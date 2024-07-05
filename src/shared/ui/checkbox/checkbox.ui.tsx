@@ -7,13 +7,10 @@ import React, {
   ComponentPropsWithoutRef,
 } from 'react';
 
+import Center from '@/shared/ui/center';
 import CheckIcon from '@/shared/config/assets/check.svg';
 
-import {
-  getCheckboxInputStyle,
-  getCheckboxWrapperStyle,
-} from '@/shared/ui/checkbox/style';
-import Center from '@/shared/ui/center';
+import { getCheckboxWrapperStyle } from '@/shared/ui/checkbox/style';
 
 interface ICheckboxProps extends ComponentPropsWithoutRef<'button'> {
   id?: string;
@@ -42,7 +39,7 @@ const CheckboxComponent = (
         checked={isChecked}
         type="checkbox"
         css={css({
-          ...getCheckboxInputStyle(),
+          display: 'none',
         })}
       />
 

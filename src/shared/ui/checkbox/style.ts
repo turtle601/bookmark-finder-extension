@@ -1,11 +1,5 @@
 import { CSSObject } from '@emotion/react';
 
-export const getCheckboxInputStyle = (): CSSObject => {
-  return {
-    display: 'none',
-  };
-};
-
 export const getCheckboxWrapperStyle = (): CSSObject => {
   return {
     width: '16px',
