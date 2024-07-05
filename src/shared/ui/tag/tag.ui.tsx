@@ -1,46 +1,93 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
-import { CSSObject } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
+
+import React, {
+  ComponentPropsWithoutRef,
+  forwardRef,
+  ReactNode,
+  Ref,
+  useCallback,
+  useState,
+} from 'react';
 
 import Flex from '@/shared/ui/flex';
+import Text from '@/shared/ui/text';
 import XIcon from '@/shared/config/assets/x.svg';
 
+import { color } from '@/shared/config/styles';
 import { getTagStyle } from '@/shared/ui/tag/tag.style';
 
-interface ITagProps {
+interface ITagProps extends ComponentPropsWithoutRef<'button'> {
+  label: string;
   children: ReactNode;
-  isSelected?: boolean;
   etcStyles?: CSSObject;
 }
 
-const Tag: FC<ITagProps> = ({
-  children,
-  isSelected = false,
-  etcStyles = {},
-}) => {
+const TagComponent = (
+  { label, children, etcStyles = {}, ...attribute }: ITagProps,
+  ref: Ref<HTMLInputElement>,
+) => {
   const [isShow, setIsShow] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleTag = useCallback(() => {
+    const isSelected = !isChecked;
+    setIsChecked(isSelected);
+  }, [isChecked]);
 
   const closeTag = useCallback(() => {
     setIsShow(false);
-  }, [isShow]);
+  }, []);
 
   return (
     isShow && (
-      <Flex
-        justify="space-between"
-        align="center"
-        gap="12px"
-        etcStyles={{
-          ...getTagStyle(isSelected),
-          ...etcStyles,
-        }}
-      >
-        <div>{children}</div>
-        <button type="button" onClick={closeTag}>
-          <XIcon />
-        </button>
-      </Flex>
+      <>
+        <input
+          id={label}
+          ref={ref}
+          value={label}
+          checked={isChecked}
+          type="checkbox"
+          css={css({
+            display: 'none',
+          })}
+        />
+        <Flex
+          as="button"
+          justify="space-between"
+          align="center"
+          gap="12px"
+          etcStyles={{
+            ...getTagStyle(isChecked),
+            ...etcStyles,
+          }}
+          onClick={toggleTag}
+          {...attribute}
+        >
+          <label htmlFor={label}>
+            <Text
+              label={label}
+              type="sm"
+              fontWeightType="semibold"
+              textColor={color.white}
+              etcStyles={{
+                fontSize: '12px',
+                lineHeight: 0,
+              }}
+            />
+          </label>
+          <button type="button" onClick={closeTag}>
+            <XIcon />
+          </button>
+        </Flex>
+      </>
     )
   );
 };
+
+export type ITag = React.ForwardRefExoticComponent<
+  ITagProps & React.RefAttributes<HTMLInputElement>
+>;
+
+const Tag: ITag = forwardRef(TagComponent);
 
 export default Tag;

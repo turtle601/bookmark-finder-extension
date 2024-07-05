@@ -1,19 +1,6 @@
 import { color } from '@/shared/config/styles';
 import { CSSObject } from '@emotion/react';
 
-export const getToggleCheckBoxStyle = (): CSSObject => {
-  return {
-    '&:checked label': {
-      backgroundColor: color.green,
-    },
-
-    '&:checked span': {
-      left: `calc(100% - 44px)`,
-      background: color.white,
-    },
-  };
-};
-
 export const getToggleSwitchStyle = (isChecked: boolean): CSSObject => {
   return {
     display: 'block',
