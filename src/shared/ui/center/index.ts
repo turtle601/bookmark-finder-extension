@@ -1,1 +1,3 @@
-export * from './center.ui';
+import Center from './center.ui';
+
+export default Center;
