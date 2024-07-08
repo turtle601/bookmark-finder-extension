@@ -1,11 +1,18 @@
 import { color } from '@/shared/config/styles';
+
 import type { CSSObject } from '@emotion/react';
 
-export const getLineEffectStyle = (isDragEnter?: boolean): CSSObject => {
+export const getLineEffectStyle = (
+  isDragEnter: boolean,
+  dist: number,
+): CSSObject => {
   return {
     width: '170px',
     height: '4px',
     position: 'relative',
+    background: isDragEnter
+      ? `linear-gradient(to right, ${color.purple} 0 ${dist}px, transparent ${dist + 8}px 100%)`
+      : 'transparent',
     ...(isDragEnter && {
       '::before': {
         content: '""',
@@ -21,5 +28,3 @@ export const getLineEffectStyle = (isDragEnter?: boolean): CSSObject => {
     }),
   };
 };
-
-// background: linear-gradient(to left, #333, #333 50%, #eee 75%, #333 75%);

@@ -1,37 +1,43 @@
-import { css } from '@emotion/react';
-import React, { ComponentPropsWithoutRef, ReactElement } from 'react';
+import { css, CSSObject } from '@emotion/react';
 
-import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
-import { injectPropsForChild } from '@/shared/ui/utils';
+import React, { ComponentPropsWithoutRef } from 'react';
+
+import { useDnDContext } from '@/shared/ui/dnd/model';
+import {
+  getOverlayStyle,
+  getOverlayWrapperStyle,
+} from '@/shared/ui/dnd/part/overlay/style';
+
+import Dragable from '@/shared/ui/dnd/part/dragable';
 
 export interface IOverlayProps extends ComponentPropsWithoutRef<'div'> {
-  children: ReactElement;
+  etcStyles?: CSSObject;
 }
 
-const Overlay: React.FC<IOverlayProps> = ({ children, ...attribute }) => {
-  const { isDrag, mouseX, mouseY } = useDnDContext();
+const Overlay: React.FC<IOverlayProps> = ({ etcStyles = {}, ...attribute }) => {
+  const { mouseX, mouseY, dragStartItem, dragEnterItem } = useDnDContext();
 
-  const { getStartDragPosition } = useDnDActionContext();
-
-  const isShow = isDrag && !(mouseX === 0 && mouseY === 0);
+  const isDrag = !!dragStartItem;
+  const isEnter = !!dragEnterItem;
 
   return (
-    isShow && (
+    isDrag && (
       <div
         css={css({
-          position: 'absolute',
-          left: mouseX - 12,
-          top: mouseY - 24,
-          zIndex: 10,
+          ...getOverlayWrapperStyle(mouseX, mouseY),
         })}
         {...attribute}
       >
-        {injectPropsForChild({
-          props: {
-            position: getStartDragPosition(),
-          },
-          child: children,
-        })}
+        <Dragable
+          position={dragStartItem}
+          customStyle={() => ({
+            ...getOverlayStyle(isEnter),
+            ...etcStyles,
+          })}
+          {...attribute}
+        >
+          {dragStartItem.data?.text}
+        </Dragable>
       </div>
     )
   );

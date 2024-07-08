@@ -1,52 +1,31 @@
-import React from 'react';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
 
-import { IDragPosition, IUseDnDParameter } from '@/shared/ui/dnd/hooks/useDnD';
-
-export interface IDropAction {
-  action?: IUseDnDParameter['onDrop'];
-}
+import type { IDragPosition } from '@/shared/ui/dnd/hooks/useDnD';
 
 interface IOnDropParameter {
   startPosition: IDragPosition;
   endPosition: IDragPosition;
 }
 
-interface IUseDrop {
-  dragStartItem: React.MutableRefObject<IDragPosition | null>;
-  dragEnterItem: React.MutableRefObject<IDragPosition | null>;
-  onDrop: ({ startPosition, endPosition }: IOnDropParameter) => void;
-  setIsDrag: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IUseDrop {
+  action: ({ startPosition, endPosition }: IOnDropParameter) => void;
 }
 
-export const useDrop = ({
-  dragStartItem,
-  dragEnterItem,
-  onDrop,
-  setIsDrag,
-}: IUseDrop) => {
-  const dropAction =
-    ({ action }: IDropAction): React.DragEventHandler =>
-    () => {
-      if (dragStartItem.current === null || dragEnterItem.current === null)
-        return;
+export const useDrop = ({ action }: IUseDrop) => {
+  const { dragStartItem, dragEnterItem } = useDnDContext();
+  const { setDragStartItem, setDragEnterItem } = useDnDActionContext();
 
-      if (action) {
-        action({
-          startPosition: dragStartItem.current,
-          endPosition: dragEnterItem.current,
-        });
-      } else {
-        onDrop({
-          startPosition: dragStartItem.current,
-          endPosition: dragEnterItem.current,
-        });
-      }
+  const drop = () => {
+    if (dragStartItem === null || dragEnterItem === null) return;
 
-      dragStartItem.current = null;
-      dragEnterItem.current = null;
+    action({
+      startPosition: dragStartItem,
+      endPosition: dragEnterItem,
+    });
 
-      setIsDrag(false);
-    };
+    setDragEnterItem(null);
+    setDragStartItem(null);
+  };
 
-  return { dropAction };
+  return { drop };
 };

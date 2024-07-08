@@ -1,13 +1,13 @@
-import type { IDragStartParameter } from '@/shared/ui/dnd/hooks/useDragStart';
-export type IDragEnterParamter = IDragStartParameter;
+import { useDnDActionContext } from '@/shared/ui/dnd/model';
 
-interface IUseDragEnd {
-  setIsDrag: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export const useDragEnd = () => {
+  const { setDragStartItem, setDragEnterItem, setMousePosition } =
+    useDnDActionContext();
 
-export const useDragEnd = ({ setIsDrag }: IUseDragEnd) => {
-  const dragEnd: React.DragEventHandler = () => {
-    setIsDrag(false);
+  const dragEnd = () => {
+    setDragStartItem(null);
+    setDragEnterItem(null);
+    setMousePosition({ x: 0, y: 0 });
   };
 
   return {

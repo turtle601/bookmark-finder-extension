@@ -1,10 +1,15 @@
-import { useMousePosition } from '@/shared/hooks/useMousePosition';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
 
 export const useDragOver = () => {
-  const { mouseX, mouseY, setMousePosition } = useMousePosition();
+  const { mouseX, mouseY } = useDnDContext();
+  const { setMousePosition } = useDnDActionContext();
 
-  const dragOver: React.DragEventHandler = (e) => {
+  const blockDragOverEvent: React.DragEventHandler = (e) => {
     e.preventDefault();
+  };
+
+  const setDragOverPointer: React.DragEventHandler = (e) => {
+    blockDragOverEvent(e);
 
     setMousePosition({ x: e.clientX, y: e.clientY });
   };
@@ -12,6 +17,7 @@ export const useDragOver = () => {
   return {
     mouseX,
     mouseY,
-    dragOver,
+    blockDragOverEvent,
+    setDragOverPointer,
   };
 };

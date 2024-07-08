@@ -1,40 +1,32 @@
-import { useRef, useState } from 'react';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
 
 import type { IDragPosition } from '@/shared/ui/dnd/hooks/useDnD';
 
-export interface IDragStartParameter {
+export interface IUseDragStartParameter {
   position: IDragPosition;
 }
 
-export const useDragStart = () => {
-  const [isDrag, setIsDrag] = useState(false);
-  const dragStartItem = useRef<IDragPosition | null>(null);
+export const useDragStart = ({ position }: IUseDragStartParameter) => {
+  const { dragStartItem } = useDnDContext();
+  const { setDragStartItem } = useDnDActionContext();
+
+  const emptyImg = new Image();
+
+  emptyImg.src =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
   const hideDragDefaultImg: React.DragEventHandler = (e) => {
-    const emptyImg = new Image();
-    emptyImg.src =
-      'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-
     e.dataTransfer.setDragImage(emptyImg, 0, 0);
   };
 
-  const dragStart =
-    ({ position }: IDragStartParameter): React.DragEventHandler =>
-    (e) => {
-      dragStartItem.current = position;
-      setIsDrag(true);
-      hideDragDefaultImg(e);
-    };
-
-  const getStartDragPosition = () => {
-    return dragStartItem.current;
+  const dragStart: React.DragEventHandler = (e) => {
+    setDragStartItem(position);
+    hideDragDefaultImg(e);
   };
 
   return {
-    isDrag,
-    setIsDrag,
-    dragStart,
+    isDrag: !!dragStartItem,
     dragStartItem,
-    getStartDragPosition,
+    dragStart,
   };
 };

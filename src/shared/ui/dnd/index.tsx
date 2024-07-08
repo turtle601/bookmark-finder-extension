@@ -1,25 +1,37 @@
 import React from 'react';
 
-import Item from '@/shared/ui/dnd/part/item';
-import DropArea from '@/shared/ui/dnd/part/drop-area';
+import Dragable from '@/shared/ui/dnd/part/dragable';
+import DragableLine from '@/shared/ui/dnd/part/dragable/dragableLine';
+import Dropable from '@/shared/ui/dnd/part/dropable';
+import DropableLine from '@/shared/ui/dnd/part/dropable/dropableLine';
 import Overlay from '@/shared/ui/dnd/part/overlay';
 
+import type { IDragableProps } from '@/shared/ui/dnd/part/dragable/dragable.ui';
 import type { PolymorpicProps } from '@/shared/ui/util.type';
-import type { IDropAreaProps } from '@/shared/ui/dnd/part/drop-area/drop-area.ui';
-import type { IItemProps } from '@/shared/ui/dnd/part/item/item.ui';
+import type { IDropableProps } from '@/shared/ui/dnd/part/dropable/dropable.ui';
+import type { IDragableLineProps } from '@/shared/ui/dnd/part/dragable/dragableLine/dragableLine.ui';
+import type { IDropableLineProps } from '@/shared/ui/dnd/part/dropable/dropableLine/dropableLine.ui';
 import type { IOverlayProps } from '@/shared/ui/dnd/part/overlay/overlay.ui';
 
 export interface IDnD {
-  DropArea: React.FC<PolymorpicProps<React.ElementType, IDropAreaProps>>;
-  Item: React.FC<IItemProps>;
+  Dragable: React.FC<PolymorpicProps<React.ElementType, IDragableProps>>;
+  DragableLine: React.FC<
+    PolymorpicProps<React.ElementType, IDragableLineProps>
+  >;
+  Dropable: React.FC<PolymorpicProps<React.ElementType, IDropableProps>>;
+  DropableLine: React.FC<
+    PolymorpicProps<React.ElementType, IDropableLineProps>
+  >;
   Overlay: React.FC<IOverlayProps>;
 }
 
 const DnD: IDnD = Object.assign(
   {},
   {
-    DropArea,
-    Item,
+    Dragable,
+    DragableLine,
+    Dropable,
+    DropableLine,
     Overlay,
   },
 );

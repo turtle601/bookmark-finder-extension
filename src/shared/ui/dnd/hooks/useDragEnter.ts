@@ -1,20 +1,21 @@
-import { useRef } from 'react';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
 
 import type { IDragPosition } from '@/shared/ui/dnd/hooks/useDnD';
-import type { IDragStartParameter } from '@/shared/ui/dnd/hooks/useDragStart';
 
-export type IDragEnterParamter = IDragStartParameter;
+interface IUserDragEnterParameter {
+  position: IDragPosition;
+}
 
-export const useDragEnter = () => {
-  const dragEnterItem = useRef<IDragPosition | null>(null); // 드랍할 위치의 아이템의 인덱스
+export const useDragEnter = ({ position }: IUserDragEnterParameter) => {
+  const { dragEnterItem } = useDnDContext();
+  const { setDragEnterItem } = useDnDActionContext();
 
-  const dragEnter =
-    ({ position }: IDragEnterParamter): React.DragEventHandler =>
-    () => {
-      dragEnterItem.current = position;
-    };
+  const dragEnter = () => {
+    setDragEnterItem(position);
+  };
 
   return {
+    isDragEnter: !!dragEnterItem,
     dragEnterItem,
     dragEnter,
   };

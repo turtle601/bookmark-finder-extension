@@ -5,49 +5,40 @@ import { DnDActionContext, DnDContext } from '@/shared/ui/dnd/model/context';
 
 import { useDnD } from '@/shared/ui/dnd/hooks/useDnD';
 
-import type { IUseDnDParameter } from '@/shared/ui/dnd/hooks/useDnD';
-
-interface IDnDProviderProps extends IUseDnDParameter {
+interface IDnDProviderProps {
   children: ReactNode;
 }
 
 const DnDProvider: React.FC<IDnDProviderProps> = ({
-  onDrop,
   children,
 }: IDnDProviderProps) => {
   const {
-    isDrag,
     mouseX,
     mouseY,
-    dragOver,
-    dragStart,
-    dragEnter,
-    dragEnd,
-    dropAction,
-    getStartDragPosition,
-  } = useDnD({
-    onDrop,
-  });
+    dragStartItem,
+    dragEnterItem,
+    setDragStartItem,
+    setDragEnterItem,
+    setMousePosition,
+  } = useDnD();
 
   const state = useMemo(
     () => ({
-      isDrag,
       mouseX,
       mouseY,
+      dragStartItem,
+      dragEnterItem,
     }),
-    [isDrag, mouseX, mouseY],
+    [dragEnterItem, dragStartItem, mouseX, mouseY],
   );
 
   const action = useMemo(
     () => ({
-      dragOver,
-      dragStart,
-      dragEnter,
-      dragEnd,
-      dropAction,
-      getStartDragPosition,
+      setDragStartItem,
+      setDragEnterItem,
+      setMousePosition,
     }),
-    [dragEnter, dragOver, dragStart, dropAction, dragEnd, getStartDragPosition],
+    [setDragEnterItem, setDragStartItem, setMousePosition],
   );
 
   return (
