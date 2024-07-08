@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { useState } from 'react';
 
 import DnD from '@/shared/ui/dnd';
@@ -6,12 +5,6 @@ import DnDProvider from '@/shared/ui/dnd/provider';
 
 import type { IDragPosition } from '@/shared/ui/dnd/hooks';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { getLineEffectStyle } from '@/shared/ui/dnd/part/drop-area';
-import {
-  getDragItemStyle,
-  getOverlayItemStyle,
-} from '@/shared/ui/dnd/part/item/style';
 
 const meta: Meta<typeof DnD> = {
   title: 'shared/DnD',
@@ -73,51 +66,20 @@ const DnDComponent = () => {
   };
 
   return (
-    <DnDProvider onDrop={onDropMove}>
-      <DnD.Overlay>
-        <DnD.Item
-          draggable={false}
-          customStyle={(isDrag) => ({
-            width: '170px',
-            height: '32px',
-            zIndex: 10,
-            ...getOverlayItemStyle(isDrag),
-          })}
-        />
-      </DnD.Overlay>
+    <DnDProvider>
+      <DnD.Overlay />
       {list.map((item, id) => {
         return (
-          <div
-            css={css({
-              width: '100%',
-            })}
-            key={id}
-          >
-            <DnD.DropArea
+          <div key={id}>
+            <DnD.DropableLine
+              action={onDropMove}
               position={{ id: id, data: item }}
-              customStyle={(isDragEnter) => ({
-                width: '170px',
-                height: '32px',
-                ...getLineEffectStyle(isDragEnter),
-              })}
             />
-
-            <DnD.Item
-              position={{ id: id, data: item }}
-              customStyle={(isDrag) => ({
-                width: '170px',
-                height: '32px',
-                ...getDragItemStyle(isDrag),
-              })}
-            />
+            <DnD.DragableLine position={{ id: id, data: item }} />
           </div>
         );
       })}
-      <DnD.DropArea
-        as="div"
-        position={{ id: list.length }}
-        customStyle={(isDragEnter) => getLineEffectStyle(isDragEnter)}
-      />
+      <DnD.DropableLine action={onDropMove} position={{ id: list.length }} />
     </DnDProvider>
   );
 };
