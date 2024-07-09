@@ -1,9 +1,20 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
-      { "targets": { "browsers": ["last 2 versions", ">= 5% in KR"] } }
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
     ],
-    "@babel/react"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", ">= 5% in KR"]
+        }
+      }
+    ],
+    "@emotion/babel-preset-css-prop",
+    "@babel/preset-typescript"
   ]
 }
