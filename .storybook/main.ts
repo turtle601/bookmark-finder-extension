@@ -3,6 +3,7 @@ import type { StorybookConfig } from '@storybook/react-webpack5';
 
 const config: StorybookConfig = {
   stories: ['../**/*.mdx', '../**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+
   addons: [
     '@storybook/addon-webpack5-compiler-swc',
     '@storybook/addon-onboarding',
@@ -10,11 +11,17 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@chromatic-com/storybook',
     '@storybook/addon-interactions',
+    '@storybook/addon-webpack5-compiler-babel',
   ],
+
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      fastRefresh: true,
+      legacyRootApi: true,
+    },
   },
+
   webpackFinal: async (config) => {
     if (config?.resolve?.alias) {
       config.resolve.alias = {
@@ -38,22 +45,11 @@ const config: StorybookConfig = {
       use: ['@svgr/webpack'],
     });
 
-    config.module.rules.push({
-      test: /\.(js|jsx|ts|tsx)$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            ['@babel/preset-react', { runtime: 'automatic' }],
-            '@emotion/babel-preset-css-prop',
-            '@babel/preset-typescript',
-          ],
-        },
-      },
-    });
-
     return config;
+  },
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
   },
 };
 
