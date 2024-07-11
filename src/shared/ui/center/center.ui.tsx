@@ -1,4 +1,4 @@
-import { ElementType } from 'react';
+import React from 'react';
 
 import Flex from '@/shared/ui/flex/flex.ui';
 
@@ -10,7 +10,7 @@ export interface ICenterProps {
   etcStyles?: CSSObject;
 }
 
-const Center = <T extends ElementType = 'div'>({
+const Center = <T extends React.ElementType = 'div'>({
   as,
   direction = 'row',
   etcStyles = {},

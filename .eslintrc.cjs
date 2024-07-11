@@ -2,10 +2,7 @@ require('@turtle601/eslint-config/patch');
 
 module.exports = {
   env: { browser: true, es2020: true },
-  extends: [
-    '@turtle601/eslint-config', // 공통 ESLint 컨피그 불러오기
-    '@turtle601/eslint-config/mixins/react', // React용 ESLint 컨피그 불러오기
-  ],
+  extends: ['@turtle601/eslint-config', '@turtle601/eslint-config/mixins/react', 'plugin:storybook/recommended', 'plugin:storybook/recommended'],
   settings: {
     react: {
       version: '18.3.1',

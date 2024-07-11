@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import type { ISpacerProps, SpacerType } from '@/shared/ui/spacer';
+import type { ISpacerProps, SpacerType } from '@/shared/ui/spacer/spacer.ui';
 
 export const getSpacerStyle = <T extends SpacerType>({
   direction,

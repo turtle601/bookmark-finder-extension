@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { IFlexProps } from '@/shared/ui/flex';
+import type { IFlexProps } from '@/shared/ui/flex/flex.ui';
 
 export const getFlexStyle = ({
   direction,

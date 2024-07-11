@@ -1,1 +1,3 @@
-export * from './spacer.ui';
+import Spacer from './spacer.ui';
+
+export default Spacer;

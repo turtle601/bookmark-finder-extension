@@ -12,6 +12,7 @@ export const getTextStyle = ({
 }: Omit<ITextProps, 'label'>) => {
   return css({
     color: textColor,
+    height: 'auto',
     fontWeight: fontWeight[fontWeightType],
     ...typography[type],
     ...etcStyles,

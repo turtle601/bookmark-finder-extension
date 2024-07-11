@@ -27,17 +27,8 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.(ts|tsx)$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              presets: ['@babel/preset-env'],
-            },
-          },
-          'ts-loader',
-        ],
+        test: /\.(js|jsx|ts|tsx)$/,
+        loader: 'babel-loader',
         exclude: /node_modules/,
       },
       {
