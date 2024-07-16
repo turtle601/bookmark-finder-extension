@@ -57,7 +57,6 @@ export function reducer(
         },
       };
     case 'CLICK_OVERLAY':
-      console.log('click overlay');
       return closeActionForOverlay(state);
 
     case 'PRESS_ESC':
