@@ -9,11 +9,6 @@ import {
 } from '@/entities/bookmark/bookmark.api';
 import { createBoomarkMutation } from '@/entities/bookmark/bookmark.api';
 
-import {
-  createBookmark,
-  updateBookmark,
-} from '@/entities/bookmark/bookmark.mock';
-
 import type { Bookmark } from '@/entities/bookmark/bookmark.type';
 
 export const keys = {
@@ -58,23 +53,13 @@ export function useCreateBookmarkMutation() {
       await bookmarkService.cancelCache();
       const prevBookmarkCache = bookmarkService.getCache();
 
-      bookmarkService.setCache((bookmarks) => {
-        const result = createBookmark({
-          bookmarks,
-          parentId: variables.parentId,
-          title: variables.title,
-          url: variables.url,
-        });
-
-        return result;
-      });
-
       return { prevBookmarkCache };
     },
     onSuccess: async () => {
       await bookmarkService.invalidateCache();
     },
-    onError: (error, variables, context) => {
+    onError: async (error, variables, context) => {
+      await bookmarkService.invalidateCache();
       bookmarkService.setCache(context?.prevBookmarkCache);
     },
   });
@@ -88,24 +73,13 @@ export function useUpdateBookmarkMutation() {
       await bookmarkService.cancelCache();
       const prevBookmarkCache = bookmarkService.getCache();
 
-      bookmarkService.setCache((bookmarks) => {
-        const result = updateBookmark({
-          bookmarks,
-          id: variables.id,
-          parentId: variables.parentId,
-          title: variables.title,
-          url: variables.url,
-        });
-
-        return result;
-      });
-
       return { prevBookmarkCache };
     },
-    onSuccess: () => {
-      bookmarkService.invalidateCache();
+    onSuccess: async () => {
+      await bookmarkService.invalidateCache();
     },
-    onError: (error, variables, context) => {
+    onError: async (error, variables, context) => {
+      await bookmarkService.invalidateCache();
       bookmarkService.setCache(context?.prevBookmarkCache);
     },
   });

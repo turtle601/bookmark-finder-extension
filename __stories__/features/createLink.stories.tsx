@@ -9,10 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { bookmarkService } from '@/entities/bookmark/bookmark.queries';
 
-import {
-  createLinkMockData,
-  makeBookmarkMockData,
-} from '@/entities/bookmark/bookmark.mock';
+import { makeBookmarkMockData } from '@/entities/bookmark/bookmark.mock';
 
 import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
@@ -79,8 +76,7 @@ export const DefaultInteraction: Story = {
     await userEvent.click(buttonElement);
 
     await waitFor(() => {
-      expect(mock1).toBeCalled();
-      expect(bookmarkService.getCache()).toEqual(createLinkMockData);
+      expect(mock1).toHaveBeenCalledTimes(1);
     });
   },
 };

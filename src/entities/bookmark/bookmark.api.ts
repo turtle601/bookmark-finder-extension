@@ -21,25 +21,17 @@ interface ICreateBookmarkMutationParameter {
   url?: string;
 }
 
-export const createBoomarkMutation = async (
-  payload: ICreateBookmarkMutationParameter,
-) => {
-  await createChromeRequest({
-    action: 'createBookmark',
-    payload: { ...payload },
-  });
-};
-
-interface IDeleteBookmarkMutationParameter {
-  bookmarkId: string;
+interface ICreateBookmarkReturnType {
+  isSuccess: boolean;
+  bookmark: Bookmark;
 }
 
-export const deleteBookmarkMutation = async (
-  paylaod: IDeleteBookmarkMutationParameter,
-) => {
-  await createChromeRequest({
-    action: 'deleteBookmark',
-    payload: { ...paylaod },
+export const createBoomarkMutation = async (
+  payload: ICreateBookmarkMutationParameter,
+): Promise<ICreateBookmarkReturnType> => {
+  return await createChromeRequest({
+    action: 'createBookmark',
+    payload: { ...payload },
   });
 };
 
@@ -50,11 +42,33 @@ interface IUpdateBookmarkMutationParameter {
   url?: string;
 }
 
+interface IUpdateBookmarkReturnType {
+  isSuccess: boolean;
+  bookmark: Bookmark;
+}
+
 export const updateBookmarkMutation = async (
   paylaod: IUpdateBookmarkMutationParameter,
-) => {
-  await createChromeRequest({
+): Promise<IUpdateBookmarkReturnType> => {
+  return await createChromeRequest({
     action: 'updateBookmark',
+    payload: { ...paylaod },
+  });
+};
+
+interface IDeleteBookmarkMutationParameter {
+  bookmarkId: string;
+}
+
+interface IDeleteBookmarkReturnType {
+  isSuccess: boolean;
+}
+
+export const deleteBookmarkMutation = async (
+  paylaod: IDeleteBookmarkMutationParameter,
+): Promise<IDeleteBookmarkReturnType> => {
+  return await createChromeRequest({
+    action: 'deleteBookmark',
     payload: { ...paylaod },
   });
 };

@@ -12,10 +12,7 @@ import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
 import UpdateFolder from '@/features/bookmark/updateFolder';
 import { queryClient } from '@/shared/lib/react-query';
-import {
-  makeBookmarkMockData,
-  updateFolderMockData,
-} from '@/entities/bookmark';
+import { makeBookmarkMockData } from '@/entities/bookmark';
 
 const meta: Meta<typeof UpdateFolder> = {
   title: 'features/UpdateFolder',
@@ -85,8 +82,7 @@ export const DefaultInteraction: Story = {
     await sleep(1000);
 
     await waitFor(() => {
-      expect(mock1).toBeCalled();
-      expect(bookmarkService.getCache()).toEqual(updateFolderMockData);
+      expect(mock1).toHaveBeenCalledTimes(1);
     });
   },
 };

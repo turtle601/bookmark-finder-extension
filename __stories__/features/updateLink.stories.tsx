@@ -13,7 +13,7 @@ import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
 import UpdateLink from '@/features/bookmark/updateLink';
 
-import { makeBookmarkMockData, updateLinkMockData } from '@/entities/bookmark';
+import { makeBookmarkMockData } from '@/entities/bookmark';
 
 const meta: Meta<typeof UpdateLink> = {
   title: 'features/UpdateLink',
@@ -89,8 +89,7 @@ export const DefaultInteraction: Story = {
     await sleep(1000);
 
     await waitFor(() => {
-      expect(mock1).toBeCalled();
-      expect(bookmarkService.getCache()).toEqual(updateLinkMockData);
+      expect(mock1).toHaveBeenCalledTimes(1);
     });
   },
 };

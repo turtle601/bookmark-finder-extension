@@ -11,10 +11,7 @@ import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
 import CreateFolder from '@/features/bookmark/createFolder';
 
-import {
-  createFolderMockData,
-  makeBookmarkMockData,
-} from '@/entities/bookmark/bookmark.mock';
+import { makeBookmarkMockData } from '@/entities/bookmark/bookmark.mock';
 import { queryClient } from '@/shared/lib/react-query';
 
 const meta: Meta<typeof CreateFolder> = {
@@ -54,6 +51,19 @@ export const DefaultInteraction: Story = {
     moduleMock: {
       mock: () => {
         const mock1 = createMock(bookmarkApi, 'createBoomarkMutation');
+        mock1.mockReturnValue(
+          Promise.resolve({
+            isSuccess: true,
+            bookmark: {
+              id: 'newId',
+              parentId: '4',
+              title: '새 폴더',
+              index: 1,
+              dateAdded: 12345,
+              children: [],
+            },
+          }),
+        );
 
         return mock1;
       },
@@ -81,8 +91,7 @@ export const DefaultInteraction: Story = {
     await sleep(1000);
 
     await waitFor(() => {
-      expect(mock1).toBeCalled();
-      expect(bookmarkService.getCache()).toEqual(createFolderMockData);
+      expect(mock1).toHaveBeenCalledTimes(1);
     });
   },
 };
