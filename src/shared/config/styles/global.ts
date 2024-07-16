@@ -22,6 +22,7 @@ export const globalStyle: SerializedStyles = css({
 
   a: {
     textDecoration: 'none',
+    color: 'inherit',
   },
 
   button: {
