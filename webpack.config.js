@@ -1,8 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+require('dotenv').config({ path: './.env' });
 
 module.exports = {
   entry: {
@@ -46,6 +49,9 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [{ from: 'public/manifest.json', to: 'manifest.json' }],
+    }),
+    new webpack.DefinePlugin({
+      'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY),
     }),
   ],
 };
