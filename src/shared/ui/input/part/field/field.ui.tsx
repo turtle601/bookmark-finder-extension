@@ -1,9 +1,11 @@
 import { css, CSSObject } from '@emotion/react';
 
 import {
+  ChangeEventHandler,
   ComponentPropsWithoutRef,
   forwardRef,
   ForwardRefExoticComponent,
+  MouseEventHandler,
   Ref,
   RefAttributes,
   useEffect,
@@ -20,19 +22,20 @@ import { getFieldStyle } from '@/shared/ui/input/part/field/field.style';
 
 interface IFieldProps extends ComponentPropsWithoutRef<'input'> {
   kind: 'outline' | 'flushed';
+  externalonChangeAction?: ChangeEventHandler<HTMLInputElement>;
   etcStyles?: CSSObject;
   paddingLeft?: CSSObject['paddingLeft'];
 }
-interface IFieldAttribute {
-  focus: () => void;
-  checkValidity: () => boolean;
-  scrollIntoView: () => void;
-  value: string;
-}
 
 const FieldComponent = (
-  { kind, etcStyles = {}, paddingLeft = '20px', ...attribute }: IFieldProps,
-  ref: Ref<IFieldAttribute>,
+  {
+    kind,
+    externalonChangeAction,
+    etcStyles = {},
+    paddingLeft = '20px',
+    ...attribute
+  }: IFieldProps,
+  ref: Ref<HTMLInputElement>,
 ) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { name, value, isError, touched } = useInputContext();
@@ -41,7 +44,8 @@ const FieldComponent = (
 
   useImperativeHandle(
     ref,
-    (): IFieldAttribute => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (): any => ({
       focus: () => {
         inputRef.current?.focus();
       },
@@ -72,6 +76,11 @@ const FieldComponent = (
     }
   }, [value]);
 
+  const handleOnChangedAction: ChangeEventHandler<HTMLInputElement> = (e) => {
+    handleChange(e);
+    if (externalonChangeAction) externalonChangeAction(e);
+  };
+
   return (
     <input
       id={name}
@@ -80,7 +89,7 @@ const FieldComponent = (
       ref={inputRef}
       onBlur={handleBlur}
       onFocus={handleFocus}
-      onChange={handleChange}
+      onChange={handleOnChangedAction}
       css={css({
         display: 'block',
         ...getFieldStyle(kind, isError, touched),
@@ -93,7 +102,7 @@ const FieldComponent = (
 };
 
 export type IField = ForwardRefExoticComponent<
-  IFieldProps & RefAttributes<IFieldAttribute>
+  IFieldProps & RefAttributes<HTMLInputElement>
 >;
 
 const Field: IField = forwardRef(FieldComponent);

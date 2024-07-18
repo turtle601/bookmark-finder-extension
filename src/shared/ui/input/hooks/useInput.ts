@@ -16,7 +16,7 @@ export const useInput = ({
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    if (validate) setIsError(validate(value));
+    if (validate) setIsError(validate(value || ''));
   }, [value, isError, validate]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {

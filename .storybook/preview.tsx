@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Global } from '@emotion/react';
 
-import type { Preview } from '@storybook/react';
-
+import { QueryClientProvider } from '../src/app/provider/queryClientProvider';
 import { globalStyle } from '../src/shared/config/styles/global';
+
+import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
   parameters: {
@@ -18,10 +19,10 @@ const preview: Preview = {
 
   decorators: [
     (Story) => (
-      <div>
+      <QueryClientProvider>
         <Global styles={globalStyle} />
         <Story />
-      </div>
+      </QueryClientProvider>
     ),
   ],
 };

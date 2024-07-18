@@ -1,12 +1,15 @@
 import { Global } from '@emotion/react';
 import { globalStyle } from '@/shared/config/styles/global';
-import ModalProvider from '@/shared/ui/modal/provider';
+import { QueryClientProvider } from '@/app/provider/queryClientProvider';
+
+import AutoSearch from '@/features/search/autoSearch/autoSearch.ui';
 
 const Provider = () => {
   return (
-    <ModalProvider>
+    <QueryClientProvider>
       <Global styles={globalStyle} />
-    </ModalProvider>
+      <AutoSearch />
+    </QueryClientProvider>
   );
 };
 

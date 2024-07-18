@@ -14,10 +14,10 @@ export default meta;
 type Story = StoryObj<typeof Toggle>;
 
 export const Default: Story = {
-  args: {
-    externalAction: (isChecked) => {
-      const ment = isChecked ? '토글 켜기' : '토글 끄기';
-      console.log(ment);
-    },
-  },
+  // args: {
+  //   externalAction: (isChecked) => {
+  //     const ment = isChecked ? '토글 켜기' : '토글 끄기';
+  //     console.log(ment);
+  //   },
+  // },
 };

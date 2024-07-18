@@ -1,0 +1,1 @@
+export { getFaviconkitIcon } from './utils';

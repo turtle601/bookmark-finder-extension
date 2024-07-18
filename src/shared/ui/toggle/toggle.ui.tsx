@@ -1,11 +1,6 @@
 import { CSSObject, css } from '@emotion/react';
 
-import React, {
-  ComponentPropsWithoutRef,
-  forwardRef,
-  useCallback,
-  useState,
-} from 'react';
+import React, { ComponentPropsWithoutRef, forwardRef } from 'react';
 
 import {
   getToggleButtonStyle,
@@ -14,23 +9,15 @@ import {
 
 interface IToggleProps extends ComponentPropsWithoutRef<'button'> {
   id?: string;
-  externalAction?: (toggledIsChecked?: boolean) => void;
+  isChecked: boolean;
+  onClick: VoidFunction;
   etcStyles?: CSSObject;
 }
 
 const ToggleComponent = (
-  { id, externalAction, etcStyles = {}, ...attribute }: IToggleProps,
+  { id, isChecked, onClick, etcStyles = {}, ...attribute }: IToggleProps,
   ref: React.Ref<HTMLInputElement>,
 ) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const toggle = useCallback(() => {
-    const toggledIsChecked = !isChecked;
-    setIsChecked(toggledIsChecked);
-
-    if (externalAction) externalAction(toggledIsChecked);
-  }, [isChecked, externalAction]);
-
   return (
     <>
       <input
@@ -42,7 +29,7 @@ const ToggleComponent = (
           display: 'none',
         })}
       ></input>
-      <button onClick={toggle} {...attribute}>
+      <button onClick={onClick} {...attribute}>
         <label
           htmlFor={id || 'toggle'}
           css={css({

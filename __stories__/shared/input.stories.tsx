@@ -2,7 +2,7 @@ import Input from '@/shared/ui/input';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SearchIcon from '../src/shared/config/assets/search.svg';
+import SearchIcon from '@/shared/config/assets/search.svg';
 
 const meta: Meta<typeof Input> = {
   title: 'shared/Input',
