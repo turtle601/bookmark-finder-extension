@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import React, { ComponentPropsWithoutRef, MouseEventHandler } from 'react';
+import React, { ComponentPropsWithoutRef, MouseEvent } from 'react';
 
 import {
   IModalLayerState,
@@ -8,11 +8,13 @@ import {
 
 import type { CSSObject } from '@emotion/react';
 
+import Center from '@/shared/ui/center';
+
 export interface ICloserProps extends ComponentPropsWithoutRef<'button'> {
   modalType: IModalLayerState['modalType'];
   children: React.ReactNode;
   etcStyles?: CSSObject;
-  externalAction?: MouseEventHandler;
+  externalAction?: (e?: MouseEvent) => void | Promise<void>;
 }
 
 const Closer: React.FC<ICloserProps> = ({
@@ -24,23 +26,23 @@ const Closer: React.FC<ICloserProps> = ({
 }) => {
   const { closeModal } = useModalLayerActionContext();
 
-  const handleCloseModal: MouseEventHandler = (e) => {
+  const handleCloseModal = async (e?: MouseEvent) => {
+    if (externalAction) await externalAction(e);
     closeModal(modalType);
-
-    if (externalAction) externalAction(e);
   };
 
   return (
-    <button
+    <Center
+      as="button"
       type="button"
-      {...attribute}
-      onClick={handleCloseModal}
       css={css({
         ...etcStyles,
       })}
+      onClick={handleCloseModal}
+      {...attribute}
     >
       {children}
-    </button>
+    </Center>
   );
 };
 
