@@ -18,7 +18,7 @@ import { getTagStyle } from '@/shared/ui/tag/tag.style';
 
 interface ITagProps extends ComponentPropsWithoutRef<'button'> {
   label: string;
-  children: ReactNode;
+  children?: ReactNode;
   etcStyles?: CSSObject;
 }
 

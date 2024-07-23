@@ -1,6 +1,10 @@
 import { CSSObject, css } from '@emotion/react';
 
-import React, { ComponentPropsWithoutRef, forwardRef } from 'react';
+import React, {
+  ComponentPropsWithoutRef,
+  forwardRef,
+  MouseEventHandler,
+} from 'react';
 
 import {
   getToggleButtonStyle,
@@ -10,7 +14,7 @@ import {
 interface IToggleProps extends ComponentPropsWithoutRef<'button'> {
   id?: string;
   isChecked: boolean;
-  onClick: VoidFunction;
+  onClick: MouseEventHandler;
   etcStyles?: CSSObject;
 }
 
