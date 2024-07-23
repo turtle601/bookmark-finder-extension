@@ -5,7 +5,6 @@ import {
   ComponentPropsWithoutRef,
   forwardRef,
   ForwardRefExoticComponent,
-  MouseEventHandler,
   Ref,
   RefAttributes,
   useEffect,
