@@ -13,15 +13,19 @@ export const useArray = <T extends IArrayItem>(initialValue: T[] = []) => {
     setValue((oldValue) => [...oldValue, newValue]);
   };
 
-  const remove = (id: string) => {
-    setValue((oldValue) => oldValue.filter(({ oldIdx }) => oldIdx !== id));
+  const unshift = (newValue: T) => {
+    setValue((oldValue) => [newValue, ...oldValue]);
   };
 
-  const pick = (id: string) => {
-    setValue((oldValue) => oldValue.filter(({ oldIdx }) => oldIdx === id));
+  const remove = (idx: string) => {
+    setValue((oldValue) =>
+      oldValue.filter(({ id }) => {
+        return id !== idx;
+      }),
+    );
   };
 
   const isEmpty = () => value.length === 0;
 
-  return { value, setValue, push, remove, isEmpty, pick };
+  return { value, setValue, push, unshift, remove, isEmpty };
 };
