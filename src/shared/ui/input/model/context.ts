@@ -1,9 +1,16 @@
-import { ChangeEventHandler, Context, createContext, useContext } from 'react';
+import {
+  ChangeEventHandler,
+  Context,
+  createContext,
+  KeyboardEventHandler,
+  useContext,
+} from 'react';
 
 export interface IInputActionContextProps {
   handleChange: ChangeEventHandler<HTMLInputElement>;
   handleFocus: ChangeEventHandler<HTMLInputElement>;
   handleBlur: ChangeEventHandler<HTMLInputElement>;
+  handleKeyPress: KeyboardEventHandler<HTMLInputElement>;
   validate?: (value: string) => boolean;
 }
 
