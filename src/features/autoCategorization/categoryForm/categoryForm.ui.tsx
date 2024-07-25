@@ -14,31 +14,34 @@ import { useCategoryForm } from '@/features/autoCategorization/categoryForm/hook
 
 const CategoryForm: React.FC = () => {
   const {
+    inputRef,
     categoriesRef,
     isDisabled,
     customCategories,
-    handleInputEnter,
     isLoadingCategories,
     categories,
     isAI,
+    validateInput,
+    handleInputEnter,
+    handleRemoveCustomCategory,
     toggleAI,
   } = useCategoryForm();
 
   return (
-    <Flex as="article" direction="column" gap={spacer.spacing3}>
-      <div>
-        <Flex align={'center'}>
-          <Input inputValue="" inputName="category-input">
-            <Input.Field
-              onKeyDown={handleInputEnter}
-              kind="outline"
-              placeholder="카테고리를 입력하세요"
-              paddingLeft={spacer['spacing2.5']}
-              etcStyles={{
-                padding: spacer['spacing2.5'],
-              }}
-            />
-          </Input>
+    <Input inputValue="" inputName="category-input" validate={validateInput}>
+      <Flex as="article" direction="column">
+        <Flex align={'center'} justify={'space-between'}>
+          <Input.Field
+            ref={inputRef}
+            kind="outline"
+            placeholder="카테고리를 입력하세요"
+            paddingLeft={spacer['spacing2.5']}
+            externalonKeyUpAction={handleInputEnter}
+            etcStyles={{
+              padding: spacer['spacing2.5'],
+            }}
+          />
+
           <Flex align={'center'} gap={spacer.spacing2}>
             <AIIcon />
             <Toggle
@@ -51,17 +54,29 @@ const CategoryForm: React.FC = () => {
 
         <CategoryList
           categories={categories}
+          removeCategory={handleRemoveCustomCategory}
           isLoadingCategories={isLoadingCategories}
           categoriesRef={categoriesRef}
           isAI={isAI}
           customTags={customCategories}
         />
-      </div>
-      <SubmitCategoriesButton
-        isDisabled={isDisabled}
-        categoriesRef={categoriesRef}
-      />
-    </Flex>
+
+        <Input.ErrorMessage
+          message={
+            '중복되지 않고 최소 한 글자 이상의 카테고리만 만들 수 있습니다'
+          }
+          etcStyles={{
+            fontSize: '12px',
+          }}
+        />
+
+        <SubmitCategoriesButton
+          inputRef={inputRef}
+          isDisabled={isDisabled}
+          categoriesRef={categoriesRef}
+        />
+      </Flex>
+    </Input>
   );
 };
 

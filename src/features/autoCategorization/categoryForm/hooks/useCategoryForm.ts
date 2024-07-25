@@ -1,35 +1,62 @@
 import { useQuery } from '@tanstack/react-query';
-import { KeyboardEventHandler, useEffect, useRef } from 'react';
+import { KeyboardEventHandler, useCallback, useEffect, useRef } from 'react';
 
 import { useArray } from '@/shared/hooks/useArray';
 import { useBoolean } from '@/shared/hooks/useBoolean';
 
 import { categoryService } from '@/entities/category';
-import { getCheckedCategory } from '@/features/autoCategorization/categoryForm/categoryForm.lib';
+
+import {
+  getCheckedCategory,
+  validateInputCategories,
+} from '@/features/autoCategorization/categoryForm/categoryForm.lib';
 
 import type { ICategory } from '@/entities/category/category.type';
 
-const useAddNewCategory = () => {
-  const { value: customCategories, push: addCustomCategory } =
-    useArray<ICategory>([]);
+const useCategory = (
+  validateCategories: (
+    categories: ICategory[],
+  ) => (inputText: string) => boolean,
+) => {
+  const {
+    value: customCategories,
+    unshift: addCustomCategory,
+    remove: removeCustomCategory,
+  } = useArray<ICategory>([]);
 
-  const handleInputEnter: KeyboardEventHandler<HTMLInputElement> = (e) => {
-    e.stopPropagation();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-    if (e.key === 'Enter') {
-      console.log(e.target);
-      const newCategory = {
-        id: e.currentTarget.value,
-        text: e.currentTarget.value,
-      };
+  const validateInput = validateCategories(customCategories);
 
-      addCustomCategory(newCategory);
-    }
+  const handleInputEnter: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      const inputValue = inputRef.current?.value || '';
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+
+        const newCategory = {
+          id: inputValue,
+          text: inputValue,
+        };
+        if (!validateInput(inputValue)) {
+          addCustomCategory(newCategory);
+        }
+      }
+    },
+    [addCustomCategory, validateInput],
+  );
+
+  const handleRemoveCustomCategory = (id: string) => () => {
+    removeCustomCategory(id);
   };
 
   return {
+    inputRef,
     customCategories,
+    validateInput,
     handleInputEnter,
+    handleRemoveCustomCategory,
   };
 };
 
@@ -38,10 +65,17 @@ export const useCategoryForm = () => {
 
   const { value: isDisabled, setValue: setIsDisabled } = useBoolean(false);
 
-  const { customCategories, handleInputEnter } = useAddNewCategory();
   const { isLoading: isLoadingCategories, data: categories } = useQuery(
     categoryService.queryOptions(),
   );
+
+  const {
+    inputRef,
+    customCategories,
+    handleInputEnter,
+    handleRemoveCustomCategory,
+    validateInput,
+  } = useCategory(validateInputCategories(categories));
 
   const { value: isAI, toggle: toggleAI } = useBoolean(true);
 
@@ -51,16 +85,19 @@ export const useCategoryForm = () => {
 
     setIsDisabled(isEmptyCategories);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAI]);
+  }, [isAI, categories, customCategories]);
 
   return {
+    inputRef,
     categoriesRef,
     isDisabled,
     customCategories,
-    handleInputEnter,
     isLoadingCategories,
     categories,
     isAI,
+    validateInput,
+    handleRemoveCustomCategory,
+    handleInputEnter,
     toggleAI,
   };
 };

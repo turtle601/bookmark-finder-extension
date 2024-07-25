@@ -9,7 +9,7 @@ import CategoryForm from '@/features/autoCategorization/categoryForm';
 import * as categoryApi from '@/entities/category/category.api';
 import * as classifyApi from '@/entities/classify/classify.api';
 
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { createMock } from 'storybook-addon-module-mock';
 import { queryClient } from '@/shared/lib/react-query';
 import { userEvent, waitFor, within } from '@storybook/test';
 
@@ -51,6 +51,7 @@ export const TypingCategories: Story = {
         mock1.mockResolvedValue([
           { id: '노션', text: '노션' },
           { id: '여행', text: '여행' },
+          { id: 'CS', text: 'CS' },
         ]);
 
         return [mock1, mock2];

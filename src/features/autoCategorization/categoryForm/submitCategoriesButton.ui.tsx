@@ -10,6 +10,7 @@ import { getCheckedCategory } from '@/features/autoCategorization/categoryForm/c
 
 interface ISubmitCategoriesButtonProps {
   isDisabled: boolean;
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
   categoriesRef: React.MutableRefObject<
     Record<string, HTMLInputElement | null>
   >;

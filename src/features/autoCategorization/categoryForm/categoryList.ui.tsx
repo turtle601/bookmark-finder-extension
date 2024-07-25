@@ -6,6 +6,7 @@ import Tag from '@/shared/ui/tag';
 import { spacer } from '@/shared/config/styles';
 
 import { ICategory } from '@/entities/category/category.type';
+
 import SkeletonTag from '@/shared/ui/skeleton/skeletonTag';
 
 interface ICategoryListProps {
@@ -14,12 +15,14 @@ interface ICategoryListProps {
     Record<string, HTMLInputElement | null>
   >;
   isLoadingCategories: boolean;
+  removeCategory: (id: string) => VoidFunction;
   isAI: boolean;
   customTags: ICategory[];
 }
 
 const CategoryList: React.FC<ICategoryListProps> = ({
   categoriesRef,
+  removeCategory,
   categories,
   isLoadingCategories,
   isAI,
@@ -41,37 +44,48 @@ const CategoryList: React.FC<ICategoryListProps> = ({
   }
 
   return (
-    <Flex
-      as="ul"
-      data-testid={'categoryList'}
-      etcStyles={{
-        marginTop: spacer['spacing2.5'],
+    <div
+      css={{
         height: '120px',
       }}
-      gap={spacer['spacing2.5']}
     >
-      {customTags.map((category) => {
-        return (
-          <li key={category.id}>
-            <Tag
-              ref={(el) => (categoriesRef.current[category.id] = el)}
-              label={category.text}
-            />
-          </li>
-        );
-      })}
-      {isAI &&
-        categories?.map((category) => {
+      <Flex
+        as="ul"
+        direction={'row'}
+        data-testid={'categoryList'}
+        etcStyles={{
+          marginTop: spacer['spacing2.5'],
+          flexWrap: 'wrap',
+          maxHeight: '120px',
+          rowGap: spacer.spacing2,
+          columnGap: spacer.spacing2,
+          overflow: 'auto',
+        }}
+      >
+        {customTags.map((category) => {
           return (
             <li key={category.id}>
               <Tag
                 ref={(el) => (categoriesRef.current[category.id] = el)}
                 label={category.text}
+                externalAction={removeCategory(category.id)}
               />
             </li>
           );
         })}
-    </Flex>
+        {isAI &&
+          categories?.map((category) => {
+            return (
+              <li key={category.id}>
+                <Tag
+                  ref={(el) => (categoriesRef.current[category.id] = el)}
+                  label={category.text}
+                />
+              </li>
+            );
+          })}
+      </Flex>
+    </div>
   );
 };
 
