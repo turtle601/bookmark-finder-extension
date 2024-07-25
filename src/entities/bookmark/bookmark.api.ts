@@ -1,6 +1,7 @@
 import { createChromeRequest } from '@/shared/lib/fetch';
 
-import type { Bookmark } from '@/entities/bookmark';
+import { bookmarkService, type Bookmark } from '@/entities/bookmark';
+import { traverseBookmarks } from '@/entities/bookmark/bookmark.lib';
 
 interface IBookmarkQueryResponse {
   isSuccess: boolean;
@@ -71,4 +72,28 @@ export const deleteBookmarkMutation = async (
     action: 'deleteBookmark',
     payload: { ...paylaod },
   });
+};
+
+export const createNewChromeBookmarksMutation = async (
+  selectedBookmarks: Bookmark[],
+) => {
+  const createNewBookmarks = async (bookmark: Bookmark) => {
+    const { parentId, title, url } = bookmark;
+
+    await createBoomarkMutation({ parentId: parentId as string, title, url });
+  };
+
+  const removeOldBookmarks = async (bookmark: Bookmark) => {
+    const { id } = bookmark;
+
+    await deleteBookmarkMutation({ bookmarkId: id });
+  };
+
+  const chromeBookmarks = bookmarkService.getCache();
+
+  if (chromeBookmarks) {
+    await traverseBookmarks(chromeBookmarks, removeOldBookmarks);
+  }
+
+  await traverseBookmarks(selectedBookmarks, createNewBookmarks);
 };

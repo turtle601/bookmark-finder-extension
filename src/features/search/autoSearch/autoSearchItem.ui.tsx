@@ -56,9 +56,7 @@ const AutoSearchLinkItem = ({ bookmark }: IAutoSearchLinkItem) => {
               height: '24px',
             })}
           >
-            <a href={bookmark.url}>
-              <Text type="sm" label={bookmark.title} />
-            </a>
+            <Text type="sm" label={bookmark.title} />
           </Flex>
         </Flex>
       ) : (

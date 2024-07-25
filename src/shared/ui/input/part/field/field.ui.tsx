@@ -5,9 +5,10 @@ import {
   ComponentPropsWithoutRef,
   forwardRef,
   ForwardRefExoticComponent,
-  MouseEventHandler,
+  KeyboardEventHandler,
   Ref,
   RefAttributes,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -23,6 +24,7 @@ import { getFieldStyle } from '@/shared/ui/input/part/field/field.style';
 interface IFieldProps extends ComponentPropsWithoutRef<'input'> {
   kind: 'outline' | 'flushed';
   externalonChangeAction?: ChangeEventHandler<HTMLInputElement>;
+  externalonKeyUpAction?: KeyboardEventHandler<HTMLInputElement>;
   etcStyles?: CSSObject;
   paddingLeft?: CSSObject['paddingLeft'];
 }
@@ -31,6 +33,7 @@ const FieldComponent = (
   {
     kind,
     externalonChangeAction,
+    externalonKeyUpAction,
     etcStyles = {},
     paddingLeft = '20px',
     ...attribute
@@ -38,8 +41,9 @@ const FieldComponent = (
   ref: Ref<HTMLInputElement>,
 ) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const { name, value, isError, touched } = useInputContext();
-  const { handleBlur, handleChange, handleFocus, validate } =
+  const { handleBlur, handleChange, handleFocus, handleKeyPress, validate } =
     useInputActionContext();
 
   useImperativeHandle(
@@ -76,10 +80,23 @@ const FieldComponent = (
     }
   }, [value]);
 
-  const handleOnChangedAction: ChangeEventHandler<HTMLInputElement> = (e) => {
-    handleChange(e);
-    if (externalonChangeAction) externalonChangeAction(e);
-  };
+  const handleOnChangedAction: ChangeEventHandler<HTMLInputElement> =
+    useCallback(
+      (e) => {
+        handleChange(e);
+        if (externalonChangeAction) externalonChangeAction(e);
+      },
+      [externalonChangeAction, handleChange],
+    );
+
+  const handleOnKeyUpAction: KeyboardEventHandler<HTMLInputElement> =
+    useCallback(
+      (e) => {
+        if (externalonKeyUpAction) externalonKeyUpAction(e);
+        handleKeyPress(e);
+      },
+      [externalonKeyUpAction, handleKeyPress],
+    );
 
   return (
     <input
@@ -90,6 +107,7 @@ const FieldComponent = (
       onBlur={handleBlur}
       onFocus={handleFocus}
       onChange={handleOnChangedAction}
+      onKeyUp={handleOnKeyUpAction}
       css={css({
         display: 'block',
         ...getFieldStyle(kind, isError, touched),

@@ -4,9 +4,11 @@ import { queryOptions as tsqQueryOptions } from '@tanstack/react-query';
 
 import {
   bookmarkQuery,
+  createNewChromeBookmarksMutation,
   deleteBookmarkMutation,
   updateBookmarkMutation,
 } from '@/entities/bookmark/bookmark.api';
+
 import { createBoomarkMutation } from '@/entities/bookmark/bookmark.api';
 
 import type { Bookmark } from '@/entities/bookmark/bookmark.type';
@@ -38,7 +40,7 @@ export const bookmarkService = {
   cancelCache: async () =>
     await queryClient.cancelQueries({ queryKey: bookmarkService.queryKey() }),
   queryOptions: () => {
-    return tsqQueryOptions({
+    return tsqQueryOptions<Bookmark[]>({
       queryKey: bookmarkService.queryKey(),
       queryFn: bookmarkQuery,
     });
@@ -91,3 +93,13 @@ export function useDeleteBookmarkMutation() {
     mutationFn: deleteBookmarkMutation,
   });
 }
+
+export const useCreateAIBookmarks = () => {
+  return useMutation({
+    mutationKey: bookmarkService.queryKey(),
+    mutationFn: createNewChromeBookmarksMutation,
+    onSuccess: () => {
+      bookmarkService.invalidateCache();
+    },
+  });
+};

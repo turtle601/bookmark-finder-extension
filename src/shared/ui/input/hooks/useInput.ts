@@ -1,4 +1,9 @@
-import { ChangeEventHandler, useState, useEffect } from 'react';
+import {
+  ChangeEventHandler,
+  useState,
+  useEffect,
+  KeyboardEventHandler,
+} from 'react';
 
 export interface IUseInputParameters {
   inputName: string;
@@ -31,6 +36,12 @@ export const useInput = ({
     setTouched(true);
   };
 
+  const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      setValue('');
+    }
+  };
+
   return {
     name: inputName,
     value,
@@ -40,5 +51,6 @@ export const useInput = ({
     handleChange,
     handleFocus,
     handleBlur,
+    handleKeyPress,
   };
 };

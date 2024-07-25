@@ -1,10 +1,10 @@
 import { CSSObject, css } from '@emotion/react';
+
 import React, {
   Ref,
   forwardRef,
-  useCallback,
-  useState,
   ComponentPropsWithoutRef,
+  MouseEventHandler,
 } from 'react';
 
 import Center from '@/shared/ui/center';
@@ -14,23 +14,21 @@ import { getCheckboxWrapperStyle } from '@/shared/ui/checkbox/style';
 
 interface ICheckboxProps extends ComponentPropsWithoutRef<'button'> {
   id?: string;
+  isChecked: boolean;
+  onClickAction: MouseEventHandler;
   etcStyles?: CSSObject;
-  externalAction?: (toggledIsChecked: boolean) => void;
 }
 
 const CheckboxComponent = (
-  { id, etcStyles = {}, externalAction, ...attribute }: ICheckboxProps,
+  {
+    id,
+    isChecked,
+    onClickAction,
+    etcStyles = {},
+    ...attribute
+  }: ICheckboxProps,
   ref: Ref<HTMLInputElement>,
 ) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const toggle = useCallback(() => {
-    const toggledIsChecked = !isChecked;
-    setIsChecked(toggledIsChecked);
-
-    if (externalAction) externalAction(toggledIsChecked);
-  }, [externalAction, isChecked]);
-
   return (
     <>
       <input
@@ -44,9 +42,10 @@ const CheckboxComponent = (
       />
 
       <Center
+        role={'checkbox'}
         as="button"
         type="button"
-        onClick={toggle}
+        onClick={onClickAction}
         css={css({
           ...getCheckboxWrapperStyle(),
           ...etcStyles,

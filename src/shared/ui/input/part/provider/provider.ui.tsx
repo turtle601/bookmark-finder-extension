@@ -44,6 +44,7 @@ const Provider: FC<IInputProviderProps> = ({
     handleChange,
     handleFocus,
     handleBlur,
+    handleKeyPress,
   } = useInput({
     inputName,
     inputValue,
@@ -59,9 +60,10 @@ const Provider: FC<IInputProviderProps> = ({
       handleChange,
       handleFocus,
       handleBlur,
+      handleKeyPress,
       validate,
     }),
-    [handleChange, handleFocus, handleBlur, validate],
+    [handleChange, handleFocus, handleBlur, validate, handleKeyPress],
   );
 
   return (
