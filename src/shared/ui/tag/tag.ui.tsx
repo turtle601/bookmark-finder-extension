@@ -17,26 +17,31 @@ import { color } from '@/shared/config/styles';
 import { getTagStyle } from '@/shared/ui/tag/tag.style';
 
 interface ITagProps extends ComponentPropsWithoutRef<'button'> {
+  id?: string;
   label: string;
   children?: ReactNode;
   etcStyles?: CSSObject;
+  externalAction?: () => void;
 }
 
 const TagComponent = (
-  { label, children, etcStyles = {}, ...attribute }: ITagProps,
+  {
+    id,
+    label,
+    children,
+    externalAction,
+    etcStyles = {},
+    ...attribute
+  }: ITagProps,
   ref: Ref<HTMLInputElement>,
 ) => {
   const [isShow, setIsShow] = useState(true);
-  const [isChecked, setIsChecked] = useState(false);
-
-  const toggleTag = useCallback(() => {
-    const isSelected = !isChecked;
-    setIsChecked(isSelected);
-  }, [isChecked]);
 
   const closeTag = useCallback(() => {
     setIsShow(false);
-  }, []);
+
+    if (externalAction) externalAction();
+  }, [externalAction]);
 
   return (
     isShow && (
@@ -45,7 +50,7 @@ const TagComponent = (
           id={label}
           ref={ref}
           value={label}
-          checked={isChecked}
+          checked={isShow}
           type="checkbox"
           css={css({
             display: 'none',
@@ -57,10 +62,9 @@ const TagComponent = (
           align="center"
           gap="12px"
           etcStyles={{
-            ...getTagStyle(isChecked),
+            ...getTagStyle(),
             ...etcStyles,
           }}
-          onClick={toggleTag}
           {...attribute}
         >
           <label htmlFor={label}>
