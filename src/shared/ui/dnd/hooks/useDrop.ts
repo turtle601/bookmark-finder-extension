@@ -1,31 +1,21 @@
-import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
+import { useDnDActionContext } from '@/shared/ui/dnd/model';
+import type { AsyncVoidFunction } from '@/shared/ui/util.type';
 
-import type { IDragPosition } from '@/shared/ui/dnd/hooks/useDnD';
-
-interface IOnDropParameter {
-  startPosition: IDragPosition;
-  endPosition: IDragPosition;
+interface IUseDropParameter {
+  action: VoidFunction | AsyncVoidFunction;
 }
 
-export interface IUseDrop {
-  action: ({ startPosition, endPosition }: IOnDropParameter) => void;
-}
+export const useDrop = ({ action }: IUseDropParameter) => {
+  const { setMousePosition, setDragStartContent } = useDnDActionContext();
 
-export const useDrop = ({ action }: IUseDrop) => {
-  const { dragStartItem, dragEnterItem } = useDnDContext();
-  const { setDragStartItem, setDragEnterItem } = useDnDActionContext();
+  const drop = async () => {
+    await action();
 
-  const drop = () => {
-    if (dragStartItem === null || dragEnterItem === null) return;
-
-    action({
-      startPosition: dragStartItem,
-      endPosition: dragEnterItem,
-    });
-
-    setDragEnterItem(null);
-    setDragStartItem(null);
+    setMousePosition(null);
+    setDragStartContent(null);
   };
 
-  return { drop };
+  return {
+    drop,
+  };
 };

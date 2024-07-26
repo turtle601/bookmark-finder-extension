@@ -1,40 +1,22 @@
-import { useState } from 'react';
-import { useMousePosition } from '@/shared/hooks/useMousePosition';
+import { ReactNode, useState } from 'react';
 
-export interface IDragPosition {
-  id: number;
-  data?: {
-    id: string;
-    text: string;
-  } & unknown;
-  parentId?: string;
+interface IMousePosition {
+  x: number;
+  y: number;
 }
 
-// interface IOnDropParameter {
-//   startPosition: IDragPosition;
-//   endPosition: IDragPosition;
-// }
-
-// export interface IUseDnDParameter {
-//   onDrop: ({ startPosition, endPosition }: IOnDropParameter) => void;
-// }
-
 export const useDnD = () => {
-  const { mouseX, mouseY, setMousePosition } = useMousePosition();
-  const [dragStartItem, setDragStartItem] = useState<IDragPosition | null>(
+  const [mousePosition, setMousePosition] = useState<IMousePosition | null>(
     null,
   );
-  const [dragEnterItem, setDragEnterItem] = useState<IDragPosition | null>(
+  const [dragStartContent, setDragStartContent] = useState<ReactNode | null>(
     null,
   );
 
   return {
-    mouseX,
-    mouseY,
-    dragStartItem,
-    dragEnterItem,
-    setDragStartItem,
-    setDragEnterItem,
+    mousePosition,
+    dragStartContent,
     setMousePosition,
+    setDragStartContent,
   };
 };
