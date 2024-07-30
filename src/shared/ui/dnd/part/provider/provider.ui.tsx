@@ -1,44 +1,39 @@
 import { css } from '@emotion/react';
+
 import React, { ReactNode, useMemo } from 'react';
 
-import { DnDActionContext, DnDContext } from '@/shared/ui/dnd/model/context';
+import { DnDContext, DnDActionContext } from '@/shared/ui/dnd/model';
 
-import { useDnD } from '@/shared/ui/dnd/hooks/useDnD';
+import { useDnD } from '@/shared/ui/dnd/hooks';
 
 interface IDnDProviderProps {
   children: ReactNode;
 }
 
-const DnDProvider: React.FC<IDnDProviderProps> = ({
-  children,
-}: IDnDProviderProps) => {
+export type DnDProviderFC = React.FC<IDnDProviderProps>;
+
+const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
   const {
-    mouseX,
-    mouseY,
-    dragStartItem,
-    dragEnterItem,
-    setDragStartItem,
-    setDragEnterItem,
+    mousePosition,
+    dragStartContent,
     setMousePosition,
+    setDragStartContent,
   } = useDnD();
 
   const state = useMemo(
     () => ({
-      mouseX,
-      mouseY,
-      dragStartItem,
-      dragEnterItem,
+      mousePosition,
+      dragStartContent,
     }),
-    [dragEnterItem, dragStartItem, mouseX, mouseY],
+    [mousePosition, dragStartContent],
   );
 
   const action = useMemo(
     () => ({
-      setDragStartItem,
-      setDragEnterItem,
       setMousePosition,
+      setDragStartContent,
     }),
-    [setDragEnterItem, setDragStartItem, setMousePosition],
+    [setMousePosition, setDragStartContent],
   );
 
   return (
@@ -56,4 +51,4 @@ const DnDProvider: React.FC<IDnDProviderProps> = ({
   );
 };
 
-export default DnDProvider;
+export default Provider;

@@ -1,70 +1,53 @@
 import { css } from '@emotion/react';
-import React, { ReactNode, useState, ElementType } from 'react';
+import React, { ElementType, ReactNode } from 'react';
 
-import { useDrop } from '@/shared/ui/dnd/hooks/useDrop';
-import { useDragEnter } from '@/shared/ui/dnd/hooks/useDragEnter';
-import { useDragLeave } from '@/shared/ui/dnd/hooks/useDragLeave';
-import { useDragOver } from '@/shared/ui/dnd/hooks/useDragOver';
+import { useDropable } from '@/shared/ui/dnd/hooks';
 
-import type { IUseDrop } from '@/shared/ui/dnd/hooks/useDrop';
 import type { CSSObject } from '@emotion/react';
-import type { PolymorpicProps } from '@/shared/ui/util.type';
-import type { IDragPosition } from '@/shared/ui/dnd/hooks';
-import { useDragEnd } from '@/shared/ui/dnd/hooks/useDragEnd';
+import type {
+  AsyncVoidFunction,
+  PolymorpicPropsExcludeChildren,
+} from '@/shared/ui/util.type';
 
-export interface IDropableProps {
-  position: IDragPosition;
-  action: IUseDrop['action'];
-  customStyle: (isDragEnter: boolean) => CSSObject;
-  children?: ReactNode;
+interface IDropableProps {
+  children: (props: { isDragEnter: boolean }) => ReactNode;
+  dropAction: VoidFunction | AsyncVoidFunction;
+  etcStyles?: CSSObject;
 }
 
-const Dropable: React.FC<PolymorpicProps<ElementType, IDropableProps>> = ({
+export type DropableFC = React.FC<
+  PolymorpicPropsExcludeChildren<ElementType, IDropableProps>
+>;
+
+const Dropable: DropableFC = ({
   as,
-  position,
-  action,
-  customStyle,
+  dropAction,
   children,
-  ...attribuite
+  etcStyles = {},
+  ...attribute
 }) => {
   const Element = as || 'div';
-  const [isDragEnter, setIsDragEnter] = useState(false);
 
-  const { dragEnter } = useDragEnter({ position });
-  const { drop } = useDrop({ action });
-  const { dragLeave } = useDragLeave();
-  const { setDragOverPointer } = useDragOver();
-  const { dragEnd } = useDragEnd();
-
-  const handleDragEnter = () => {
-    dragEnter();
-    setIsDragEnter(true);
-  };
-
-  const handleDragLeave = () => {
-    dragLeave();
-    setIsDragEnter(false);
-  };
-
-  const handleDrop = () => {
-    drop();
-    setIsDragEnter(false);
-  };
+  const {
+    isDragEnter,
+    handleDragEnter,
+    handleDragLeave,
+    handleDrop,
+    handleDragOver,
+  } = useDropable({ action: dropAction });
 
   return (
     <Element
-      draggable
       onDragEnter={handleDragEnter}
       onDrop={handleDrop}
-      onDragEnd={dragEnd}
       onDragLeave={handleDragLeave}
-      onDragOver={setDragOverPointer}
+      onDragOver={handleDragOver}
       css={css({
-        ...customStyle(isDragEnter),
+        ...etcStyles,
       })}
-      {...attribuite}
+      {...attribute}
     >
-      {children}
+      {children({ isDragEnter })}
     </Element>
   );
 };

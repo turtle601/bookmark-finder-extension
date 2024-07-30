@@ -1,14 +1,8 @@
-import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
+import { ReactNode } from 'react';
+import { useDnDActionContext } from '@/shared/ui/dnd/model';
 
-import type { IDragPosition } from '@/shared/ui/dnd/hooks/useDnD';
-
-export interface IUseDragStartParameter {
-  position: IDragPosition;
-}
-
-export const useDragStart = ({ position }: IUseDragStartParameter) => {
-  const { dragStartItem } = useDnDContext();
-  const { setDragStartItem } = useDnDActionContext();
+export const useDragStart = () => {
+  const { setDragStartContent } = useDnDActionContext();
 
   const emptyImg = new Image();
 
@@ -19,14 +13,14 @@ export const useDragStart = ({ position }: IUseDragStartParameter) => {
     e.dataTransfer.setDragImage(emptyImg, 0, 0);
   };
 
-  const dragStart: React.DragEventHandler = (e) => {
-    setDragStartItem(position);
-    hideDragDefaultImg(e);
-  };
+  const dragStart =
+    (children: ReactNode): React.DragEventHandler =>
+    (e) => {
+      hideDragDefaultImg(e);
+      setDragStartContent(children);
+    };
 
   return {
-    isDrag: !!dragStartItem,
-    dragStartItem,
     dragStart,
   };
 };

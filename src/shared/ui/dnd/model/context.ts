@@ -1,23 +1,18 @@
-import React, { Context, createContext, useContext } from 'react';
+import { Context, createContext, ReactNode, useContext } from 'react';
 
-import type { IDragPosition } from '@/shared/ui/dnd/hooks';
-
-export interface IDnDContextProps {
-  mouseX: number;
-  mouseY: number;
-  dragStartItem: IDragPosition | null;
-  dragEnterItem: IDragPosition | null;
+export interface IMousePosition {
+  x: number;
+  y: number;
 }
 
-interface IMousePositionParameter {
-  x: IDnDContextProps['mouseX'];
-  y: IDnDContextProps['mouseY'];
+export interface IDnDContextProps {
+  mousePosition: IMousePosition | null;
+  dragStartContent: ReactNode;
 }
 
 export interface IDnDActionContextProps {
-  setDragStartItem: React.Dispatch<React.SetStateAction<IDragPosition | null>>;
-  setDragEnterItem: React.Dispatch<React.SetStateAction<IDragPosition | null>>;
-  setMousePosition: ({ x, y }: IMousePositionParameter) => void;
+  setMousePosition: React.Dispatch<React.SetStateAction<IMousePosition | null>>;
+  setDragStartContent: React.Dispatch<React.SetStateAction<ReactNode>>;
 }
 
 export const DnDContext: Context<IDnDContextProps | null> =

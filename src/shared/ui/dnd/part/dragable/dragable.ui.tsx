@@ -1,55 +1,49 @@
+import React from 'react';
 import { css } from '@emotion/react';
-import React, { ElementType, ReactNode, useState } from 'react';
 
-import { useDragStart } from '@/shared/ui/dnd/hooks/useDragStart';
-import { useDragEnd } from '@/shared/ui/dnd/hooks/useDragEnd';
-import { useDragOver } from '@/shared/ui/dnd/hooks/useDragOver';
+import { useDragable } from '@/shared/ui/dnd/hooks';
 
 import type { CSSObject } from '@emotion/react';
-import type { IDragPosition } from '@/shared/ui/dnd/hooks';
-import type { PolymorpicProps } from '@/shared/ui/util.type';
+import type { ElementType, ReactNode } from 'react';
+import type {
+  AsyncVoidFunction,
+  PolymorpicPropsExcludeChildren,
+} from '@/shared/ui/util.type';
 
 export interface IDragableProps {
-  position: IDragPosition;
-  customStyle: (isDrag?: boolean) => CSSObject;
-  children?: ReactNode;
+  children: (props: { isDrag: boolean }) => ReactNode;
+  dragAction?: VoidFunction | AsyncVoidFunction;
+  etcStyles?: CSSObject;
 }
 
-const Dragable: React.FC<PolymorpicProps<ElementType, IDragableProps>> = ({
+export type DragableFC = React.FC<
+  PolymorpicPropsExcludeChildren<ElementType, IDragableProps>
+>;
+
+const Dragable: DragableFC = ({
   as,
-  position,
   children,
-  customStyle,
+  dragAction = () => {},
+  etcStyles = {},
   ...attribute
 }) => {
   const Element = as || 'div';
-  const [isDrag, setIsDrag] = useState(false);
-  const { dragStart } = useDragStart({ position });
-  const { dragEnd } = useDragEnd();
-  const { setDragOverPointer } = useDragOver();
 
-  const handleDragStart: React.DragEventHandler = (e) => {
-    dragStart(e);
-    setIsDrag(true);
-  };
-
-  const handleDragEnd: React.DragEventHandler = (e) => {
-    dragEnd();
-    setIsDrag(false);
-  };
+  const { isDrag, handleDragEnd, handleDragOver, handleDragStart } =
+    useDragable({ dragAction, children });
 
   return (
     <Element
       draggable
-      css={css({
-        ...customStyle(isDrag),
-      })}
-      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDragOver={setDragOverPointer}
+      onDragOver={handleDragOver}
+      onDragStart={handleDragStart}
+      css={css({
+        ...etcStyles,
+      })}
       {...attribute}
     >
-      {children}
+      {children({ isDrag })}
     </Element>
   );
 };
