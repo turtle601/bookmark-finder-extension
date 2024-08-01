@@ -39,6 +39,8 @@ const Dragable: DragableFC = ({
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
       css={css({
+        position: 'absolute',
+        cursor: 'grab',
         ...etcStyles,
       })}
       {...attribute}

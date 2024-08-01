@@ -6,6 +6,7 @@ export interface IMousePosition {
 }
 
 export interface IDnDContextProps {
+  boundaryRef: React.RefObject<HTMLDivElement>;
   mousePosition: IMousePosition | null;
   dragStartContent: ReactNode;
 }

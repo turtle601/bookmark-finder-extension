@@ -43,6 +43,7 @@ const Dropable: DropableFC = ({
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       css={css({
+        position: 'absolute',
         ...etcStyles,
       })}
       {...attribute}
