@@ -19,14 +19,18 @@ const DropableComponent = (
   const { isDragEnter, handleDragEnter, handleDragLeave, handleDrop } =
     useDropable({ action: dropAction });
 
+  const handleDragOver: React.DragEventHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div
       ref={ref}
       onDragEnter={handleDragEnter}
       onDrop={handleDrop}
+      onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       css={css({
-        position: 'absolute',
         ...etcStyles,
       })}
       {...attribute}

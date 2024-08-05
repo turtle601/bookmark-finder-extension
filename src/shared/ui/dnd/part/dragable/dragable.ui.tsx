@@ -30,16 +30,22 @@ const DragableComponent = (
     },
   );
 
+  const handleDragOver: React.DragEventHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div
       ref={ref}
       draggable
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
       css={css({
-        position: 'absolute',
+        display: 'inline-block',
         cursor: 'grab',
         ...(dragEndType === 'leftSide' && {
+          position: 'absolute',
           top: mousePosition?.y || 0,
           left: mousePosition?.x || 0,
         }),
