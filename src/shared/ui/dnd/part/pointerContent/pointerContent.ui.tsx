@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { useDnDContext } from '@/shared/ui/dnd/model';
 
 import type { CSSObject } from '@emotion/react';
+import { THIRD_LAYER_ZIDENX } from '@/shared/config/constant';
 
 interface IPointerContentProps extends ComponentPropsWithoutRef<'div'> {
   customStyle?: (mouseX?: number, mouseY?: number) => CSSObject;
@@ -17,14 +18,18 @@ const PointerContent: PointerContentFC = ({
 }) => {
   const { mousePosition, dragStartContent } = useDnDContext();
 
+  const mouseX = mousePosition?.x || 0;
+  const mouseY = mousePosition?.y || 0;
+
   return (
-    mousePosition && (
+    dragStartContent && (
       <div
         css={css({
           position: 'absolute',
-          left: mousePosition.x,
-          top: mousePosition.y,
-          ...customStyle(mousePosition.x, mousePosition.y),
+          transform: `translate(${mouseX}px, ${mouseY}px)`,
+          zIndex: `${THIRD_LAYER_ZIDENX}`,
+          pointerEvents: 'none',
+          ...customStyle(mouseX, mouseY),
         })}
         {...attribute}
       >
