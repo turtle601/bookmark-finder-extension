@@ -31,8 +31,7 @@ export const useDragStart = () => {
       const offsetY = e.clientY - rect.top;
 
       const handleDrag = (e: DragEvent) => {
-        e.preventDefault();
-
+        if (e.clientX === 0 && e.clientY === 0) return;
         if (!boundaryRef.current) return;
 
         const boundaryBox = boundaryRef.current.getBoundingClientRect();
@@ -52,11 +51,11 @@ export const useDragStart = () => {
       };
 
       const handleDrop = () => {
-        document.removeEventListener('dragover', handleDrag);
+        document.removeEventListener('drag', handleDrag);
         document.removeEventListener('drop', handleDrop);
       };
 
-      document.addEventListener('dragover', handleDrag);
+      document.addEventListener('drag', handleDrag);
       document.addEventListener('drop', handleDrop);
     };
 

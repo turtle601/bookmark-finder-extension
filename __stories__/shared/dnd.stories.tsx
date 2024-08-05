@@ -79,56 +79,39 @@ const DnDComponent: React.FC = () => {
   };
 
   return (
-    <DnD.VerticalList
-      location={{
-        top: 20,
-        left: 0,
-      }}
-    >
-      {({ refs }) => {
-        return (
-          <>
-            {list.map((item, id) => (
-              <>
-                <Dropable
-                  ref={(el: HTMLDivElement) => (refs.current[id * 2] = el)}
-                  dropAction={onDropMove(id)}
+    <>
+      {list.map((item, id) => (
+        <>
+          <Dropable dropAction={onDropMove(id)}>
+            {({ isDragEnter }) => (
+              <li
+                css={css({
+                  width: '120px',
+                  height: '8px',
+                  backgroundColor: isDragEnter ? color.purple : color.white,
+                })}
+              ></li>
+            )}
+          </Dropable>
+          <Dragable dragAction={onDragItem(id)}>
+            {({ isDrag }) => {
+              return (
+                <li
+                  css={css({
+                    width: '120px',
+                    height: '32px',
+                    backgroundColor: isDrag ? color.gray200 : color.white,
+                    padding: '8px',
+                  })}
                 >
-                  {({ isDragEnter }) => (
-                    <li
-                      css={css({
-                        width: '120px',
-                        height: '8px',
-                        backgroundColor: isDragEnter
-                          ? color.purple
-                          : color.white,
-                      })}
-                    ></li>
-                  )}
-                </Dropable>
-                <Dragable
-                  ref={(el: HTMLDivElement) => (refs.current[id * 2 + 1] = el)}
-                  dragAction={onDragItem(id)}
-                >
-                  {({ isDrag }) => (
-                    <li
-                      css={css({
-                        width: '120px',
-                        height: '32px',
-                        backgroundColor: isDrag ? color.gray200 : color.white,
-                        padding: '8px',
-                      })}
-                    >
-                      {item.text}
-                    </li>
-                  )}
-                </Dragable>
-              </>
-            ))}
-          </>
-        );
-      }}
-    </DnD.VerticalList>
+                  {item.text}
+                </li>
+              );
+            }}
+          </Dragable>
+        </>
+      ))}
+    </>
   );
 };
 
