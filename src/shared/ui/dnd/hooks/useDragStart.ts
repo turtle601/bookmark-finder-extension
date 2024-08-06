@@ -1,8 +1,15 @@
 import { ReactNode } from 'react';
-import { useDnDActionContext } from '@/shared/ui/dnd/model';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
+
+const inrange = (v: number, min: number, max: number) => {
+  if (v < min) return min;
+  if (v > max) return max;
+  return v;
+};
 
 export const useDragStart = () => {
-  const { setDragStartContent } = useDnDActionContext();
+  const { boundaryRef } = useDnDContext();
+  const { setDragStartContent, setMousePosition } = useDnDActionContext();
 
   const emptyImg = new Image();
 
@@ -18,6 +25,38 @@ export const useDragStart = () => {
     (e) => {
       hideDragDefaultImg(e);
       setDragStartContent(children);
+
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+
+      const handleDrag = (e: DragEvent) => {
+        if (e.clientX === 0 && e.clientY === 0) return;
+        if (!boundaryRef.current) return;
+
+        const boundaryBox = boundaryRef.current.getBoundingClientRect();
+
+        setMousePosition({
+          x: inrange(
+            e.clientX - boundaryBox.left - offsetX,
+            0,
+            boundaryBox.width - rect.width,
+          ),
+          y: inrange(
+            e.clientY - boundaryBox.top - offsetY,
+            0,
+            boundaryBox.height - rect.height,
+          ),
+        });
+      };
+
+      const handleDrop = () => {
+        document.removeEventListener('drag', handleDrag);
+        document.removeEventListener('drop', handleDrop);
+      };
+
+      document.addEventListener('drag', handleDrag);
+      document.addEventListener('drop', handleDrop);
     };
 
   return {

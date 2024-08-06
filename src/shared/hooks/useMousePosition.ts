@@ -1,17 +1,27 @@
 import { useState } from 'react';
 
-interface IMousePositionParameter {
+interface IUseMousePositionParameter {
   x: number;
   y: number;
 }
 
-export const useMousePosition = () => {
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
+interface IMousePositionParameter {
+  x: IUseMousePositionParameter['x'];
+  y: IUseMousePositionParameter['y'];
+}
+
+export const useMousePosition = ({
+  x = 0,
+  y = 0,
+}: IUseMousePositionParameter) => {
+  const [mouseX, setMouseX] = useState(x);
+  const [mouseY, setMouseY] = useState(y);
 
   const setMousePosition = ({ x, y }: IMousePositionParameter) => {
-    setMouseX(x);
-    setMouseY(y);
+    requestAnimationFrame(() => {
+      setMouseX(x);
+      setMouseY(y);
+    });
   };
 
   return {

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 interface IMousePosition {
   x: number;
@@ -6,6 +6,8 @@ interface IMousePosition {
 }
 
 export const useDnD = () => {
+  const boundaryRef = useRef<HTMLDivElement>(null);
+
   const [mousePosition, setMousePosition] = useState<IMousePosition | null>(
     null,
   );
@@ -14,6 +16,7 @@ export const useDnD = () => {
   );
 
   return {
+    boundaryRef,
     mousePosition,
     dragStartContent,
     setMousePosition,

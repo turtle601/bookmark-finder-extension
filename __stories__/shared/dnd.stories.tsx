@@ -2,19 +2,27 @@ import React from 'react';
 
 import { useRef, useState } from 'react';
 
-import DnD from '@/shared/ui/dnd';
-
-import type { Meta, StoryObj } from '@storybook/react';
 import { css } from '@emotion/react';
 import { color } from '@/shared/config/styles';
-import Center from '@/shared/ui/center';
+
+import DnD from '@/shared/ui/dnd';
+import Dragable from '@/shared/ui/dnd/part/dragable';
+import Dropable from '@/shared/ui/dnd/part/dropable';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof DnD> = {
   title: 'shared/DnD',
-
   decorators: [
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    (Story) => <Story />,
+    (Story) => (
+      <DnD.Provider>
+        <DnD.Boundary width={'500px'} height={'500px'}>
+          <DnD.PointerContent />
+          <Story />
+        </DnD.Boundary>
+      </DnD.Provider>
+    ),
   ],
 };
 
@@ -71,61 +79,44 @@ const DnDComponent: React.FC = () => {
   };
 
   return (
-    <ul>
-      {list.map((item, id) => {
-        return (
-          <>
-            <DnD.Dropable dropAction={onDropMove(id)}>
-              {({ isDragEnter }) => {
-                return (
-                  <li
-                    css={css({
-                      width: '120px',
-                      height: '8px',
-                      backgroundColor: isDragEnter ? color.purple : color.white,
-                    })}
-                  ></li>
-                );
-              }}
-            </DnD.Dropable>
-            <DnD.Dragable key={item.id} dragAction={onDragItem(id)}>
-              {({ isDrag }) => {
-                return (
-                  <li
-                    css={css({
-                      width: '120px',
-                      height: '32px',
-                      backgroundColor: isDrag ? color.gray200 : color.white,
-                      padding: '8px',
-                    })}
-                  >
-                    {item.text}
-                  </li>
-                );
-              }}
-            </DnD.Dragable>
-          </>
-        );
-      })}
-    </ul>
+    <>
+      {list.map((item, id) => (
+        <>
+          <Dropable dropAction={onDropMove(id)}>
+            {({ isDragEnter }) => (
+              <li
+                css={css({
+                  width: '120px',
+                  height: '8px',
+                  backgroundColor: isDragEnter ? color.purple : color.white,
+                })}
+              ></li>
+            )}
+          </Dropable>
+          <Dragable dragAction={onDragItem(id)}>
+            {({ isDrag }) => {
+              return (
+                <li
+                  css={css({
+                    width: '120px',
+                    height: '32px',
+                    backgroundColor: isDrag ? color.gray200 : color.white,
+                    padding: '8px',
+                  })}
+                >
+                  {item.text}
+                </li>
+              );
+            }}
+          </Dragable>
+        </>
+      ))}
+    </>
   );
 };
 
 export const Default: Story = {
   render: () => {
-    return (
-      <DnD.Provider>
-        <Center
-          direction={'column'}
-          etcStyles={{
-            width: '200px',
-            height: '300px',
-          }}
-        >
-          <DnD.PointerContent />
-          <DnDComponent />
-        </Center>
-      </DnD.Provider>
-    );
+    return <DnDComponent />;
   },
 };

@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 import React, { ReactNode, useMemo } from 'react';
 
 import { DnDContext, DnDActionContext } from '@/shared/ui/dnd/model';
@@ -14,6 +12,7 @@ export type DnDProviderFC = React.FC<IDnDProviderProps>;
 
 const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
   const {
+    boundaryRef,
     mousePosition,
     dragStartContent,
     setMousePosition,
@@ -22,10 +21,11 @@ const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
 
   const state = useMemo(
     () => ({
+      boundaryRef,
       mousePosition,
       dragStartContent,
     }),
-    [mousePosition, dragStartContent],
+    [mousePosition, dragStartContent, boundaryRef],
   );
 
   const action = useMemo(
@@ -39,13 +39,7 @@ const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
   return (
     <DnDContext.Provider value={state}>
       <DnDActionContext.Provider value={action}>
-        <div
-          css={css({
-            position: 'relative',
-          })}
-        >
-          {children}
-        </div>
+        {children}
       </DnDActionContext.Provider>
     </DnDContext.Provider>
   );

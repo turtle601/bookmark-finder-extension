@@ -1,22 +1,26 @@
 import { ReactNode, useState } from 'react';
 
-import { useDragEnd, useDragOver, useDragStart } from '@/shared/ui/dnd/hooks';
+import { useDragEnd, useDragStart } from '@/shared/ui/dnd/hooks';
+import { useDnDContext } from '@/shared/ui/dnd/model';
+
 import type { AsyncVoidFunction } from '@/shared/ui/util.type';
 
 interface IUseDragableParameter {
   children: (props: { isDrag: boolean }) => ReactNode;
   dragAction: VoidFunction | AsyncVoidFunction;
+  dragEndType: 'reset' | 'leftSide';
 }
 
 export const useDragable = ({
   children,
   dragAction,
+  dragEndType,
 }: IUseDragableParameter) => {
+  const { mousePosition } = useDnDContext();
   const [isDrag, setIsDrag] = useState(false);
 
   const { dragStart } = useDragStart();
   const { dragEnd } = useDragEnd();
-  const { handleDragOver } = useDragOver();
 
   const handleDragStart: React.DragEventHandler = async (e) => {
     await dragAction();
@@ -25,14 +29,20 @@ export const useDragable = ({
   };
 
   const handleDragEnd: React.DragEventHandler = (e) => {
-    dragEnd();
     setIsDrag(false);
+
+    if (mousePosition && dragEndType === 'leftSide') {
+      dragEnd({ x: 0, y: mousePosition.y });
+      return;
+    }
+
+    dragEnd(null);
   };
 
   return {
     isDrag,
+    mousePosition,
     handleDragStart,
-    handleDragOver,
     handleDragEnd,
   };
 };
