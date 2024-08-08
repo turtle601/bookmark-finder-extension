@@ -3,13 +3,12 @@ import { css } from '@emotion/react';
 import { useDragable } from '@/shared/ui/dnd/hooks';
 
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode, Ref } from 'react';
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
+import type { DragEventHandler, ReactNode, Ref } from 'react';
 
 export interface IDragableProps {
   children: (props: { isDrag: boolean }) => ReactNode;
   dragEndType?: 'reset' | 'leftSide';
-  dragAction?: VoidFunction | AsyncVoidFunction;
+  dragAction?: DragEventHandler;
   etcStyles?: CSSObject;
 }
 
@@ -57,10 +56,12 @@ const DragableComponent = (
   );
 };
 
-export type DragableFC = React.ForwardRefExoticComponent<
-  IDragableProps & React.RefAttributes<HTMLDivElement>
+export type DragableFC = React.MemoExoticComponent<
+  React.ForwardRefExoticComponent<
+    IDragableProps & React.RefAttributes<HTMLDivElement>
+  >
 >;
 
-const Dragable: DragableFC = forwardRef(DragableComponent);
+const Dragable: DragableFC = React.memo(forwardRef(DragableComponent));
 
 export default Dragable;

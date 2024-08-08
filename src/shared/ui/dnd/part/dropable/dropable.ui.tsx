@@ -4,11 +4,10 @@ import React, { forwardRef, ReactNode, Ref } from 'react';
 import { useDropable } from '@/shared/ui/dnd/hooks';
 
 import type { CSSObject } from '@emotion/react';
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
 
 interface IDropableProps {
   children: (props: { isDragEnter: boolean }) => ReactNode;
-  dropAction: VoidFunction | AsyncVoidFunction;
+  dropAction: React.DragEventHandler;
   etcStyles?: CSSObject;
 }
 
@@ -40,10 +39,12 @@ const DropableComponent = (
   );
 };
 
-export type DropableFC = React.ForwardRefExoticComponent<
-  IDropableProps & React.RefAttributes<HTMLDivElement>
+export type DropableFC = React.MemoExoticComponent<
+  React.ForwardRefExoticComponent<
+    IDropableProps & React.RefAttributes<HTMLDivElement>
+  >
 >;
 
-const Dropable: DropableFC = forwardRef(DropableComponent);
+const Dropable: DropableFC = React.memo(forwardRef(DropableComponent));
 
 export default Dropable;

@@ -39,4 +39,8 @@ const PointerContent: PointerContentFC = ({
   );
 };
 
+export type PointerContentFC = React.NamedExoticComponent<IPointerContentProps>;
+
+const PointerContent: PointerContentFC = React.memo(PointerContentComponent);
+
 export default PointerContent;
