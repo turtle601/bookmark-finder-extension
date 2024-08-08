@@ -31,22 +31,26 @@ export const useDragStart = () => {
       const offsetY = e.clientY - rect.top;
 
       const handleDrag = (e: DragEvent) => {
-        if (e.clientX === 0 && e.clientY === 0) return;
         if (!boundaryRef.current) return;
-
         const boundaryBox = boundaryRef.current.getBoundingClientRect();
 
+        const positionX = inrange(
+          e.clientX - boundaryBox.left - offsetX,
+          0,
+          boundaryBox.width - rect.width,
+        );
+
+        const positionY = inrange(
+          e.clientY - boundaryBox.top - offsetY,
+          0,
+          boundaryBox.height - rect.height,
+        );
+
+        if (positionX === 0 && positionY === 0) return;
+
         setMousePosition({
-          x: inrange(
-            e.clientX - boundaryBox.left - offsetX,
-            0,
-            boundaryBox.width - rect.width,
-          ),
-          y: inrange(
-            e.clientY - boundaryBox.top - offsetY,
-            0,
-            boundaryBox.height - rect.height,
-          ),
+          x: positionX,
+          y: positionY,
         });
       };
 
