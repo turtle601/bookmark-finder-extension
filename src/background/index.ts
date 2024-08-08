@@ -96,3 +96,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'moveBookmark') {
+    const destination = {
+      parentId: message.payload.parentId,
+      index: message.payload.index,
+    };
+
+    chrome.bookmarks.move(
+      message.payload.id,
+      { ...destination },
+      (bookmarkList) => {
+        if (chrome.runtime.lastError) {
+          sendResponse({
+            isSuccess: false,
+            error: chrome.runtime.lastError.message,
+          });
+        } else {
+          sendResponse({ isSuccess: true });
+        }
+      },
+    );
+
+    return true;
+  }
+});

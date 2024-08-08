@@ -97,3 +97,18 @@ export const createNewChromeBookmarksMutation = async (
 
   await traverseBookmarks(selectedBookmarks, createNewBookmarks);
 };
+
+interface IMoveBookmarkMutationParameter {
+  id: Bookmark['id'];
+  parentId: Bookmark['parentId'];
+  index: Bookmark['index'];
+}
+
+export const moveBookmarkMutation = async (
+  payload: IMoveBookmarkMutationParameter,
+) => {
+  return await createChromeRequest({
+    action: 'moveBookmark',
+    payload: { ...payload },
+  });
+};

@@ -6,6 +6,7 @@ import {
   bookmarkQuery,
   createNewChromeBookmarksMutation,
   deleteBookmarkMutation,
+  moveBookmarkMutation,
   updateBookmarkMutation,
 } from '@/entities/bookmark/bookmark.api';
 
@@ -18,6 +19,7 @@ export const keys = {
   createBookmark: () => [...keys.root(), 'create'],
   updateBookmark: () => [...keys.root(), 'update'],
   deleteBookmark: () => [...keys.root(), 'delete'],
+  moveBookmark: () => [...keys.root(), 'move'],
 } as const;
 
 export const bookmarkService = {
@@ -98,6 +100,16 @@ export const useCreateAIBookmarks = () => {
   return useMutation({
     mutationKey: bookmarkService.queryKey(),
     mutationFn: createNewChromeBookmarksMutation,
+    onSuccess: () => {
+      bookmarkService.invalidateCache();
+    },
+  });
+};
+
+export const useMoveBookmark = () => {
+  return useMutation({
+    mutationKey: keys.moveBookmark(),
+    mutationFn: moveBookmarkMutation,
     onSuccess: () => {
       bookmarkService.invalidateCache();
     },
