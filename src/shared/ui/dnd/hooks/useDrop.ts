@@ -1,18 +1,18 @@
 import { useDnDActionContext } from '@/shared/ui/dnd/model';
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
+
+import { DragEventHandler } from 'react';
 
 interface IUseDropParameter {
-  action: VoidFunction | AsyncVoidFunction;
+  action: DragEventHandler;
 }
 
 export const useDrop = ({ action }: IUseDropParameter) => {
   const { setMousePosition, setDragStartContent } = useDnDActionContext();
 
-  const drop = async () => {
-    await action();
-
+  const drop: DragEventHandler = async (e) => {
     setMousePosition(null);
     setDragStartContent(null);
+    action(e);
   };
 
   return {

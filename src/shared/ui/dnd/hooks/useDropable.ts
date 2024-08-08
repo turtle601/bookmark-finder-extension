@@ -1,27 +1,32 @@
 import { DragEventHandler, useState } from 'react';
 
 import { useDrop } from '@/shared/ui/dnd/hooks';
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
 
 interface IUseDropableParameter {
-  action: VoidFunction | AsyncVoidFunction;
+  action: DragEventHandler;
 }
 
 export const useDropable = ({ action }: IUseDropableParameter) => {
   const [isDragEnter, setIsDragEnter] = useState(false);
   const { drop } = useDrop({ action });
 
-  const handleDragEnter = () => {
+  const handleDragEnter: DragEventHandler = (e) => {
+    e.preventDefault();
+
     setIsDragEnter(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDragEnter(false);
+  const handleDragLeave: DragEventHandler = (e) => {
+    e.preventDefault();
+
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragEnter(false);
+    }
   };
 
-  const handleDrop: DragEventHandler = async (e) => {
-    await drop();
+  const handleDrop: DragEventHandler = (e) => {
     setIsDragEnter(false);
+    drop(e);
   };
 
   const handleDragOver: DragEventHandler = (e) => {

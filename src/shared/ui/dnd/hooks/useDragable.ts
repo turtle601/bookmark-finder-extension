@@ -1,13 +1,11 @@
-import { ReactNode, useState } from 'react';
+import { DragEventHandler, ReactNode, useState } from 'react';
 
 import { useDragEnd, useDragStart } from '@/shared/ui/dnd/hooks';
 import { useDnDContext } from '@/shared/ui/dnd/model';
 
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
-
 interface IUseDragableParameter {
   children: (props: { isDrag: boolean }) => ReactNode;
-  dragAction: VoidFunction | AsyncVoidFunction;
+  dragAction: DragEventHandler;
   dragEndType: 'reset' | 'leftSide';
 }
 
@@ -22,10 +20,10 @@ export const useDragable = ({
   const { dragStart } = useDragStart();
   const { dragEnd } = useDragEnd();
 
-  const handleDragStart: React.DragEventHandler = async (e) => {
-    await dragAction();
+  const handleDragStart: React.DragEventHandler = (e) => {
     dragStart(children({ isDrag }))(e);
     setIsDrag(true);
+    dragAction(e);
   };
 
   const handleDragEnd: React.DragEventHandler = (e) => {
