@@ -21,17 +21,26 @@ const DragableComponent = (
   }: IDragableProps,
   ref: Ref<HTMLDivElement>,
 ) => {
-  const { isDrag, handleDragEnd, handleDragStart, mousePosition } = useDragable(
-    {
-      dragAction,
-      children,
-      dragEndType,
-    },
-  );
+  const {
+    isDrag,
+    isFirstDragStart,
+    handleDragEnd,
+    handleDragStart,
+    mousePosition,
+  } = useDragable({
+    dragAction,
+    children,
+    dragEndType,
+  });
 
   const handleDragOver: React.DragEventHandler = (e) => {
     e.preventDefault();
   };
+
+  const positionX = mousePosition?.x || 0;
+  const positionY = isFirstDragStart
+    ? mousePosition?.y || '56px'
+    : mousePosition?.y || 0;
 
   return (
     <div
@@ -45,8 +54,8 @@ const DragableComponent = (
         cursor: 'grab',
         ...(dragEndType === 'leftSide' && {
           position: 'absolute',
-          top: mousePosition?.y || 0,
-          left: mousePosition?.x || 0,
+          top: positionY,
+          left: positionX,
         }),
         ...etcStyles,
       })}

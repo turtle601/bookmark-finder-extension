@@ -16,6 +16,7 @@ export const useDragable = ({
 }: IUseDragableParameter) => {
   const { mousePosition } = useDnDContext();
   const [isDrag, setIsDrag] = useState(false);
+  const [isDragStartCount, setIsDragStartCount] = useState(0);
 
   const { dragStart } = useDragStart();
   const { dragEnd } = useDragEnd();
@@ -24,13 +25,14 @@ export const useDragable = ({
     dragStart(children({ isDrag }))(e);
     setIsDrag(true);
     dragAction(e);
+    setIsDragStartCount((prev) => prev + 1);
   };
 
   const handleDragEnd: React.DragEventHandler = (e) => {
     setIsDrag(false);
 
-    if (mousePosition && dragEndType === 'leftSide') {
-      dragEnd({ x: 0, y: mousePosition.y });
+    if (dragEndType === 'leftSide') {
+      dragEnd({ x: 0, y: mousePosition?.y || 0 });
       return;
     }
 
@@ -39,6 +41,7 @@ export const useDragable = ({
 
   return {
     isDrag,
+    isFirstDragStart: isDragStartCount <= 1,
     mousePosition,
     handleDragStart,
     handleDragEnd,

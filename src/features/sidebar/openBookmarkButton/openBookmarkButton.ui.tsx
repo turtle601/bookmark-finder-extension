@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { css } from '@emotion/react';
 
@@ -8,13 +8,20 @@ import DnD from '@/shared/ui/dnd';
 import ModalLayer from '@/shared/ui/modalLayer';
 import BookmarkIcon from '@/shared/config/assets/bookmark.svg';
 import SidebarContentWrapper from '@/features/sidebar/sidebarContent';
+import SidebarHeader from '@/features/sidebar/sidebarContent/sidebarHeader.ui';
+import SidebarSection from '@/features/sidebar/sidebarContent/sidebarSection.ui';
 
 const OpenBookmarkButton: React.FC = () => {
   return (
     <ModalLayer.Opener
       modalType="sidebar"
       modalContent={
-        <SidebarContentWrapper>사이드바 내용입니다.</SidebarContentWrapper>
+        <SidebarContentWrapper>
+          <SidebarHeader />
+          <Suspense fallback={<></>}>
+            <SidebarSection />
+          </Suspense>
+        </SidebarContentWrapper>
       }
     >
       <DnD.Dragable dragEndType="leftSide">

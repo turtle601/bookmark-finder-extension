@@ -2,27 +2,30 @@ import React, { ComponentPropsWithoutRef } from 'react';
 import { css } from '@emotion/react';
 
 import { useDnDContext } from '@/shared/ui/dnd/model';
-
-import type { CSSObject } from '@emotion/react';
 import { THIRD_LAYER_ZIDENX } from '@/shared/config/constant';
 
+import type { CSSObject } from '@emotion/react';
+
 interface IPointerContentProps extends ComponentPropsWithoutRef<'div'> {
+  dragEndType?: 'reset' | 'leftSide';
   customStyle?: (mouseX?: number, mouseY?: number) => CSSObject;
 }
 
-export type PointerContentFC = React.FC<IPointerContentProps>;
-
-const PointerContent: PointerContentFC = ({
+const PointerContentComponent: React.FC<IPointerContentProps> = ({
   customStyle = () => {},
+  dragEndType = 'reset',
   ...attribute
 }) => {
   const { mousePosition, dragStartContent } = useDnDContext();
 
   const mouseX = mousePosition?.x || 0;
-  const mouseY = mousePosition?.y || 0;
+  const mouseY =
+    dragEndType === 'leftSide' ? mousePosition?.y || 56 : mousePosition?.y || 0;
+
+  const isShow = Boolean(dragStartContent);
 
   return (
-    dragStartContent && (
+    isShow && (
       <div
         css={css({
           position: 'absolute',
