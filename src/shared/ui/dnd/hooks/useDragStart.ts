@@ -46,7 +46,7 @@ export const useDragStart = () => {
           boundaryBox.height - rect.height,
         );
 
-        if (positionX === 0 && positionY === 0) return;
+        if (e.clientX === 0 && e.clientY === 0) return;
 
         setMousePosition({
           x: positionX,
