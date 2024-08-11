@@ -37,13 +37,13 @@ export const useDragStart = () => {
         const positionX = inrange(
           e.clientX - boundaryBox.left - offsetX,
           0,
-          boundaryBox.width - rect.width,
+          boundaryBox.width - offsetX,
         );
 
         const positionY = inrange(
           e.clientY - boundaryBox.top - offsetY,
           0,
-          boundaryBox.height - rect.height,
+          boundaryBox.height - offsetY,
         );
 
         if (e.clientX === 0 && e.clientY === 0) return;
