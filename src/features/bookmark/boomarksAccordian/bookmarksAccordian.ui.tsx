@@ -20,12 +20,10 @@ const BookmarksAccordian: React.FC<IBookmarksAccordianProps> = ({
         return (
           <>
             {bookmark.children ? (
-              <div>
-                <BookmarkFolder
-                  folderData={bookmark}
-                  bookmarks={bookmark.children}
-                />
-              </div>
+              <BookmarkFolder
+                folderData={bookmark}
+                bookmarks={bookmark.children}
+              />
             ) : (
               <BookmarkLink bookmark={bookmark} />
             )}

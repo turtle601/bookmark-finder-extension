@@ -3,6 +3,10 @@ import { css } from '@emotion/react';
 
 import { color, spacer } from '@/shared/config/styles';
 
+import PlusIcon from '@/shared/config/assets/+.svg';
+import UpdateIcon from '@/shared/config/assets/update.svg';
+import LargeXIcon from '@/shared/config/assets/largeX.svg';
+
 import DnD from '@/shared/ui/dnd';
 import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
@@ -12,12 +16,20 @@ import Accordion from '@/shared/ui/accordion';
 import FolderIcon from '@/shared/config/assets/folder.svg';
 import BookmarkLink from '@/features/bookmark/boomarksAccordian/bookmarkLink.ui';
 import BookmarkDropArea from '@/features/bookmark/boomarksAccordian/bookmarkDropArea.ui';
+import ModalLayer from '@/shared/ui/modalLayer';
+
+import SidebarFormWrapper from '@/features/sidebar/sidebarContent/sidebarFormWrapper.ui';
+import CreateFolder from '@/features/bookmark/createFolder';
+import UpdateFolder from '@/features/bookmark/updateFolder';
 
 import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 
 import { useMoveBookmark } from '@/entities/bookmark';
 
 import type { Bookmark } from '@/entities/bookmark';
+
+import Tabs from '@/shared/ui/tabs';
+import CreateLink from '@/features/bookmark/createLink';
 
 interface IBookmarkFolderProps {
   folderData: Bookmark;
@@ -35,6 +47,7 @@ const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
       DND_BOOKMARK_KEY,
       JSON.stringify({
         id: folderData.id,
+        type: 'folder',
         parentId: folderData.parentId,
         index: folderData.index,
       }),
@@ -52,18 +65,14 @@ const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
   };
 
   return (
-    <li
-      css={css({
-        width: '100%',
-      })}
-    >
+    <li>
       <DnD.Dropable dropAction={handleDrop}>
         {({ isDragEnter }) => {
           return (
             <Flex
               align={'center'}
               etcStyles={{
-                width: 'calc(100% - 2px)',
+                width: 'calc(100% - 4px)',
                 height: '32px',
                 border: isDragEnter
                   ? `2px solid ${color.purple}`
@@ -104,16 +113,83 @@ const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
                         <FolderIcon />
                       </Center>
                       <Spacer direction="horizontal" space={spacer.spacing2} />
-                      <Text
-                        type="sm"
-                        label={folderData.title}
+                      <Text type="sm" label={folderData.title} />
+                      <Flex
+                        align={'center'}
                         etcStyles={{
-                          width: '100%',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
+                          marginLeft: 'auto',
+                          marginRight: '4px',
                         }}
-                      />
+                      >
+                        {folderData.parentId !== '0' && (
+                          <ModalLayer.Opener
+                            modalContent={
+                              <SidebarFormWrapper>
+                                <UpdateFolder
+                                  id={folderData.id}
+                                  parentId={folderData.parentId as string}
+                                  title={folderData.title}
+                                />
+                              </SidebarFormWrapper>
+                            }
+                            modalType="sidebar-form"
+                          >
+                            <Center
+                              etcStyles={{
+                                width: '24px',
+                                height: '24px',
+                              }}
+                            >
+                              <UpdateIcon />
+                            </Center>
+                          </ModalLayer.Opener>
+                        )}
+                      </Flex>
+                      <ModalLayer.Opener
+                        modalType="sidebar-form"
+                        modalContent={
+                          <SidebarFormWrapper>
+                            <Tabs>
+                              <Flex align={'center'} justify={'space-between'}>
+                                <Tabs.TabList>
+                                  <Tabs.Tab>새 폴더</Tabs.Tab>
+                                  <Tabs.Tab>새 링크</Tabs.Tab>
+                                </Tabs.TabList>
+                                <ModalLayer.Closer modalType="sidebar-form">
+                                  <Center
+                                    etcStyles={{
+                                      width: '24px',
+                                      height: '24px',
+                                    }}
+                                  >
+                                    <LargeXIcon />
+                                  </Center>
+                                </ModalLayer.Closer>
+                              </Flex>
+                              <Tabs.TabPanels>
+                                <Tabs.TabPanel>
+                                  <CreateFolder
+                                    title={folderData.title}
+                                    parentId={folderData.id}
+                                  />
+                                </Tabs.TabPanel>
+                                <Tabs.TabPanel>
+                                  <CreateLink parentId={folderData.id} />
+                                </Tabs.TabPanel>
+                              </Tabs.TabPanels>
+                            </Tabs>
+                          </SidebarFormWrapper>
+                        }
+                      >
+                        <Center
+                          etcStyles={{
+                            width: '24px',
+                            height: '24px',
+                          }}
+                        >
+                          <PlusIcon />
+                        </Center>
+                      </ModalLayer.Opener>
                     </Flex>
                   );
                 }}

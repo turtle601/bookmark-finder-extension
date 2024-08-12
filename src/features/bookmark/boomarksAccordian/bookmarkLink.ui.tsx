@@ -1,6 +1,8 @@
 import React from 'react';
 import { css } from '@emotion/react';
 
+import UpdateIcon from '@/shared/config/assets/update.svg';
+
 import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
 import Center from '@/shared/ui/center';
@@ -13,6 +15,10 @@ import { getFaviconkitIcon } from '@/shared/lib/icon';
 import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 
 import type { Bookmark } from '@/entities/bookmark';
+
+import ModalLayer from '@/shared/ui/modalLayer';
+import SidebarFormWrapper from '@/features/sidebar/sidebarContent/sidebarFormWrapper.ui';
+import UpdateLink from '@/features/bookmark/updateLink';
 
 interface IBookmarkLinkProps {
   bookmark: Bookmark;
@@ -29,9 +35,14 @@ const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
     e.dataTransfer.setData(
       DND_BOOKMARK_KEY,
       JSON.stringify({
+        type: 'link',
         id: bookmark.id,
       }),
     );
+  };
+
+  const handleOpenUpdateLinkForm = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
   };
 
   return (
@@ -73,6 +84,37 @@ const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
               </Center>
               <Spacer direction="horizontal" space={spacer.spacing2} />
               <Text type="sm" label={bookmark.title} />
+              <Flex
+                align={'center'}
+                etcStyles={{
+                  marginLeft: 'auto',
+                  marginRight: '4px',
+                }}
+              >
+                <ModalLayer.Opener
+                  modalType="sidebar-form"
+                  modalContent={
+                    <SidebarFormWrapper>
+                      <UpdateLink
+                        id={bookmark.id}
+                        parentId={bookmark.parentId as string}
+                        title={bookmark.title}
+                        url={bookmark.url as string}
+                      />
+                    </SidebarFormWrapper>
+                  }
+                  externalAction={handleOpenUpdateLinkForm}
+                >
+                  <Center
+                    etcStyles={{
+                      width: '24px',
+                      height: '24px',
+                    }}
+                  >
+                    <UpdateIcon />
+                  </Center>
+                </ModalLayer.Opener>
+              </Flex>
             </Flex>
           </li>
         );
