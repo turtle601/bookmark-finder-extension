@@ -18,11 +18,12 @@ const PointerContentComponent: React.FC<IPointerContentProps> = ({
 }) => {
   const { mousePosition, dragStartContent } = useDnDContext();
 
-  const mouseX = mousePosition?.x || 0;
-  const mouseY =
-    dragEndType === 'leftSide' ? mousePosition?.y || 56 : mousePosition?.y || 0;
+  const mouseX = mousePosition?.x;
+  const mouseY = mousePosition?.y;
 
-  const isShow = Boolean(dragStartContent);
+  const isShow = Boolean(
+    dragStartContent && mouseX !== undefined && mouseY !== undefined,
+  );
 
   return (
     isShow && (
