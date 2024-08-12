@@ -1,17 +1,15 @@
-import { createRoot } from 'react-dom/client';
+import React from 'react';
 
-import Provider from '@/app/provider';
+import { GlobalProvider } from './provider';
 
-export const makeContentScript = () => {
-  const appContainer = document.createElement('div');
-  const screenContainer = document.createElement('div');
-  appContainer.id = 'bookmark';
-  screenContainer.id = 'screen';
+import Home from '@/pages/home';
 
-  document.body.appendChild(appContainer);
-  document.body.appendChild(screenContainer);
-
-  const root = createRoot(appContainer);
-
-  root.render(<Provider />);
+const App: React.FC = () => {
+  return (
+    <GlobalProvider>
+      <Home />
+    </GlobalProvider>
+  );
 };
+
+export default App;
