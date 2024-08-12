@@ -6,28 +6,40 @@ import TrashIcon from '@/shared/config/assets/trash.svg';
 
 import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 
-import { useDeleteBookmarkMutation } from '@/entities/bookmark';
-
 import {
   closeTrashAnimation,
   getButtonAnimationStyle,
   openTrashAnimation,
 } from '@/features/bookmark/deleteBookmarkButton/style';
+import {
+  useDeleteBookmarkFolderMutation,
+  useDeleteBookmarkLinkMutation,
+} from '@/entities/bookmark';
 
 const DeleteBookmarkButton: React.FC = () => {
-  const isFnCall = useRef(false); // dragenter했을 때만 animation을 실행하기 위한 변수
+  const isAnimationCall = useRef(false); // dragenter했을 때만 animation을 실행하기 위한 변수
 
-  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
+  const { mutate: deleteBookmarkLink } = useDeleteBookmarkLinkMutation();
+  const { mutate: deleteBookmarkFolder } = useDeleteBookmarkFolderMutation();
 
   const handleDrop: React.DragEventHandler = (e) => {
-    const { id } = JSON.parse(e.dataTransfer.getData(DND_BOOKMARK_KEY));
+    const { id, type } = JSON.parse(e.dataTransfer.getData(DND_BOOKMARK_KEY));
 
-    deleteBookmark({ bookmarkId: id });
+    switch (type) {
+      case 'link':
+        deleteBookmarkLink({ bookmarkId: id });
+        break;
+      case 'folder':
+        deleteBookmarkFolder({ folderId: id });
+        break;
+      default:
+        throw new Error('북마크 타입이 정해지지 않았습니다.');
+    }
   };
 
   const getAnimationStyle = useCallback((isDragEnter: boolean) => {
-    if (!isFnCall.current) {
-      isFnCall.current = true;
+    if (!isAnimationCall.current) {
+      isAnimationCall.current = true;
       return {};
     }
 

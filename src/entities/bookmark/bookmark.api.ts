@@ -1,7 +1,6 @@
 import { createChromeRequest } from '@/shared/lib/fetch';
 
-import { bookmarkService, type Bookmark } from '@/entities/bookmark';
-import { traverseBookmarks } from '@/entities/bookmark/bookmark.lib';
+import type { Bookmark } from '@/entities/bookmark';
 
 interface IBookmarkQueryResponse {
   isSuccess: boolean;
@@ -57,45 +56,30 @@ export const updateBookmarkMutation = async (
   });
 };
 
-interface IDeleteBookmarkMutationParameter {
+interface IDeleteBookmarkLinkMutationParameter {
   bookmarkId: string;
 }
 
-interface IDeleteBookmarkReturnType {
-  isSuccess: boolean;
-}
-
-export const deleteBookmarkMutation = async (
-  paylaod: IDeleteBookmarkMutationParameter,
-): Promise<IDeleteBookmarkReturnType> => {
+export const deleteBookmarkLinkMutation = async (
+  payload: IDeleteBookmarkLinkMutationParameter,
+) => {
   return await createChromeRequest({
-    action: 'deleteBookmark',
-    payload: { ...paylaod },
+    action: 'deleteBookmarkLink',
+    payload: { ...payload },
   });
 };
 
-export const createNewChromeBookmarksMutation = async (
-  selectedBookmarks: Bookmark[],
+interface IDeleteBookmarkFolderMutationParameter {
+  folderId: string;
+}
+
+export const deleteBookmarkFolderMutation = async (
+  payload: IDeleteBookmarkFolderMutationParameter,
 ) => {
-  const createNewBookmarks = async (bookmark: Bookmark) => {
-    const { parentId, title, url } = bookmark;
-
-    await createBoomarkMutation({ parentId: parentId as string, title, url });
-  };
-
-  const removeOldBookmarks = async (bookmark: Bookmark) => {
-    const { id } = bookmark;
-
-    await deleteBookmarkMutation({ bookmarkId: id });
-  };
-
-  const chromeBookmarks = bookmarkService.getCache();
-
-  if (chromeBookmarks) {
-    await traverseBookmarks(chromeBookmarks, removeOldBookmarks);
-  }
-
-  await traverseBookmarks(selectedBookmarks, createNewBookmarks);
+  return await createChromeRequest({
+    action: 'deleteBookmarkFolder',
+    payload: { ...payload },
+  });
 };
 
 interface IMoveBookmarkMutationParameter {
@@ -112,3 +96,27 @@ export const moveBookmarkMutation = async (
     payload: { ...payload },
   });
 };
+
+// export const createNewChromeBookmarksMutation = async (
+//   selectedBookmarks: Bookmark[],
+// ) => {
+//   const createNewBookmarks = async (bookmark: Bookmark) => {
+//     const { parentId, title, url } = bookmark;
+
+//     await createBoomarkMutation({ parentId: parentId as string, title, url });
+//   };
+
+//   const removeOldBookmarks = async (bookmark: Bookmark) => {
+//     const { id } = bookmark;
+
+//     await deleteBookmarkMutation({ bookmarkId: id });
+//   };
+
+//   const chromeBookmarks = bookmarkService.getCache();
+
+//   if (chromeBookmarks) {
+//     await traverseBookmarks(chromeBookmarks, removeOldBookmarks);
+//   }
+
+//   await traverseBookmarks(selectedBookmarks, createNewBookmarks);
+// };
