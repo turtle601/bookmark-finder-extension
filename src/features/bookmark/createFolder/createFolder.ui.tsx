@@ -1,15 +1,22 @@
-import { FormEventHandler, useRef } from 'react';
+import React, { FormEventHandler, useRef } from 'react';
 
 import Button from '@/shared/ui/button';
 import Input from '@/shared/ui/input';
+import Spacer from '@/shared/ui/spacer';
+import ModalLayer from '@/shared/ui/modalLayer';
+
+import { color, spacer } from '@/shared/config/styles';
 
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
 
+import type { Bookmark } from '@/entities/bookmark';
+
 interface ICreateFolder {
+  title: Bookmark['title'];
   parentId: string;
 }
 
-const CreateFolder = ({ parentId }: ICreateFolder) => {
+const CreateFolder: React.FC<ICreateFolder> = ({ title, parentId }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { mutate: createBookmark } = useCreateBookmarkMutation();
@@ -23,33 +30,42 @@ const CreateFolder = ({ parentId }: ICreateFolder) => {
   };
 
   return (
-    <form onSubmit={submitFolder}>
-      <Input
-        inputName="createBookmark"
-        inputValue=""
-        validate={(value) => value.length === 0}
-      >
-        <Input.Field
-          ref={inputRef}
-          kind={'outline'}
-          placeholder="폴더의 이름을 입력해주세요"
+    <>
+      <form onSubmit={submitFolder}>
+        <Spacer direction="vertical" space={spacer.spacing2} />
+        <Input
+          inputName="createBookmark"
+          inputValue=""
+          validate={(value) => value.length === 0}
+        >
+          <Input.Field
+            ref={inputRef}
+            kind={'outline'}
+            placeholder={`${title} 폴더 내 새 폴더 생성하기`}
+            paddingLeft={'8px'}
+            etcStyles={{
+              width: '100%',
+              padding: '8px',
+              color: color.gray,
+            }}
+          />
+          <Input.ErrorMessage message="폴더 이름은 한 글자 이상 입력하세요" />
+        </Input>
+      </form>
+      <ModalLayer.Closer modalType="sidebar-form" etcStyles={{ width: '100%' }}>
+        <Button
+          kind="default"
+          type="submit"
+          onClick={submitFolder}
           etcStyles={{
             width: '100%',
+            padding: '12px',
           }}
-        />
-        <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
-      </Input>
-      <Button
-        kind="default"
-        type="submit"
-        etcStyles={{
-          width: '100%',
-          padding: '12px',
-        }}
-      >
-        폴더 만들기
-      </Button>
-    </form>
+        >
+          새 폴더 만들기
+        </Button>
+      </ModalLayer.Closer>
+    </>
   );
 };
 
