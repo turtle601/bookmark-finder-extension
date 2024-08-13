@@ -41,7 +41,7 @@ const CreateFolder: React.FC<ICreateFolder> = ({ title, parentId }) => {
           <Input.Field
             ref={inputRef}
             kind={'outline'}
-            placeholder={`${title} 폴더 내 새 폴더 생성하기`}
+            placeholder={`폴더의 이름을 작성해주세요`}
             paddingLeft={'8px'}
             etcStyles={{
               width: '100%',
