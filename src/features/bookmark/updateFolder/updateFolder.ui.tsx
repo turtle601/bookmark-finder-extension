@@ -1,8 +1,5 @@
 import React, { useRef } from 'react';
 
-import LargeXIcon from '@/shared/config/assets/largeX.svg';
-
-import Flex from '@/shared/ui/flex';
 import Button from '@/shared/ui/button';
 import Input from '@/shared/ui/input';
 import Spacer from '@/shared/ui/spacer';
@@ -11,7 +8,6 @@ import ModalLayer from '@/shared/ui/modalLayer';
 import { color, spacer } from '@/shared/config/styles';
 
 import { useUpdateBookmarkMutation } from '@/entities/bookmark';
-import Center from '@/shared/ui/center';
 
 interface IUpdateFolder {
   id: string;
@@ -34,28 +30,13 @@ const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
 
   return (
     <>
+      <Spacer direction="vertical" space={spacer.spacing3} />
       <form onSubmit={submitFolder}>
         <Input
           inputName="updateFolder"
           inputValue={title}
           validate={(value) => value.length === 0}
         >
-          <Flex justify={'space-between'} align={'center'}>
-            <Input.Label
-              text={`${title} 폴더 수정하기`}
-              etcStyles={{
-                padding: '4px 12px',
-                color: color.green,
-                borderBottom: `1px solid ${color.green}`,
-              }}
-            />
-            <ModalLayer.Closer modalType="sidebar-form">
-              <Center etcStyles={{ width: '24px', height: '24px' }}>
-                <LargeXIcon />
-              </Center>
-            </ModalLayer.Closer>
-          </Flex>
-          <Spacer direction="vertical" space={spacer.spacing2} />
           <Input.Field
             ref={inputRef}
             kind={'outline'}

@@ -1,13 +1,8 @@
 import React, { useRef } from 'react';
 
-import LargeXIcon from '@/shared/config/assets/largeX.svg';
-
-import Flex from '@/shared/ui/flex';
-import Center from '@/shared/ui/center';
 import Button from '@/shared/ui/button';
 import Input from '@/shared/ui/input';
 import Spacer from '@/shared/ui/spacer';
-import Text from '@/shared/ui/text';
 import ModalLayer from '@/shared/ui/modalLayer';
 
 import { color, spacer } from '@/shared/config/styles';
@@ -41,26 +36,8 @@ const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
 
   return (
     <>
+      <Spacer direction="vertical" space={spacer.spacing3} />
       <form onSubmit={submitUpdateLink}>
-        <Flex justify={'space-between'} align={'center'}>
-          <div>
-            <Text
-              label="링크 수정하기"
-              type="sm"
-              textColor={color.green}
-              etcStyles={{
-                padding: '4px 12px',
-                borderBottom: `1px solid ${color.green}`,
-              }}
-            />
-          </div>
-          <ModalLayer.Closer modalType="sidebar-form">
-            <Center etcStyles={{ width: '24px', height: '24px' }}>
-              <LargeXIcon />
-            </Center>
-          </ModalLayer.Closer>
-        </Flex>
-        <Spacer direction="vertical" space={spacer.spacing3} />
         <Input
           inputName="update-link-title"
           inputValue={title}
