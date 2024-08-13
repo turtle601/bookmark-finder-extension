@@ -4,8 +4,10 @@ import { queryOptions as tsqQueryOptions } from '@tanstack/react-query';
 
 import {
   bookmarkQuery,
-  createNewChromeBookmarksMutation,
-  deleteBookmarkMutation,
+  // createNewChromeBookmarksMutation,
+  deleteBookmarkFolderMutation,
+  deleteBookmarkLinkMutation,
+  moveBookmarkMutation,
   updateBookmarkMutation,
 } from '@/entities/bookmark/bookmark.api';
 
@@ -18,6 +20,7 @@ export const keys = {
   createBookmark: () => [...keys.root(), 'create'],
   updateBookmark: () => [...keys.root(), 'update'],
   deleteBookmark: () => [...keys.root(), 'delete'],
+  moveBookmark: () => [...keys.root(), 'move'],
 } as const;
 
 export const bookmarkService = {
@@ -51,18 +54,8 @@ export function useCreateBookmarkMutation() {
   return useMutation({
     mutationKey: keys.createBookmark(),
     mutationFn: createBoomarkMutation,
-    onMutate: async (variables) => {
-      await bookmarkService.cancelCache();
-      const prevBookmarkCache = bookmarkService.getCache();
-
-      return { prevBookmarkCache };
-    },
     onSuccess: async () => {
       await bookmarkService.invalidateCache();
-    },
-    onError: async (error, variables, context) => {
-      await bookmarkService.invalidateCache();
-      bookmarkService.setCache(context?.prevBookmarkCache);
     },
   });
 }
@@ -71,35 +64,48 @@ export function useUpdateBookmarkMutation() {
   return useMutation({
     mutationKey: keys.createBookmark(),
     mutationFn: updateBookmarkMutation,
-    onMutate: async (variables) => {
-      await bookmarkService.cancelCache();
-      const prevBookmarkCache = bookmarkService.getCache();
-
-      return { prevBookmarkCache };
-    },
     onSuccess: async () => {
       await bookmarkService.invalidateCache();
     },
-    onError: async (error, variables, context) => {
-      await bookmarkService.invalidateCache();
-      bookmarkService.setCache(context?.prevBookmarkCache);
+  });
+}
+
+export function useDeleteBookmarkLinkMutation() {
+  return useMutation({
+    mutationKey: keys.deleteBookmark(),
+    mutationFn: deleteBookmarkLinkMutation,
+    onSuccess: () => {
+      bookmarkService.invalidateCache();
     },
   });
 }
 
-export function useDeleteBookmarkMutation() {
+export function useDeleteBookmarkFolderMutation() {
   return useMutation({
     mutationKey: keys.deleteBookmark(),
-    mutationFn: deleteBookmarkMutation,
+    mutationFn: deleteBookmarkFolderMutation,
+    onSuccess: () => {
+      bookmarkService.invalidateCache();
+    },
   });
 }
 
-export const useCreateAIBookmarks = () => {
+export const useMoveBookmark = () => {
   return useMutation({
-    mutationKey: bookmarkService.queryKey(),
-    mutationFn: createNewChromeBookmarksMutation,
+    mutationKey: keys.moveBookmark(),
+    mutationFn: moveBookmarkMutation,
     onSuccess: () => {
       bookmarkService.invalidateCache();
     },
   });
 };
+
+// export const useCreateAIBookmarks = () => {
+//   return useMutation({
+//     mutationKey: bookmarkService.queryKey(),
+//     mutationFn: createNewChromeBookmarksMutation,
+//     onSuccess: () => {
+//       bookmarkService.invalidateCache();
+//     },
+//   });
+// };

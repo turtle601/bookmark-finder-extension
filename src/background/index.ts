@@ -20,9 +20,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'createBookmark') {
-    const { url, title, parentId } = message.payload;
-
-    chrome.bookmarks.create({ parentId, title, url }, (bookmark) => {
+    chrome.bookmarks.create(message.payload, (bookmark) => {
       if (chrome.runtime.lastError) {
         sendResponse({
           isSuccess: false,
@@ -44,7 +42,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'updateBookmark') {
     const { id, title, url } = message.payload;
 
+    console.log(message.payload);
+
     chrome.bookmarks.update(id, { title, url }, (bookmark) => {
+      if (chrome.runtime.lastError) {
+        console.log('실패');
+
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        console.log('성공');
+        sendResponse({ isSuccess: true });
+      }
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'deleteBookmarkLink') {
+    const bookmarkId = message.payload.bookmarkId;
+
+    chrome.bookmarks.remove(bookmarkId, () => {
       if (chrome.runtime.lastError) {
         sendResponse({
           isSuccess: false,
@@ -60,10 +82,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'deleteBookmark') {
-    const bookmarkId = message.bookmarkId;
+  if (message.action === 'deleteBookmarkFolder') {
+    const folderId = message.payload.folderId;
 
-    chrome.bookmarks.remove(bookmarkId, () => {
+    chrome.bookmarks.removeTree(folderId, () => {
       if (chrome.runtime.lastError) {
         sendResponse({
           isSuccess: false,
@@ -92,6 +114,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ isSuccess: true, data: bookmarkList });
       }
     });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'moveBookmark') {
+    const destination = {
+      parentId: message.payload.parentId,
+      index: message.payload.index,
+    };
+
+    chrome.bookmarks.move(
+      message.payload.id,
+      { ...destination },
+      (bookmarkList) => {
+        if (chrome.runtime.lastError) {
+          sendResponse({
+            isSuccess: false,
+            error: chrome.runtime.lastError.message,
+          });
+        } else {
+          sendResponse({ isSuccess: true });
+        }
+      },
+    );
 
     return true;
   }

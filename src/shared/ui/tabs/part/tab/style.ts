@@ -3,12 +3,8 @@ import { CSSObject } from '@emotion/react';
 
 export const getTabStyle = (isSelected: boolean): CSSObject => {
   return {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    width: '72px',
-    height: '48px',
+    cursor: 'pointer',
+    padding: '4px 12px',
 
     color: isSelected ? color.green : color.gray300,
 

@@ -3,13 +3,12 @@ import { css } from '@emotion/react';
 import { useDragable } from '@/shared/ui/dnd/hooks';
 
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode, Ref } from 'react';
-import type { AsyncVoidFunction } from '@/shared/ui/util.type';
+import type { DragEventHandler, ReactNode, Ref } from 'react';
 
 export interface IDragableProps {
   children: (props: { isDrag: boolean }) => ReactNode;
   dragEndType?: 'reset' | 'leftSide';
-  dragAction?: VoidFunction | AsyncVoidFunction;
+  dragAction?: DragEventHandler;
   etcStyles?: CSSObject;
 }
 
@@ -22,17 +21,26 @@ const DragableComponent = (
   }: IDragableProps,
   ref: Ref<HTMLDivElement>,
 ) => {
-  const { isDrag, handleDragEnd, handleDragStart, mousePosition } = useDragable(
-    {
-      dragAction,
-      children,
-      dragEndType,
-    },
-  );
+  const {
+    isDrag,
+    isFirstDragStart,
+    handleDragEnd,
+    handleDragStart,
+    mousePosition,
+  } = useDragable({
+    dragAction,
+    children,
+    dragEndType,
+  });
 
   const handleDragOver: React.DragEventHandler = (e) => {
     e.preventDefault();
   };
+
+  const positionX = mousePosition?.x || 0;
+  const positionY = isFirstDragStart
+    ? mousePosition?.y || '56px'
+    : mousePosition?.y || 0;
 
   return (
     <div
@@ -46,8 +54,8 @@ const DragableComponent = (
         cursor: 'grab',
         ...(dragEndType === 'leftSide' && {
           position: 'absolute',
-          top: mousePosition?.y || 0,
-          left: mousePosition?.x || 0,
+          top: positionY,
+          left: positionX,
         }),
         ...etcStyles,
       })}
@@ -57,10 +65,12 @@ const DragableComponent = (
   );
 };
 
-export type DragableFC = React.ForwardRefExoticComponent<
-  IDragableProps & React.RefAttributes<HTMLDivElement>
+export type DragableFC = React.MemoExoticComponent<
+  React.ForwardRefExoticComponent<
+    IDragableProps & React.RefAttributes<HTMLDivElement>
+  >
 >;
 
-const Dragable: DragableFC = forwardRef(DragableComponent);
+const Dragable: DragableFC = React.memo(forwardRef(DragableComponent));
 
 export default Dragable;

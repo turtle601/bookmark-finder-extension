@@ -1,7 +1,11 @@
-import { FormEventHandler, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import Button from '@/shared/ui/button';
 import Input from '@/shared/ui/input';
+import Spacer from '@/shared/ui/spacer';
+import ModalLayer from '@/shared/ui/modalLayer';
+
+import { color, spacer } from '@/shared/config/styles';
 
 import { useUpdateBookmarkMutation } from '@/entities/bookmark';
 
@@ -11,12 +15,12 @@ interface IUpdateFolder {
   title: string;
 }
 
-const UpdateFolder = ({ id, parentId, title }: IUpdateFolder) => {
+const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { mutate: updateFolder } = useUpdateBookmarkMutation();
 
-  const submitFolder: FormEventHandler = (e) => {
+  const submitFolder: React.FormEventHandler = (e) => {
     e.preventDefault();
 
     if (inputRef.current && !inputRef.current.checkValidity()) {
@@ -25,34 +29,45 @@ const UpdateFolder = ({ id, parentId, title }: IUpdateFolder) => {
   };
 
   return (
-    <form onSubmit={submitFolder}>
-      <Input
-        inputName="updateFolder"
-        inputValue={title}
-        validate={(value) => value.length === 0}
+    <>
+      <Spacer direction="vertical" space={spacer.spacing3} />
+      <form onSubmit={submitFolder}>
+        <Input
+          inputName="updateFolder"
+          inputValue={title}
+          validate={(value) => value.length === 0}
+        >
+          <Input.Field
+            ref={inputRef}
+            kind={'outline'}
+            placeholder=""
+            paddingLeft={'8px'}
+            etcStyles={{
+              width: '100%',
+              padding: '8px',
+              color: color.gray,
+            }}
+          />
+          <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
+        </Input>
+      </form>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
       >
-        <Input.Field
-          ref={inputRef}
-          kind={'outline'}
-          placeholder="폴더의 이름을 입력해주세요"
+        <Button
+          kind="default"
+          type="submit"
+          onClick={submitFolder}
           etcStyles={{
             width: '100%',
+            padding: '12px',
           }}
-        />
-        <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
-      </Input>
-
-      <Button
-        kind="default"
-        type="submit"
-        etcStyles={{
-          width: '100%',
-          padding: '12px',
-        }}
-      >
-        링크 수정하기
-      </Button>
-    </form>
+        >
+          폴더 수정하기
+        </Button>
+      </ModalLayer.Closer>
+    </>
   );
 };
 

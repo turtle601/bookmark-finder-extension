@@ -13,7 +13,7 @@ const Tab: FC<ITabProps> = ({ id, children, etcStyles = {} }) => {
   const { selectedId } = useTabsContext();
   const { selectTab } = useTabsActionContext();
 
-  const isSelected = useMemo(() => selectedId === id, [selectedId]);
+  const isSelected = useMemo(() => selectedId === id, [id, selectedId]);
 
   const handleSelectTab = () => {
     if (id) {

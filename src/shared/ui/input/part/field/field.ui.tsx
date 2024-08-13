@@ -83,6 +83,7 @@ const FieldComponent = (
   const handleOnChangedAction: ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (e) => {
+        e.stopPropagation();
         handleChange(e);
         if (externalonChangeAction) externalonChangeAction(e);
       },
@@ -92,6 +93,7 @@ const FieldComponent = (
   const handleOnKeyUpAction: KeyboardEventHandler<HTMLInputElement> =
     useCallback(
       (e) => {
+        e.stopPropagation();
         if (externalonKeyUpAction) externalonKeyUpAction(e);
         handleKeyPress(e);
       },

@@ -1,33 +1,27 @@
-import { FormEventHandler, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import Button from '@/shared/ui/button';
 import Input from '@/shared/ui/input';
+import Spacer from '@/shared/ui/spacer';
+import ModalLayer from '@/shared/ui/modalLayer';
+
+import { color, spacer } from '@/shared/config/styles';
 
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
 
-interface ICreateLink {
+interface ICreateLinkProps {
   parentId: string;
 }
 
-const CreateLink = ({ parentId }: ICreateLink) => {
+const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
   const inputRefList = useRef<(HTMLInputElement | null)[]>([]);
 
   const { mutate: createBookmark } = useCreateBookmarkMutation();
 
-  const submitFolder: FormEventHandler = (e) => {
+  const submitNewLink: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    let flag = false;
-
-    inputRefList.current.forEach((inputRef, i) => {
-      if (inputRef?.checkValidity()) {
-        flag = true;
-        inputRef?.focus();
-        return;
-      }
-    });
-
-    if (!flag && inputRefList.current[0] && inputRefList.current[1]) {
+    if (inputRefList.current[0] && inputRefList.current[1]) {
       createBookmark({
         title: inputRefList.current[0]?.value,
         url: inputRefList.current[1]?.value,
@@ -37,49 +31,55 @@ const CreateLink = ({ parentId }: ICreateLink) => {
   };
 
   return (
-    <form onSubmit={submitFolder}>
-      <Input
-        inputName="createBookmark"
-        inputValue=""
-        validate={(value) => value.length === 0}
+    <>
+      <form onSubmit={submitNewLink}>
+        <Spacer direction="vertical" space={spacer.spacing2} />
+        <Input inputName="create-link-titile" inputValue="">
+          <Input.Field
+            ref={(el) => (inputRefList.current[0] = el)}
+            kind={'outline'}
+            placeholder="링크의 제목을 지어주세요"
+            paddingLeft={'8px'}
+            etcStyles={{
+              width: '100%',
+              padding: '8px',
+              color: color.gray,
+            }}
+          />
+        </Input>
+        <Spacer direction="vertical" space={spacer.spacing3} />
+        <Input inputName="create-link-url" inputValue="">
+          <Input.Field
+            ref={(el) => (inputRefList.current[1] = el)}
+            kind={'outline'}
+            placeholder="링크를 입력해주세요"
+            paddingLeft={'8px'}
+            etcStyles={{
+              width: '100%',
+              padding: '8px',
+              color: color.gray,
+            }}
+          />
+        </Input>
+        <Spacer direction="vertical" space={spacer.spacing3} />
+      </form>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
       >
-        <Input.Field
-          ref={(el) => (inputRefList.current[0] = el)}
-          kind={'outline'}
-          placeholder="링크의 제목을 지어주세요"
+        <Button
+          kind="default"
+          type="submit"
+          onClick={submitNewLink}
           etcStyles={{
             width: '100%',
+            padding: '12px',
           }}
-        />
-        <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
-      </Input>
-      <Input
-        inputName="createBookmark"
-        inputValue=""
-        validate={(value) => value.length === 0}
-      >
-        <Input.Field
-          ref={(el) => (inputRefList.current[1] = el)}
-          kind={'outline'}
-          placeholder="링크를 입력해주세요"
-          etcStyles={{
-            width: '100%',
-          }}
-        />
-        <Input.ErrorMessage message="링크 이름을 최대 한 글자 이상 입력해주세요" />
-      </Input>
-
-      <Button
-        kind="default"
-        type="submit"
-        etcStyles={{
-          width: '100%',
-          padding: '12px',
-        }}
-      >
-        새로운 링크 만들기
-      </Button>
-    </form>
+        >
+          새 링크 만들기
+        </Button>
+      </ModalLayer.Closer>
+    </>
   );
 };
 
