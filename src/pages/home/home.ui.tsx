@@ -1,11 +1,14 @@
+import React from 'react';
+
 import { css } from '@emotion/react';
 
 import { FIRST_LAYER_ZIDENX } from '@/shared/config/constant';
 
 import DnD from '@/shared/ui/dnd';
-import OpenBookmarkButton from '@/features/sidebar/openBookmarkButton';
 
-const Home = () => {
+import { OpenSidebar } from './ui';
+
+const Home: React.FC = () => {
   return (
     <div
       css={css({
@@ -15,12 +18,13 @@ const Home = () => {
         width: '100%',
         height: '100%',
         zIndex: `${FIRST_LAYER_ZIDENX}`,
+        pointerEvents: 'none',
       })}
     >
       <DnD.Provider>
-        <DnD.Boundary width={'360px'} height={'100%'}>
+        <DnD.Boundary width={'360px'} height={'100vh'}>
           <DnD.PointerContent />
-          <OpenBookmarkButton />
+          <OpenSidebar />
         </DnD.Boundary>
       </DnD.Provider>
     </div>
