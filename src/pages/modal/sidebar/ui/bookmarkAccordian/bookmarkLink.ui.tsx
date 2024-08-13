@@ -1,13 +1,13 @@
 import React from 'react';
 import { css } from '@emotion/react';
 
-import UpdateIcon from '@/shared/config/assets/update.svg';
-
 import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
 import Center from '@/shared/ui/center';
 import Spacer from '@/shared/ui/spacer';
 import DnD from '@/shared/ui/dnd';
+
+import { OpenUpdateLinkForm } from '../';
 
 import { color, spacer } from '@/shared/config/styles';
 import { getFaviconkitIcon } from '@/shared/lib/icon';
@@ -16,15 +16,11 @@ import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 
 import type { Bookmark } from '@/entities/bookmark';
 
-import ModalLayer from '@/shared/ui/modalLayer';
-import SidebarFormWrapper from '@/features/sidebar/sidebarContent/sidebarFormWrapper.ui';
-import UpdateLink from '@/features/bookmark/updateLink';
-
 interface IBookmarkLinkProps {
   bookmark: Bookmark;
 }
 
-const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
+export const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
   const handleNavigation = () => {
     if (bookmark.url) {
       window.location.href = bookmark.url;
@@ -39,10 +35,6 @@ const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
         id: bookmark.id,
       }),
     );
-  };
-
-  const handleOpenUpdateLinkForm = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
   };
 
   return (
@@ -91,29 +83,7 @@ const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
                   marginRight: '4px',
                 }}
               >
-                <ModalLayer.Opener
-                  modalType="sidebar-form"
-                  modalContent={
-                    <SidebarFormWrapper>
-                      <UpdateLink
-                        id={bookmark.id}
-                        parentId={bookmark.parentId as string}
-                        title={bookmark.title}
-                        url={bookmark.url as string}
-                      />
-                    </SidebarFormWrapper>
-                  }
-                  externalAction={handleOpenUpdateLinkForm}
-                >
-                  <Center
-                    etcStyles={{
-                      width: '24px',
-                      height: '24px',
-                    }}
-                  >
-                    <UpdateIcon />
-                  </Center>
-                </ModalLayer.Opener>
+                <OpenUpdateLinkForm bookmark={bookmark} />
               </Flex>
             </Flex>
           </li>
@@ -122,5 +92,3 @@ const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
     </DnD.Dragable>
   );
 };
-
-export default BookmarkLink;

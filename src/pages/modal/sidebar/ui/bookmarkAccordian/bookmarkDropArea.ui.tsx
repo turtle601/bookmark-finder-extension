@@ -15,7 +15,7 @@ interface IBookmarkDropAreaProps {
   index: number;
 }
 
-const BookmarkDropArea: React.FC<IBookmarkDropAreaProps> = ({
+export const BookmarkDropArea: React.FC<IBookmarkDropAreaProps> = ({
   index,
   parentId,
 }) => {
@@ -47,5 +47,3 @@ const BookmarkDropArea: React.FC<IBookmarkDropAreaProps> = ({
     </DnD.Dropable>
   );
 };
-
-export default BookmarkDropArea;
