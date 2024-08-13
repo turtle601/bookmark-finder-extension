@@ -2,11 +2,13 @@ import React from 'react';
 
 import { css } from '@emotion/react';
 
+import { color } from '@/shared/config/styles';
 import { FIRST_LAYER_ZIDENX } from '@/shared/config/constant';
 
+import BookmarkIcon from '@/shared/config/assets/bookmark.svg';
 import DnD from '@/shared/ui/dnd';
 
-import { OpenSidebar } from './ui';
+import { OpenSidebarDefault } from '@/app/modal-router';
 
 const Home: React.FC = () => {
   return (
@@ -24,7 +26,33 @@ const Home: React.FC = () => {
       <DnD.Provider>
         <DnD.Boundary width={'360px'} height={'100vh'}>
           <DnD.PointerContent />
-          <OpenSidebar />
+          <OpenSidebarDefault
+            etcStyles={{
+              pointerEvents: 'auto',
+            }}
+          >
+            <DnD.Dragable dragEndType="leftSide">
+              {({ isDrag }) => {
+                return (
+                  <div
+                    css={css({
+                      display: 'flex',
+                      opacity: isDrag ? 0 : 1,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      width: '64px',
+                      height: '40px',
+                      backgroundColor: color.gray,
+                      borderRadius: '0 4px 4px 0',
+                      padding: '10px',
+                    })}
+                  >
+                    <BookmarkIcon />
+                  </div>
+                );
+              }}
+            </DnD.Dragable>
+          </OpenSidebarDefault>
         </DnD.Boundary>
       </DnD.Provider>
     </div>
