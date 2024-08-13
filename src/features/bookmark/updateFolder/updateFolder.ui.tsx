@@ -61,7 +61,7 @@ const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
             padding: '12px',
           }}
         >
-          링크 수정하기
+          폴더 수정하기
         </Button>
       </ModalLayer.Closer>
     </>

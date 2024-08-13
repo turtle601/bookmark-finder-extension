@@ -28,7 +28,7 @@ export const OpenUpdateFolderForm: React.FC<IOpenUpdateFolderFormProps> = ({
         <SidebarPanelWidget.Wrapper>
           <SidebarPanelWidget.Header>
             <Text
-              label={`${folderData.title} 폴더 수정하기`}
+              label={`폴더 수정하기`}
               type={'sm'}
               etcStyles={{
                 padding: '4px 12px',
