@@ -1,13 +1,14 @@
 import React from 'react';
 import { css } from '@emotion/react';
 
+import UpdateIcon from '@/shared/config/assets/update.svg';
+
 import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
 import Center from '@/shared/ui/center';
 import Spacer from '@/shared/ui/spacer';
 import DnD from '@/shared/ui/dnd';
-
-import { OpenUpdateLinkForm } from '../';
+import { OpenUpdateLinkForm } from '@/app/modal-router';
 
 import { color, spacer } from '@/shared/config/styles';
 import { getFaviconkitIcon } from '@/shared/lib/icon';
@@ -35,6 +36,10 @@ export const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
         id: bookmark.id,
       }),
     );
+  };
+
+  const handleOpenUpdateLinkForm = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
   };
 
   return (
@@ -83,7 +88,19 @@ export const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
                   marginRight: '4px',
                 }}
               >
-                <OpenUpdateLinkForm bookmark={bookmark} />
+                <OpenUpdateLinkForm
+                  bookmark={bookmark}
+                  externalAction={handleOpenUpdateLinkForm}
+                >
+                  <Center
+                    etcStyles={{
+                      width: '24px',
+                      height: '24px',
+                    }}
+                  >
+                    <UpdateIcon />
+                  </Center>
+                </OpenUpdateLinkForm>
               </Flex>
             </Flex>
           </li>

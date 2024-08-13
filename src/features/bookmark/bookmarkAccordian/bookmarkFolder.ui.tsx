@@ -4,6 +4,8 @@ import { css } from '@emotion/react';
 import { color, spacer } from '@/shared/config/styles';
 
 import FolderIcon from '@/shared/config/assets/folder.svg';
+import UpdateIcon from '@/shared/config/assets/update.svg';
+import PlusIcon from '@/shared/config/assets/+.svg';
 
 import DnD from '@/shared/ui/dnd';
 import Flex from '@/shared/ui/flex';
@@ -14,7 +16,11 @@ import Accordion from '@/shared/ui/accordion';
 
 import { BookmarkDropArea } from './bookmarkDropArea.ui';
 import { BookmarkLink } from './bookmarkLink.ui';
-import { OpenUpdateFolderForm, OpenCreateBookmarkForm } from '../';
+
+import {
+  OpenCreateBookmarkForm,
+  OpenUpdateFolderForm,
+} from '@/app/modal-router';
 
 import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 
@@ -113,10 +119,28 @@ export const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
                         }}
                       >
                         {folderData.parentId !== '0' && (
-                          <OpenUpdateFolderForm folderData={folderData} />
+                          <OpenUpdateFolderForm folderData={folderData}>
+                            <Center
+                              etcStyles={{
+                                width: '24px',
+                                height: '24px',
+                              }}
+                            >
+                              <UpdateIcon />
+                            </Center>
+                          </OpenUpdateFolderForm>
                         )}
                       </Flex>
-                      <OpenCreateBookmarkForm folderData={folderData} />
+                      <OpenCreateBookmarkForm folderData={folderData}>
+                        <Center
+                          etcStyles={{
+                            width: '24px',
+                            height: '24px',
+                          }}
+                        >
+                          <PlusIcon />
+                        </Center>
+                      </OpenCreateBookmarkForm>
                     </Flex>
                   );
                 }}

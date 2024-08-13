@@ -1,13 +1,14 @@
-import DnD from '@/shared/ui/dnd';
-import BookmarksAccordian from '@/features/bookmark/boomarksAccordian';
-import Accordion from '@/shared/ui/accordion';
-
-import type { Meta, StoryObj } from '@storybook/react';
 import { css } from '@emotion/react';
 
-const meta: Meta<typeof BookmarksAccordian> = {
-  title: 'features/BookmarksAccordian',
-  component: BookmarksAccordian,
+import DnD from '@/shared/ui/dnd';
+import Accordion from '@/shared/ui/accordion';
+import BookmarkAccordian from '@/features/bookmark/bookmarkAccordian';
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta: Meta<typeof BookmarkAccordian> = {
+  title: 'features/BookmarkAccordian',
+  component: BookmarkAccordian,
   decorators: [
     // eslint-disable-next-line @typescript-eslint/naming-convention
     (Story) => (
@@ -38,7 +39,7 @@ const meta: Meta<typeof BookmarksAccordian> = {
 
 export default meta;
 
-type Story = StoryObj<typeof BookmarksAccordian>;
+type Story = StoryObj<typeof BookmarkAccordian>;
 
 export const Default: Story = {
   args: {

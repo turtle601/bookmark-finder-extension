@@ -9,7 +9,7 @@ import { bookmarkService } from '@/entities/bookmark';
 
 import type { Bookmark } from '@/entities/bookmark';
 
-export const BookmarkAccordian: React.FC = () => {
+const BookmarkAccordian: React.FC = () => {
   const { data: bookmarks } = useSuspenseQuery({
     ...bookmarkService.queryOptions(),
   });
@@ -41,3 +41,5 @@ export const BookmarkAccordian: React.FC = () => {
     </div>
   );
 };
+
+export default BookmarkAccordian;
