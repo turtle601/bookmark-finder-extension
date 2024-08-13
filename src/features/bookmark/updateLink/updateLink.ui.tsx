@@ -71,7 +71,10 @@ const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
         </Input>
       </form>
       <Spacer direction="vertical" space={spacer.spacing3} />
-      <ModalLayer.Closer modalType="sidebar-form" etcStyles={{ width: '100%' }}>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
+      >
         <Button
           kind="default"
           type="submit"

@@ -52,7 +52,10 @@ const CreateFolder: React.FC<ICreateFolder> = ({ title, parentId }) => {
           <Input.ErrorMessage message="폴더 이름은 한 글자 이상 입력하세요" />
         </Input>
       </form>
-      <ModalLayer.Closer modalType="sidebar-form" etcStyles={{ width: '100%' }}>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
+      >
         <Button
           kind="default"
           type="submit"

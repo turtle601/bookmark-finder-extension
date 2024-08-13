@@ -51,7 +51,10 @@ const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
           <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
         </Input>
       </form>
-      <ModalLayer.Closer modalType="sidebar-form" etcStyles={{ width: '100%' }}>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
+      >
         <Button
           kind="default"
           type="submit"

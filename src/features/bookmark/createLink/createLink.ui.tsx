@@ -63,7 +63,10 @@ const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
         </Input>
         <Spacer direction="vertical" space={spacer.spacing3} />
       </form>
-      <ModalLayer.Closer modalType="sidebar-form" etcStyles={{ width: '100%' }}>
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
+        etcStyles={{ width: '100%' }}
+      >
         <Button
           kind="default"
           type="submit"
