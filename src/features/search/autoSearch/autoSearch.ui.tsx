@@ -7,6 +7,8 @@ import {
   searchService,
 } from '@/entities/search/search.queries';
 
+import { color } from '@/shared/config/styles';
+
 import Flex from '@/shared/ui/flex';
 import Toggle from '@/shared/ui/toggle';
 import Input from '@/shared/ui/input';
@@ -17,7 +19,6 @@ import NameSearchIcon from '@/shared/config/assets/name-search.svg';
 import AutoSearchList from '@/features/search/autoSearch/autoSearchList.ui';
 
 import debounce from '@/shared/lib/later/debounce';
-import { color } from '@/shared/config/styles';
 
 const AutoSearch = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -31,11 +32,13 @@ const AutoSearch = () => {
     ? 'AI로 찾고 싶은 북마크를 물어보세요'
     : '링크를 검색하세요';
 
+  const searchDelay = isAI ? 1500 : 500;
+
   const { mutate: searchBookmark } = useAutoSearchMutation(isAI);
 
   const debouncedSearch = debounce((value: string) => {
     searchBookmark({ text: value });
-  }, 500);
+  }, searchDelay);
 
   const handleChangeText: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     debouncedSearch(e.target.value);
