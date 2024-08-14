@@ -38,7 +38,7 @@ export const searchAIQuery = async (
 
   if (!bookmarkCache) return [];
 
-  const prompt = `${JSON.stringify(bookmarkCache)} 데이터를 기반, ${payload.text}를 기준으로 데이터를 골라줘. 결과값은 어떠한 멘트도 치지 말고 오직 {id, title, url} 형태의 배열로만 나타내줘`;
+  const prompt = `${JSON.stringify(bookmarkCache)} 데이터를 기반, ${payload.text}를 기준으로 데이터를 골라줘. 결과값은 어떠한 멘트도 치지 말고 오직 {id, title, url} 형태의 배열로만 나타내줘. 부가적인 설명을 필요하지 않아.`;
 
   const response = await createGeminiRequest({ prompt });
 

@@ -16,6 +16,7 @@ import BookmarkAccordian from '@/features/bookmark/bookmarkAccordian';
 import SidebarWidget from '@/widget/sidebar';
 import ModalLayer from '@/shared/ui/modalLayer';
 import OpenSearchModal from '@/app/modal-router/openSearchModal.ui';
+import OpenCreateFolderCategoryForm from '@/app/modal-router/openCreateFolderCategoryForm.ui';
 
 export type SidebarDefaultFC = React.FC;
 
@@ -46,15 +47,17 @@ const Default: SidebarDefaultFC = () => {
               padding: spacer.spacing3,
             })}
           >
-            <Button
-              kind="default"
-              etcStyles={{
-                width: '100%',
-                padding: spacer.spacing3,
-              }}
-            >
-              AI로 북마크 자동 분류
-            </Button>
+            <OpenCreateFolderCategoryForm etcStyles={{ width: '100%' }}>
+              <Button
+                kind="default"
+                etcStyles={{
+                  width: '100%',
+                  padding: spacer.spacing3,
+                }}
+              >
+                AI로 북마크 자동 분류
+              </Button>
+            </OpenCreateFolderCategoryForm>
             <Spacer direction="vertical" space={spacer.spacing4} />
             <Suspense fallback={<></>}>
               <Accordion.Provider>

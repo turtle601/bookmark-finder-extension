@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { spacer } from '@/shared/config/styles';
+import { color, spacer } from '@/shared/config/styles';
 
 import Input from '@/shared/ui/input';
 import Flex from '@/shared/ui/flex';
@@ -39,6 +39,7 @@ const CategoryForm: React.FC = () => {
             externalonKeyUpAction={handleInputEnter}
             etcStyles={{
               padding: spacer['spacing2.5'],
+              color: color.gray,
             }}
           />
 
