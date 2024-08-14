@@ -2,11 +2,11 @@ import Wrapper from './wrapper.ui';
 
 import type { ModalWrapperFC } from './wrapper.ui';
 
-export interface ISidebarWidget {
+export interface IModalWidget {
   Wrapper: ModalWrapperFC;
 }
 
-const ModalWidget: ISidebarWidget = Object.assign(
+const ModalWidget: IModalWidget = Object.assign(
   {},
   {
     Wrapper,

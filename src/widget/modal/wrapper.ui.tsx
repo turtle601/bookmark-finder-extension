@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, CSSObject } from '@emotion/react';
 
-import { color } from '@/shared/config/styles';
+import { borderRadius, color, spacer } from '@/shared/config/styles';
 import { THIRD_LAYER_ZIDENX } from '@/shared/config/constant';
 
 interface IWrapperProps {
@@ -24,9 +24,13 @@ const Wrapper: ModalWrapperFC = ({ children, modalContentStyle = {} }) => {
     >
       <div
         css={css({
-          width: '640px',
-          height: '320px',
+          width: '600px',
+          height: '300px',
           backgroundColor: color.white,
+          padding: spacer.spacing3,
+          border: `4px solid rgba(66, 66, 66, 0.002)`,
+          borderRadius: borderRadius.small,
+          boxShadow: `4px 4px 20px rgba(0, 0, 0, 0.8)`,
           ...modalContentStyle,
         })}
       >

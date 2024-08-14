@@ -17,6 +17,7 @@ import NameSearchIcon from '@/shared/config/assets/name-search.svg';
 import AutoSearchList from '@/features/search/autoSearch/autoSearchList.ui';
 
 import debounce from '@/shared/lib/later/debounce';
+import { color } from '@/shared/config/styles';
 
 const AutoSearch = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -34,7 +35,7 @@ const AutoSearch = () => {
 
   const debouncedSearch = debounce((value: string) => {
     searchBookmark({ text: value });
-  }, 1000);
+  }, 500);
 
   const handleChangeText: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     debouncedSearch(e.target.value);
@@ -62,6 +63,7 @@ const AutoSearch = () => {
             placeholder={placeholderText}
             etcStyles={{
               width: '100%',
+              color: color.gray,
             }}
           />
         </Input>

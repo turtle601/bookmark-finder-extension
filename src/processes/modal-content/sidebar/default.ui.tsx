@@ -14,6 +14,8 @@ import DeleteBookmarkButton from '@/features/bookmark/deleteBookmarkButton';
 import BookmarkAccordian from '@/features/bookmark/bookmarkAccordian';
 
 import SidebarWidget from '@/widget/sidebar';
+import ModalLayer from '@/shared/ui/modalLayer';
+import OpenSearchModal from '@/app/modal-router/openSearchModal.ui';
 
 export type SidebarDefaultFC = React.FC;
 
@@ -33,7 +35,11 @@ const Default: SidebarDefaultFC = () => {
             }}
           />
           <SidebarWidget.Header>
-            <SearchButtonIcon />
+            <ModalLayer.Closer modalType="sidebar-panel">
+              <OpenSearchModal>
+                <SearchButtonIcon />
+              </OpenSearchModal>
+            </ModalLayer.Closer>
           </SidebarWidget.Header>
           <div
             css={css({

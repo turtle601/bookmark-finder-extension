@@ -15,6 +15,7 @@ const AutoSearchList = ({ bookmarks }: IAutoSearchListProps) => {
       etcStyles={{
         width: '100%',
         height: '240px',
+        overflow: 'auto',
       }}
     >
       {bookmarks.map((bookmark) => {

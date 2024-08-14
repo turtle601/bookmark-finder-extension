@@ -35,7 +35,13 @@ const AutoSearchLinkItem = ({ bookmark }: IAutoSearchLinkItem) => {
       })}
     >
       {bookmark.url ? (
-        <Flex align={'center'} gap={'12px'}>
+        <Flex
+          align={'center'}
+          gap={'12px'}
+          etcStyles={{
+            cursor: 'pointer',
+          }}
+        >
           <Center
             css={css({
               width: '24px',
