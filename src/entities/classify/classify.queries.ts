@@ -1,11 +1,13 @@
+import type { ICategoryBookmark } from './classify.type';
+
 import { queryClient } from '@/shared/lib/react-query';
+
 import {
   queryOptions as tsqQueryOptions,
   useMutation,
 } from '@tanstack/react-query';
 
-import type { IClassifiedBookmark } from '@/entities/classify/classify.type';
-import { createAIBookmarksTypesMutation } from '@/entities/classify/classify.api';
+import { classifyAIBookmarksMutation } from '@/entities/classify/classify.api';
 
 export const keys = {
   root: () => ['classify'],
@@ -13,34 +15,39 @@ export const keys = {
 
 export const classifyService = {
   queryKey: () => keys.root(),
+
   getCache: () =>
-    queryClient.getQueryData<IClassifiedBookmark[]>(classifyService.queryKey()),
-  setCache: (classifiedBookmarks: IClassifiedBookmark[]) =>
-    queryClient.setQueryData<IClassifiedBookmark[]>(
+    queryClient.getQueryData<ICategoryBookmark[] | null>(
+      classifyService.queryKey(),
+    ),
+
+  setCache: (classifiedBookmarks: ICategoryBookmark[] | null) =>
+    queryClient.setQueryData<ICategoryBookmark[] | null>(
       classifyService.queryKey(),
       classifiedBookmarks,
     ),
+
   removeCache: () =>
     queryClient.removeQueries({ queryKey: classifyService.queryKey() }),
+
   invalidateCache: async () =>
     await queryClient.invalidateQueries({
       queryKey: classifyService.queryKey(),
     }),
+
   cancelCache: async () =>
     await queryClient.cancelQueries({ queryKey: classifyService.queryKey() }),
+
   queryOptions: () => {
-    return tsqQueryOptions<IClassifiedBookmark[]>({
+    return tsqQueryOptions<ICategoryBookmark[] | null>({
       queryKey: classifyService.queryKey(),
     });
   },
 } as const;
 
-export const useCreateAIBookmarkTypes = () => {
+export const useClassifyAIBookmarks = () => {
   return useMutation({
     mutationKey: classifyService.queryKey(),
-    mutationFn: createAIBookmarksTypesMutation,
-    onSuccess: () => {
-      classifyService.invalidateCache();
-    },
+    mutationFn: classifyAIBookmarksMutation,
   });
 };

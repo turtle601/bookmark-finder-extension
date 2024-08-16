@@ -1,19 +1,25 @@
 import { createGeminiRequest } from '@/shared/lib/fetch/createGeminiRequest';
 
-import { Bookmark, bookmarkService } from '@/entities/bookmark';
+import { bookmarkService } from '@/entities/bookmark';
+
+import { mapAIBookmarks } from './classify.lib';
+
+import { ICategoryBookmark } from './classify.type';
 
 export interface ICategoriesParameter {
   categories: string[];
 }
 
-export const createAIBookmarksTypesMutation = async ({
+export const classifyAIBookmarksMutation = async ({
   categories,
-}: ICategoriesParameter): Promise<Bookmark[]> => {
+}: ICategoriesParameter): Promise<ICategoryBookmark[] | null> => {
   const bookmarkCache = bookmarkService.getCache();
-  if (bookmarkCache) return [];
+  if (!bookmarkCache) return null;
 
-  const prompt = `${bookmarkCache}에 있는 링크들을 ${categories} 배열의 각 catory 별로 링크를 분류해줘. 이때 리턴 값은 크롬 북마크 데이터 타입과 유사하게 주라`;
+  const prompt = `${JSON.stringify(bookmarkCache)}에 있는 링크들을 ${categories} 배열의 각 category 별로 링크들을 분류해줘. 이때 리턴 값은 { id, category: 카테고리명, bookmark: category와 연관된 링크들의 배열 }의 배열값으로 줘. 부가적인 설명은 필요하지 않아.`;
   const response = await createGeminiRequest({ prompt });
 
-  return JSON.parse(response);
+  const result = mapAIBookmarks(response);
+
+  return result;
 };
