@@ -1,13 +1,14 @@
 import { Updater, useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/shared/lib/react-query';
 import { queryOptions as tsqQueryOptions } from '@tanstack/react-query';
+
+import { queryClient } from '@/shared/lib/react-query';
 
 import {
   bookmarkQuery,
-  // createNewChromeBookmarksMutation,
   deleteBookmarkFolderMutation,
   deleteBookmarkLinkMutation,
   moveBookmarkMutation,
+  updateAIBookmark,
   updateBookmarkMutation,
 } from '@/entities/bookmark/bookmark.api';
 
@@ -17,10 +18,11 @@ import type { Bookmark } from '@/entities/bookmark/bookmark.type';
 
 export const keys = {
   root: () => ['bookmark'],
+  moveBookmark: () => [...keys.root(), 'move'],
   createBookmark: () => [...keys.root(), 'create'],
   updateBookmark: () => [...keys.root(), 'update'],
   deleteBookmark: () => [...keys.root(), 'delete'],
-  moveBookmark: () => [...keys.root(), 'move'],
+  updateAIBookmark: () => [...keys.root(), 'create', 'delete'],
 } as const;
 
 export const bookmarkService = {
@@ -100,12 +102,12 @@ export const useMoveBookmark = () => {
   });
 };
 
-// export const useCreateAIBookmarks = () => {
-//   return useMutation({
-//     mutationKey: bookmarkService.queryKey(),
-//     mutationFn: createNewChromeBookmarksMutation,
-//     onSuccess: () => {
-//       bookmarkService.invalidateCache();
-//     },
-//   });
-// };
+export const useUpdateAIBookmarks = () => {
+  return useMutation({
+    mutationKey: keys.updateAIBookmark(),
+    mutationFn: updateAIBookmark,
+    onSuccess: () => {
+      bookmarkService.invalidateCache();
+    },
+  });
+};

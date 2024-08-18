@@ -42,18 +42,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'updateBookmark') {
     const { id, title, url } = message.payload;
 
-    console.log(message.payload);
-
     chrome.bookmarks.update(id, { title, url }, (bookmark) => {
       if (chrome.runtime.lastError) {
-        console.log('실패');
-
         sendResponse({
           isSuccess: false,
           error: chrome.runtime.lastError.message,
         });
       } else {
-        console.log('성공');
         sendResponse({ isSuccess: true });
       }
     });
@@ -140,6 +135,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
       },
     );
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'getBookmarkChildren') {
+    const { folderId } = message.payload;
+
+    chrome.bookmarks.getChildren(folderId, (children) => {
+      if (chrome.runtime.lastError) {
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        sendResponse({ isSuccess: true, data: children });
+      }
+    });
 
     return true;
   }
