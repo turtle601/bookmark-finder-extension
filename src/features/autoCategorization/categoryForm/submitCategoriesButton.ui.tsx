@@ -2,11 +2,12 @@ import React from 'react';
 
 import Button from '@/shared/ui/button';
 import ModalLayer from '@/shared/ui/modalLayer';
+import OpenClassifyBookmarkForm from '@/app/modal-router/openClassifyBookmarkForm.ui';
 
 import { spacer } from '@/shared/config/styles';
 
-import { useCreateAIBookmarkTypes } from '@/entities/classify';
 import { getCheckedCategory } from '@/features/autoCategorization/categoryForm/categoryForm.lib';
+import { useClassifyAIBookmarks } from '@/entities/classify';
 
 interface ISubmitCategoriesButtonProps {
   isDisabled: boolean;
@@ -20,38 +21,45 @@ const SubmitCategoriesButton: React.FC<ISubmitCategoriesButtonProps> = ({
   isDisabled,
   categoriesRef,
 }) => {
-  const { isSuccess, mutate: createClassifedBookmark } =
-    useCreateAIBookmarkTypes();
+  const { mutate: classifyAIBookmarks } = useClassifyAIBookmarks();
 
   const handleSubmitClassifyFolder = () => {
     const checkedCategory = getCheckedCategory(
       Object.values(categoriesRef.current),
     );
 
-    createClassifedBookmark({
+    classifyAIBookmarks({
       categories: checkedCategory,
     });
   };
 
   return (
-    <ModalLayer.Opener
+    <OpenClassifyBookmarkForm
       disabled={isDisabled}
-      isActionable={isSuccess}
-      modalType="sidebar"
-      modalContent={<></>}
       externalAction={handleSubmitClassifyFolder}
+      etcStyles={{
+        width: '100%',
+      }}
     >
-      <Button
+      <ModalLayer.Closer
+        modalType="sidebar-panel"
         disabled={isDisabled}
-        kind={'default'}
         etcStyles={{
           width: '100%',
-          padding: spacer.spacing3,
         }}
       >
-        폴더 분류하기
-      </Button>
-    </ModalLayer.Opener>
+        <Button
+          disabled={isDisabled}
+          kind={'default'}
+          etcStyles={{
+            width: '100%',
+            padding: spacer.spacing3,
+          }}
+        >
+          폴더 분류하기
+        </Button>
+      </ModalLayer.Closer>
+    </OpenClassifyBookmarkForm>
   );
 };
 
