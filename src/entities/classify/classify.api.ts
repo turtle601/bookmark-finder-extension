@@ -16,7 +16,7 @@ export const classifyAIBookmarksMutation = async ({
   const bookmarkCache = bookmarkService.getCache();
   if (!bookmarkCache) return null;
 
-  const prompt = `${JSON.stringify(bookmarkCache)}에 있는 링크들을 ${categories} 배열의 각 category 별로 링크들을 분류해줘. 이때 리턴 값은 { id, category: 카테고리명, bookmark: category와 연관된 링크들의 배열 }의 배열값으로 줘. 부가적인 설명은 필요하지 않아.`;
+  const prompt = `${JSON.stringify(bookmarkCache)}에 있는 링크들을 ${JSON.stringify(categories)} 배열의 각 category 별로 링크들을 분류해줘. 이때 리턴 값은 { id, category: 카테고리명, bookmark: [{ id, title, url }] 형태의 배열값으로 줘. 부가적인 설명은 필요하지 않아.`;
   const response = await createGeminiRequest({ prompt });
 
   const result = mapAIBookmarks(response);
