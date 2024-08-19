@@ -8,7 +8,7 @@ import type { CSSObject } from '@emotion/react';
 interface IOpenSidebarDefaultProps {
   children: React.ReactNode;
   etcStyles?: CSSObject;
-  externalAction?: (e?: React.MouseEvent) => void | Promise<void>;
+  externalAction?: (e: React.MouseEvent) => void | Promise<void>;
 }
 
 export const OpenSidebarDefault: React.FC<IOpenSidebarDefaultProps> = ({

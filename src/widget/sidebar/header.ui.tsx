@@ -5,7 +5,7 @@ import { borderRadius, color, spacer } from '@/shared/config/styles';
 import Flex from '@/shared/ui/flex';
 
 interface IHeaderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export type SidebarHeaderFC = React.FC<IHeaderProps>;

@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef } from 'react';
+import React from 'react';
 import { css } from '@emotion/react';
 
 import {
@@ -10,13 +10,12 @@ import type { CSSObject } from '@emotion/react';
 
 import Center from '@/shared/ui/center';
 
-export interface IOpenerProps extends ComponentPropsWithoutRef<'button'> {
+export interface IOpenerProps extends React.ComponentPropsWithoutRef<'button'> {
   modalType: IModalLayerState['modalType'];
   modalContent: IModalLayerState['content'];
   children: React.ReactNode;
-  isActionable?: boolean;
   etcStyles?: CSSObject;
-  externalAction?: (e?: React.MouseEvent) => void | Promise<void>;
+  externalAction?: (e: React.MouseEvent) => void | Promise<void>;
 }
 
 const Opener: React.FC<IOpenerProps> = ({
@@ -29,8 +28,9 @@ const Opener: React.FC<IOpenerProps> = ({
 }) => {
   const { openModal } = useModalLayerActionContext();
 
-  const handleOpenModal = async (e?: React.MouseEvent) => {
+  const handleOpenModal = async (e: React.MouseEvent) => {
     if (externalAction) await externalAction(e);
+
     openModal({ modalType, content: modalContent });
   };
 
