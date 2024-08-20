@@ -1,27 +1,26 @@
+import React, { Suspense, useState } from 'react';
 import { css } from '@emotion/react';
-import React, { Suspense, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+
+import debounce from '@/shared/lib/later/debounce';
+import { spacer } from '@/shared/config/styles';
 
 import {
   useAutoSearchMutation,
   searchService,
 } from '@/entities/search/search.queries';
 
-import { color } from '@/shared/config/styles';
-
-import Flex from '@/shared/ui/flex';
-import Toggle from '@/shared/ui/toggle';
-import Input from '@/shared/ui/input';
-
 import AIIcon from '@/shared/config/assets/ai.svg';
 import AISearchIcon from '@/shared/config/assets/ai-search.svg';
+
+import Spacer from '@/shared/ui/spacer';
+import Flex from '@/shared/ui/flex';
+import Toggle from '@/shared/ui/toggle';
 import NameSearchIcon from '@/shared/config/assets/name-search.svg';
 import AutoSearchList from '@/features/search/autoSearch/autoSearchList.ui';
-
-import debounce from '@/shared/lib/later/debounce';
+import { Input } from '@/shared/ui/input';
 
 const AutoSearch = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isAI, setIsAI] = useState(false);
 
   const { data: searchBookmarkResponseData } = useQuery(
@@ -54,22 +53,41 @@ const AutoSearch = () => {
         width: '100%',
       })}
     >
-      <Flex align={'center'} gap={'8px'}>
-        <Input inputName="flushed-leftIcon" inputValue="">
-          <Input.LeftElement pointerEvents="none">
+      <Flex
+        align={'center'}
+        etcStyles={{
+          width: '100%',
+        }}
+      >
+        <div
+          css={css({
+            position: 'relative',
+            width: '100%',
+            height: '60px',
+          })}
+        >
+          <div
+            css={css({
+              position: 'absolute',
+              pointerEvents: 'none',
+              top: '50%',
+              left: '0',
+              transform: 'translateY(-50%)',
+            })}
+          >
             {isAI ? <AISearchIcon /> : <NameSearchIcon />}
-          </Input.LeftElement>
-          <Input.Field
-            ref={inputRef}
-            kind="flushed"
-            externalonChangeAction={handleChangeText}
+          </div>
+          <Input
             placeholder={placeholderText}
+            onChange={handleChangeText}
             etcStyles={{
               width: '100%',
-              color: color.gray,
+              padding: '20px',
+              paddingLeft: '48px',
             }}
           />
-        </Input>
+        </div>
+        <Spacer direction="horizontal" space={spacer.spacing2} />
         <Flex align={'center'} gap={'12px'}>
           <AIIcon />
           <Toggle isChecked={isAI} onClick={handleToggleSearchType} />
