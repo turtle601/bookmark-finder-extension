@@ -5,14 +5,15 @@ import { createMock, getMock } from 'storybook-addon-module-mock';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { queryClient } from '@/shared/lib/react-query';
 import { bookmarkService } from '@/entities/bookmark/bookmark.queries';
 
 import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
 import CreateFolder from '@/features/bookmark/createFolder';
+import ModalLayer from '@/shared/ui/modalLayer';
 
 import { makeBookmarkMockData } from '@/entities/bookmark/bookmark.mock';
-import { queryClient } from '@/shared/lib/react-query';
 
 const meta: Meta<typeof CreateFolder> = {
   title: 'features/CreateFolder',
@@ -29,7 +30,9 @@ const meta: Meta<typeof CreateFolder> = {
           height: '210px',
         })}
       >
-        <Story />
+        <ModalLayer.Provider>
+          <Story />
+        </ModalLayer.Provider>
       </div>
     ),
   ],
@@ -38,10 +41,6 @@ const meta: Meta<typeof CreateFolder> = {
 export default meta;
 
 type Story = StoryObj<typeof CreateFolder>;
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export const DefaultInteraction: Story = {
   args: {
@@ -85,10 +84,8 @@ export const DefaultInteraction: Story = {
       delay: 100,
     });
 
-    const buttonElement = canvas.getByText('폴더 만들기');
+    const buttonElement = canvas.getByText('새 폴더 만들기');
     await userEvent.click(buttonElement);
-
-    await sleep(1000);
 
     await waitFor(() => {
       expect(mock1).toHaveBeenCalledTimes(1);
