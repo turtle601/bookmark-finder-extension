@@ -1,3 +1,4 @@
+import { INPUT_ERROR_MESSAGE } from '@/shared/config/constant';
 import {
   ComponentPropsWithoutRef,
   ComponentPropsWithRef,
@@ -5,63 +6,148 @@ import {
   useState,
 } from 'react';
 
+interface ICustomValidate {
+  fn: (el: HTMLInputElement) => boolean;
+  errorMessage: string;
+}
+
 export interface IInputRefsValueType {
   element: HTMLInputElement;
-  validate: (el: HTMLInputElement) => boolean;
-  errorMessage: string;
+  customValidate: ICustomValidate;
+}
+
+interface IRegisterParameter extends ComponentPropsWithoutRef<'input'> {
+  id: string;
+  customValidate?: ICustomValidate;
 }
 
 export type FormRefValueType = Record<string, IInputRefsValueType>;
 
-interface IRegisterParameter extends ComponentPropsWithoutRef<'input'> {
-  id: string;
-  validate?: (el: HTMLInputElement) => boolean;
-  errorMessage?: string;
-}
-
 interface IActionParameter {
+  wholeErrorMessage?: string;
+  wholeValidate?: {
+    fn: (inputValue: FormRefValueType) => boolean;
+    errorMessage: string;
+  }[];
   action: (inputValue: FormRefValueType) => void;
 }
+
+const VALIDITY_STATE = [
+  'badInput',
+  'patternMismatch',
+  'rangeOverflow',
+  'rangeUnderflow',
+  'stepMismatch',
+  'tooLong',
+  'tooShort',
+  'typeMismatch',
+  'valueMissing',
+] as const;
+
+const customValidateElement = ({
+  element,
+  customValidate,
+}: IInputRefsValueType) => {
+  const errorMessage = !customValidate.fn(element)
+    ? customValidate.errorMessage
+    : '';
+
+  element.setCustomValidity(errorMessage);
+};
 
 export const useForm = () => {
   const formRefs = useRef<FormRefValueType>({});
   const [errorMessage, setErrorMessage] = useState('');
 
+  const watch = ({ id }: { id: string }) => {
+    return formRefs.current[id];
+  };
+
   const register = ({
     id,
-    validate = () => true,
-    errorMessage = '',
+    customValidate = {
+      fn: () => true,
+      errorMessage: ' ',
+    },
     ...attribute
   }: IRegisterParameter): ComponentPropsWithRef<'input'> => {
+    if (customValidate.errorMessage.length === 0) {
+      throw new Error(
+        'customValidate.errorMessage는 1이상의 문자열이 들어와야합니다.',
+      );
+    }
+
     return {
       id: id,
       ref: (el: HTMLInputElement) => {
         formRefs.current[id] = {
           element: el,
-          validate,
-          errorMessage,
+          customValidate,
         };
+      },
+      onInput: () => {
+        const element = formRefs.current[id].element;
+        const customValidate = formRefs.current[id].customValidate;
+
+        customValidateElement({ element, customValidate });
+      },
+      onFocus: () => {
+        const element = formRefs.current[id].element;
+        const customValidate = formRefs.current[id].customValidate;
+
+        customValidateElement({ element, customValidate });
       },
       ...attribute,
     };
   };
 
-  const handleOnSubmit = ({ action }: IActionParameter) => {
-    const formRefValuefList = Object.values(formRefs.current);
+  const handleOnAction = ({ action, wholeValidate = [] }: IActionParameter) => {
+    let flag = false;
 
-    const notValidElement = formRefValuefList.filter((formRefValue) => {
-      return !formRefValue.validate(formRefValue.element);
-    })[0];
+    wholeValidate.forEach(({ fn, errorMessage }) => {
+      if (!fn(formRefs.current)) {
+        flag = true;
+        setErrorMessage(errorMessage);
+        return;
+      }
+    });
 
-    const isValid = !notValidElement;
+    if (!flag) action(formRefs.current);
+  };
+
+  const handleOnSubmit = ({ action, wholeValidate = [] }: IActionParameter) => {
+    const formRefValueList = Object.values(formRefs.current);
+
+    const notValidRefValueList = formRefValueList.filter(
+      ({ element, customValidate }) => {
+        customValidateElement({ element, customValidate });
+
+        return !element.checkValidity();
+      },
+    );
+
+    const isValid = notValidRefValueList.length === 0;
 
     if (!isValid) {
-      setErrorMessage(notValidElement.errorMessage);
+      const notValidElement = notValidRefValueList[0].element;
+
+      notValidElement.focus();
+
+      if (notValidElement.validity.customError) {
+        setErrorMessage(notValidElement.validationMessage);
+      } else {
+        VALIDITY_STATE.forEach((state) => {
+          if (notValidElement.validity[state]) {
+            setErrorMessage(INPUT_ERROR_MESSAGE[state]);
+            return;
+          }
+        });
+      }
       return;
     }
 
-    action(formRefs.current);
+    handleOnAction({ action, wholeValidate });
   };
 
-  return { errorMessage, register, handleOnSubmit };
+  return { errorMessage, register, handleOnSubmit, watch, handleOnAction };
 };
