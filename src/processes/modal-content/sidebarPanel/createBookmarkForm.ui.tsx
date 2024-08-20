@@ -27,7 +27,7 @@ export const CreateBookmarkForm: CreateBookmarkFormFC = ({ folderData }) => {
         </SidebarPanelWidget.Header>
         <Tabs.TabPanels>
           <Tabs.TabPanel>
-            <CreateFolder title={folderData.title} parentId={folderData.id} />
+            <CreateFolder parentId={folderData.id} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
             <CreateLink parentId={folderData.id} />
