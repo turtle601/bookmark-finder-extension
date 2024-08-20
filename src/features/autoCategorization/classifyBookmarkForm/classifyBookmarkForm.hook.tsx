@@ -15,8 +15,6 @@ export const useCheckedBookmarkStructure = () => {
     filters: { mutationKey: classifyService.queryKey() },
   })[0];
 
-  console.log(classifiedAIBookmarks, 'data');
-
   const [errorMessage, setErrorMessage] = useState('');
   const { register, handleOnSubmit } = useForm();
 
