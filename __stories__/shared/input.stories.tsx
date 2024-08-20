@@ -1,8 +1,16 @@
-import Input from '@/shared/ui/input';
+import { color, spacer } from '@/shared/config/styles';
 
+import Button from '@/shared/ui/button';
+import Flex from '@/shared/ui/flex';
+import Text from '@/shared/ui/text';
+import { Input } from '@/shared/ui/input/input.ui';
+
+import { useForm } from '@/shared/hooks/useForm';
+
+import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
+
+import type { FormRefValueType } from '@/shared/hooks/useForm';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import SearchIcon from '@/shared/config/assets/search.svg';
 
 const meta: Meta<typeof Input> = {
   title: 'shared/Input',
@@ -15,131 +23,93 @@ export default meta;
 
 type Story = StoryObj<typeof Input>;
 
-export const OutlineDefault: Story = {
-  render: () => (
-    <Input inputName="outline-default" inputValue="">
-      <Input.Field
-        kind="outline"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
+export const Default: Story = {
+  render: () => {
+    const { errorMessage, handleOnSubmit, register } = useForm();
+
+    const submitEvent = (e: React.MouseEvent) => {
+      e.preventDefault();
+
+      const action = (formRefValue: FormRefValueType) => {
+        console.log('submit 요청!!');
+      };
+
+      handleOnSubmit({ action });
+    };
+
+    return (
+      <Flex direction={'column'} gap={'8px'}>
+        <Input
+          {...register({
+            id: '1',
+            customValidate: {
+              fn: (el: HTMLInputElement) => {
+                if (el.value.length > 3) {
+                  return true;
+                }
+
+                return false;
+              },
+              errorMessage: '절대 Input 길이를 3이하로 두지마',
+            },
+          })}
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+          }}
+        />
+        <Text label={errorMessage} textColor={color.red} type="sm" />
+        <Button
+          kind="default"
+          type="submit"
+          onClick={submitEvent}
+          etcStyles={{
+            padding: spacer.spacing2,
+          }}
+        >
+          submit 요청
+        </Button>
+      </Flex>
+    );
+  },
 };
 
-export const OutlinePlaceholder: Story = {
-  render: () => (
-    <Input inputName="outline-placeholder" inputValue="">
-      <Input.Field
-        kind="outline"
-        placeholder="placeholder"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
-};
+export const Require: Story = {
+  render: () => {
+    const { errorMessage, handleOnSubmit, register } = useForm();
 
-export const OutlineLeftIcon: Story = {
-  render: () => (
-    <Input
-      inputName="outline-placeholder"
-      inputValue=""
-      validate={(value) => true}
-    >
-      <Input.LeftElement pointerEvents="none">
-        <SearchIcon />
-      </Input.LeftElement>
-      <Input.Field
-        kind="outline"
-        placeholder="placeholder"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
-};
+    const submitEvent = (e: React.MouseEvent) => {
+      e.preventDefault();
 
-export const OutlineError: Story = {
-  render: () => (
-    <Input
-      inputName="outline-placeholder"
-      inputValue=""
-      validate={(value) => true}
-    >
-      <Input.Field
-        kind="outline"
-        placeholder="placeholder"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-      <Input.ErrorMessage message="Invalid message" />
-    </Input>
-  ),
-};
+      const action = (formRefValue: FormRefValueType) => {
+        console.log('submit 요청!!');
+      };
 
-export const FlushedDefault: Story = {
-  render: () => (
-    <Input inputName="flushed-default" inputValue="">
-      <Input.Field
-        kind="flushed"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
-};
+      handleOnSubmit({ action });
+    };
 
-export const FlushedPlaceholder: Story = {
-  render: () => (
-    <Input inputName="flushed-placeholder" inputValue="">
-      <Input.Field
-        kind="flushed"
-        placeholder="placeholder"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
-};
-
-export const FlushedLeftIcon: Story = {
-  render: () => (
-    <Input inputName="flushed-leftIcon" inputValue="">
-      <Input.LeftElement pointerEvents="none">
-        <SearchIcon />
-      </Input.LeftElement>
-      <Input.Field
-        kind="flushed"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-    </Input>
-  ),
-};
-
-export const FlushedError: Story = {
-  render: () => (
-    <Input
-      inputName="flushed-placeholder"
-      inputValue=""
-      validate={(value) => true}
-    >
-      <Input.Field
-        kind="flushed"
-        placeholder="placeholder"
-        etcStyles={{
-          width: '100%',
-        }}
-      />
-      <Input.ErrorMessage message="Invalid message" />
-    </Input>
-  ),
+    return (
+      <Flex direction={'column'} gap={'8px'}>
+        <Input
+          required
+          {...register({
+            id: '1',
+          })}
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+          }}
+        />
+        <Text label={errorMessage} textColor={color.red} type="sm" />
+        <Button
+          kind="default"
+          type="submit"
+          onClick={submitEvent}
+          etcStyles={{
+            padding: spacer.spacing2,
+          }}
+        >
+          submit 요청
+        </Button>
+      </Flex>
+    );
+  },
 };
