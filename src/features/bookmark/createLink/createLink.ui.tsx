@@ -1,68 +1,91 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
+import Flex from '@/shared/ui/flex';
 import Button from '@/shared/ui/button';
-import Input from '@/shared/ui/input';
 import Spacer from '@/shared/ui/spacer';
 import ModalLayer from '@/shared/ui/modalLayer';
+import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { color, spacer } from '@/shared/config/styles';
+import { spacer } from '@/shared/config/styles';
+import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
 
+import { useForm } from '@/shared/hooks/useForm';
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
+
+import type { FormRefValueType } from '@/shared/hooks/useForm';
 
 interface ICreateLinkProps {
   parentId: string;
 }
 
 const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
-  const inputRefList = useRef<(HTMLInputElement | null)[]>([]);
+  const { errorMessage, register, handleOnSubmit } = useForm();
 
   const { mutate: createBookmark } = useCreateBookmarkMutation();
 
   const submitNewLink: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    if (inputRefList.current[0] && inputRefList.current[1]) {
+    const action = (formRefValue: FormRefValueType) => {
       createBookmark({
-        title: inputRefList.current[0]?.value,
-        url: inputRefList.current[1]?.value,
+        title: formRefValue['create-link-title'].element.value,
+        url: formRefValue['create-link-url'].element.value,
         parentId,
       });
-    }
+    };
+
+    handleOnSubmit({
+      action,
+    });
   };
 
   return (
     <>
       <form onSubmit={submitNewLink}>
         <Spacer direction="vertical" space={spacer.spacing2} />
-        <Input inputName="create-link-titile" inputValue="">
-          <Input.Field
-            ref={(el) => (inputRefList.current[0] = el)}
-            kind={'outline'}
-            placeholder="링크의 제목을 지어주세요"
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-        </Input>
+        <Input
+          placeholder="링크 제목을 지어주세요"
+          {...register({
+            id: 'create-link-title',
+            customValidate: {
+              fn: (el) => {
+                return el.value.length > 0;
+              },
+              errorMessage: '링크 제목을 한 글자 이상 입력해주세요',
+            },
+          })}
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+            width: '100%',
+          }}
+        />
         <Spacer direction="vertical" space={spacer.spacing3} />
-        <Input inputName="create-link-url" inputValue="">
-          <Input.Field
-            ref={(el) => (inputRefList.current[1] = el)}
-            kind={'outline'}
-            placeholder="링크를 입력해주세요"
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-        </Input>
+        <Input
+          placeholder="링크 URL을 입력해주세요"
+          {...register({
+            id: 'create-link-url',
+            customValidate: {
+              fn: (el) => {
+                return el.value.length > 0;
+              },
+              errorMessage: '링크 URL을 한 글자 이상 입력해주세요',
+            },
+          })}
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+            width: '100%',
+          }}
+        />
         <Spacer direction="vertical" space={spacer.spacing3} />
       </form>
+      <Flex
+        align={'center'}
+        etcStyles={{
+          height: '36px',
+        }}
+      >
+        <ErrorMessage message={errorMessage} />
+      </Flex>
       <ModalLayer.Closer
         modalType="sidebar-panel"
         etcStyles={{ width: '100%' }}

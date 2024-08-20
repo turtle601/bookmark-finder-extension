@@ -5,15 +5,15 @@ import { expect } from '@storybook/jest';
 import { userEvent, waitFor, within } from '@storybook/test';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
-import { bookmarkService } from '@/entities/bookmark/bookmark.queries';
-
 import { makeBookmarkMockData } from '@/entities/bookmark/bookmark.mock';
 
+import { bookmarkService } from '@/entities/bookmark/bookmark.queries';
 import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
 import CreateLink from '@/features/bookmark/createLink';
+import ModalLayer from '@/shared/ui/modalLayer';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CreateLink> = {
   title: 'features/CreateLink',
@@ -30,7 +30,9 @@ const meta: Meta<typeof CreateLink> = {
           height: '210px',
         })}
       >
-        <Story />
+        <ModalLayer.Provider>
+          <Story />
+        </ModalLayer.Provider>
       </div>
     ),
   ],
@@ -72,7 +74,7 @@ export const DefaultInteraction: Story = {
       delay: 100,
     });
 
-    const buttonElement = canvas.getByText('새로운 링크 만들기');
+    const buttonElement = canvas.getByText('새 링크 만들기');
     await userEvent.click(buttonElement);
 
     await waitFor(() => {
