@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { MutationState, useMutationState } from '@tanstack/react-query';
 
 import { useForm } from '@/shared/hooks/useForm';
+
 import { classifyService } from '@/entities/classify';
-import { MutationState, useMutationState } from '@tanstack/react-query';
-import { updateAIBookmark } from '@/entities/bookmark';
 
 import type { ICategoryBookmark } from '@/entities/classify';
 import type { FormRefValueType } from '@/shared/hooks/useForm';
+import { useUpdateAIBookmarks } from '@/entities/bookmark';
 
 export const useCheckedBookmarkStructure = () => {
   const { data: classifiedAIBookmarks } = useMutationState<
@@ -15,12 +15,13 @@ export const useCheckedBookmarkStructure = () => {
     filters: { mutationKey: classifyService.queryKey() },
   })[0];
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const { register, handleOnSubmit } = useForm();
+  const { mutate: updateAIBookmarks } = useUpdateAIBookmarks();
 
-  const submitAction =
-    (e: React.MouseEvent) => (formRefValue: FormRefValueType) => {
-      const checkedElement = Array(3)
+  const { errorMessage, register, handleOnSubmit } = useForm();
+
+  const submitCheckedBookmarkStructure = (e: React.MouseEvent) => {
+    const getCheckedElement = (formRefValue: FormRefValueType) => {
+      return Array(3)
         .fill(0)
         .reduce<HTMLInputElement[]>((acc, cur, idx) => {
           const element = formRefValue[`TYPE-${idx + 1}`].element;
@@ -28,33 +29,40 @@ export const useCheckedBookmarkStructure = () => {
 
           return acc;
         }, []);
-
-      const isChecked = checkedElement.length > 0;
-
-      if (!isChecked) {
-        e.stopPropagation();
-        setErrorMessage('원하는 북마크 폴더 구조 하나를 체크해주세요');
-      } else {
-        updateAIBookmark({
-          type: checkedElement[0].id,
-          aiBookmarkData: classifiedAIBookmarks as ICategoryBookmark[],
-        });
-      }
     };
 
-  const submitCheckedBookmarkStructure = (e: React.MouseEvent) => {
-    handleOnSubmit({ action: submitAction(e) });
-  };
+    const validateChecked = (formRefValue: FormRefValueType) => {
+      const checkedElement = getCheckedElement(formRefValue);
 
-  const focusAction = () => {
-    setErrorMessage('');
+      const isChecked = checkedElement.length > 0;
+      if (!isChecked) e.stopPropagation();
+      return isChecked;
+    };
+
+    const action = (formRefValue: FormRefValueType) => {
+      const checkedElement = getCheckedElement(formRefValue);
+
+      updateAIBookmarks({
+        type: checkedElement[0].id,
+        aiBookmarkData: classifiedAIBookmarks as ICategoryBookmark[],
+      });
+    };
+
+    handleOnSubmit({
+      action,
+      wholeValidate: [
+        {
+          fn: validateChecked,
+          errorMessage: '원하는 북마크 폴더 구조 하나를 체크해주세요',
+        },
+      ],
+    });
   };
 
   return {
     classifiedAIBookmarks,
     errorMessage,
     register,
-    focusAction,
     submitCheckedBookmarkStructure,
   };
 };

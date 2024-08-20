@@ -8,7 +8,7 @@ import {
   deleteBookmarkFolderMutation,
   deleteBookmarkLinkMutation,
   moveBookmarkMutation,
-  updateAIBookmark,
+  updateAIBookmarkMutation,
   updateBookmarkMutation,
 } from '@/entities/bookmark/bookmark.api';
 
@@ -22,7 +22,7 @@ export const keys = {
   createBookmark: () => [...keys.root(), 'create'],
   updateBookmark: () => [...keys.root(), 'update'],
   deleteBookmark: () => [...keys.root(), 'delete'],
-  updateAIBookmark: () => [...keys.root(), 'create', 'delete'],
+  updateAIBookmark: () => [...keys.root(), 'ai'],
 } as const;
 
 export const bookmarkService = {
@@ -67,6 +67,7 @@ export function useUpdateBookmarkMutation() {
     mutationKey: keys.createBookmark(),
     mutationFn: updateBookmarkMutation,
     onSuccess: async () => {
+      console.log('성공');
       await bookmarkService.invalidateCache();
     },
   });
@@ -76,8 +77,8 @@ export function useDeleteBookmarkLinkMutation() {
   return useMutation({
     mutationKey: keys.deleteBookmark(),
     mutationFn: deleteBookmarkLinkMutation,
-    onSuccess: () => {
-      bookmarkService.invalidateCache();
+    onSuccess: async () => {
+      await bookmarkService.invalidateCache();
     },
   });
 }
@@ -86,8 +87,8 @@ export function useDeleteBookmarkFolderMutation() {
   return useMutation({
     mutationKey: keys.deleteBookmark(),
     mutationFn: deleteBookmarkFolderMutation,
-    onSuccess: () => {
-      bookmarkService.invalidateCache();
+    onSuccess: async () => {
+      await bookmarkService.invalidateCache();
     },
   });
 }
@@ -96,8 +97,8 @@ export const useMoveBookmark = () => {
   return useMutation({
     mutationKey: keys.moveBookmark(),
     mutationFn: moveBookmarkMutation,
-    onSuccess: () => {
-      bookmarkService.invalidateCache();
+    onSuccess: async () => {
+      await bookmarkService.invalidateCache();
     },
   });
 };
@@ -105,9 +106,9 @@ export const useMoveBookmark = () => {
 export const useUpdateAIBookmarks = () => {
   return useMutation({
     mutationKey: keys.updateAIBookmark(),
-    mutationFn: updateAIBookmark,
-    onSuccess: () => {
-      bookmarkService.invalidateCache();
+    mutationFn: updateAIBookmarkMutation,
+    onSuccess: async () => {
+      await bookmarkService.invalidateCache();
     },
   });
 };

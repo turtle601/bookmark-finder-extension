@@ -124,13 +124,13 @@ const removeChildren = async ({ folderId }: { folderId: string }) => {
     },
   );
 
-  bookmarkbarFolderChildren.forEach(async (bookmark) => {
+  for (const bookmark of bookmarkbarFolderChildren) {
     if (bookmark.url) {
       await deleteBookmarkLinkMutation({ bookmarkId: bookmark.id });
     } else {
       await deleteBookmarkFolderMutation({ folderId: bookmark.id });
     }
-  });
+  }
 };
 
 const removeAllBookmark = async () => {
@@ -147,20 +147,20 @@ const createAiBookmark = async ({
   parentId,
   aiBookmarkData,
 }: ICreateAIBookmarkParameter) => {
-  aiBookmarkData.forEach(async (aiBookmark) => {
+  for (const aiBookmark of aiBookmarkData) {
     const { bookmark: folder } = await createBoomarkMutation({
       parentId,
       title: aiBookmark.category,
     });
 
-    aiBookmark.bookmark.forEach(async (bookmark) => {
+    for (const bookmark of aiBookmark.bookmark) {
       await createBoomarkMutation({
         parentId: folder.id,
         title: bookmark.title,
         url: bookmark.url,
       });
-    });
-  });
+    }
+  }
 };
 
 interface IUpdateAIBookmarkMutationParameter {
@@ -168,7 +168,7 @@ interface IUpdateAIBookmarkMutationParameter {
   aiBookmarkData: ICategoryBookmark[];
 }
 
-export const updateAIBookmark = async ({
+export const updateAIBookmarkMutation = async ({
   type,
   aiBookmarkData,
 }: IUpdateAIBookmarkMutationParameter) => {
@@ -177,18 +177,19 @@ export const updateAIBookmark = async ({
       case 'TYPE-1':
         await removeAllBookmark();
         await createAiBookmark({ parentId: '1', aiBookmarkData });
-        return;
+        break;
       case 'TYPE-2':
         await removeAllBookmark();
         await createAiBookmark({ parentId: '2', aiBookmarkData });
-        return;
+        console.log('Mutation 성공');
+        break;
       case 'TYPE-3':
         await createAiBookmark({ parentId: '2', aiBookmarkData });
-        return;
+        break;
       default:
         throw chromeError({
           isSuccess: false,
-          error: Error('예측하지 못한 입력값이 들어왔습니다'),
+          error: Error('북마크 수정 하는 도중 에러가 발생하였습니다'),
         });
     }
   } catch (err: unknown) {

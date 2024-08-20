@@ -33,7 +33,6 @@ const ClassifyBookmarkForm: React.FC = () => {
     classifiedAIBookmarks,
     errorMessage,
     register,
-    focusAction,
     submitCheckedBookmarkStructure,
   } = useCheckedBookmarkStructure();
 
@@ -101,7 +100,6 @@ const ClassifyBookmarkForm: React.FC = () => {
                     {...register({
                       id: `TYPE-${idx + 1}`,
                       name: 'classify-bookmark',
-                      onFocus: focusAction,
                     })}
                   />
                 </Flex>
