@@ -3,16 +3,17 @@ import { css } from '@emotion/react';
 import { expect } from '@storybook/jest';
 import { userEvent, waitFor, within } from '@storybook/test';
 import { createMock, getMock } from 'storybook-addon-module-mock';
+import { queryClient } from '@/shared/lib/react-query';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
+import { makeBookmarkMockData } from '@/entities/bookmark';
 import { bookmarkService } from '@/entities/bookmark/bookmark.queries';
 
 import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 
+import ModalLayer from '@/shared/ui/modalLayer';
 import UpdateFolder from '@/features/bookmark/updateFolder';
-import { queryClient } from '@/shared/lib/react-query';
-import { makeBookmarkMockData } from '@/entities/bookmark';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof UpdateFolder> = {
   title: 'features/UpdateFolder',
@@ -29,7 +30,9 @@ const meta: Meta<typeof UpdateFolder> = {
           height: '210px',
         })}
       >
-        <Story />
+        <ModalLayer.Provider>
+          <Story />
+        </ModalLayer.Provider>
       </div>
     ),
   ],
@@ -72,11 +75,13 @@ export const DefaultInteraction: Story = {
 
     await userEvent.clear(textElement);
 
+    await sleep(1000);
+
     await userEvent.type(textElement, '수정된 폴더', {
       delay: 100,
     });
 
-    const buttonElement = canvas.getByText('링크 수정하기');
+    const buttonElement = canvas.getByText('폴더 수정하기');
     await userEvent.click(buttonElement);
 
     await sleep(1000);

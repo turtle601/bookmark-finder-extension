@@ -1,13 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 
+import { spacer } from '@/shared/config/styles';
+
+import Flex from '@/shared/ui/flex';
 import Button from '@/shared/ui/button';
-import Input from '@/shared/ui/input';
 import Spacer from '@/shared/ui/spacer';
 import ModalLayer from '@/shared/ui/modalLayer';
+import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { color, spacer } from '@/shared/config/styles';
+import { useForm } from '@/shared/hooks/useForm';
+import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
 
 import { useUpdateBookmarkMutation } from '@/entities/bookmark';
+
+import type { FormRefValueType } from '@/shared/hooks/useForm';
 
 interface IUpdateFolder {
   id: string;
@@ -16,41 +22,62 @@ interface IUpdateFolder {
 }
 
 const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const { errorMessage, register, handleOnSubmit, watch } = useForm();
 
   const { mutate: updateFolder } = useUpdateBookmarkMutation();
 
   const submitFolder: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    if (inputRef.current && !inputRef.current.checkValidity()) {
-      updateFolder({ title: inputRef.current.value, parentId, id });
-    }
+    const action = (formRefValue: FormRefValueType) => {
+      updateFolder({
+        id,
+        title: formRefValue['update-folder'].element.value,
+        parentId,
+      });
+    };
+
+    handleOnSubmit({
+      action,
+    });
   };
+
+  useEffect(() => {
+    watch({ id: 'update-folder' }).element.value = title;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <Spacer direction="vertical" space={spacer.spacing3} />
       <form onSubmit={submitFolder}>
         <Input
-          inputName="updateFolder"
-          inputValue={title}
-          validate={(value) => value.length === 0}
-        >
-          <Input.Field
-            ref={inputRef}
-            kind={'outline'}
-            placeholder=""
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-          <Input.ErrorMessage message="폴더 이름을 최대 한 글자 이상 입력해주세요" />
-        </Input>
+          {...register({
+            id: 'update-folder',
+            customValidate: {
+              fn: (el) => {
+                return el.value.length > 0;
+              },
+              errorMessage: '폴더 이름을 한 글자 이상 입력해주세요',
+            },
+          })}
+          defaultValue={title}
+          placeholder="폴더의 이름을 작성해주세요."
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+            width: '100%',
+          }}
+        />
       </form>
+      <Flex
+        align={'center'}
+        etcStyles={{
+          height: '36px',
+        }}
+      >
+        <ErrorMessage message={errorMessage} />
+      </Flex>
       <ModalLayer.Closer
         modalType="sidebar-panel"
         etcStyles={{ width: '100%' }}
