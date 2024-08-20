@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/react';
+import { useQuery } from '@tanstack/react-query';
 
 import { spacer } from '@/shared/config/styles';
 
@@ -17,14 +18,15 @@ import OpenClassifyBookmarkForm from '@/app/modal-router/openClassifyBookmarkFor
 import { ErrorMessage, Input } from '@/shared/ui/input';
 
 import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
-import { FormRefValueType, useForm } from '@/shared/hooks/useForm';
-import { useQuery } from '@tanstack/react-query';
-import { categoryService } from '@/entities/category';
+import { useForm } from '@/shared/hooks/useForm';
 import { useArray } from '@/shared/hooks/useArray';
-import { ICategory } from '@/entities/category/category.type';
 import { useBoolean } from '@/shared/hooks/useBoolean';
 
+import { categoryService } from '@/entities/category';
 import { useClassifyAIBookmarks } from '@/entities/classify';
+
+import type { FormRefValueType } from '@/shared/hooks/useForm';
+import type { ICategory } from '@/entities/category/category.type';
 
 const SkeletonCategoryList = () => {
   return (
@@ -54,49 +56,60 @@ const CategoryForm: React.FC = () => {
 
   const {
     value: categories,
-    setValue: setCategories,
-    unshift: addCustomCategory,
-    remove: removeCustomCategory,
-  } = useArray<ICategory>(fetchedCategories || []);
+    unshift: addCategory,
+    remove: removeCategory,
+  } = useArray<ICategory>([]);
 
   useEffect(() => {
-    const nonDuplicatedCategories = [...new Set([...categories])];
-
-    if (nonDuplicatedCategories.length !== categories.length) {
-      setCategories(nonDuplicatedCategories);
+    if (fetchedCategories) {
+      if (isAI) {
+        fetchedCategories.forEach((category) => {
+          addCategory(category);
+        });
+      } else {
+        fetchedCategories.forEach((category) => {
+          removeCategory(category.id);
+        });
+      }
     }
-  }, [categories, isAI, setCategories]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchedCategories, isAI]);
+
+  const isDisabled = categories.length === 0;
 
   const handleInputEnter: React.KeyboardEventHandler<HTMLInputElement> = (
     e,
   ) => {
-    const validateLength = (formRefValue: FormRefValueType) => {
-      return formRefValue['category-form'].element.value.length > 0;
-    };
-
-    const validateNonDuplicate = (formRefValue: FormRefValueType) => {
-      const inputValue = formRefValue['category-form'].element.value;
-
-      const tagList = Object.values(formRefValue).filter(({ element }) => {
-        return element.name === 'category-tag';
-      });
-
-      const isDuplicate = tagList.some((tag) => {
-        return tag.element.value === inputValue;
-      });
-
-      return !isDuplicate;
-    };
-
-    const action = (formRefValue: FormRefValueType) => {
-      addCustomCategory({
-        id: formRefValue['category-form'].element.value,
-        text: formRefValue['category-form'].element.value,
-      });
-    };
-
     if (e.key === 'Enter') {
-      e.preventDefault();
+      e.stopPropagation();
+
+      const validateLength = (formRefValue: FormRefValueType) => {
+        return formRefValue['category-form'].element.value.length > 0;
+      };
+
+      const validateNonDuplicate = (formRefValue: FormRefValueType) => {
+        const inputValue = formRefValue['category-form'].element.value;
+
+        const tagList = Object.values(formRefValue).filter((formRefValue) => {
+          return (
+            formRefValue.element && formRefValue.element.name === 'category-tag'
+          );
+        });
+
+        const isDuplicate = tagList.some((tag) => {
+          return tag.element.value === inputValue;
+        });
+
+        return !isDuplicate;
+      };
+
+      const action = (formRefValue: FormRefValueType) => {
+        addCategory({
+          id: formRefValue['category-form'].element.value,
+          text: formRefValue['category-form'].element.value,
+        });
+      };
 
       handleOnAction({
         action,
@@ -115,8 +128,10 @@ const CategoryForm: React.FC = () => {
   };
 
   const handleSubmitClassifyFolder = () => {
+    const submitedCategories = categories.map((category) => category.text);
+
     classifyAIBookmarks({
-      categories: categories.map((category) => category.text),
+      categories: submitedCategories,
     });
   };
 
@@ -160,7 +175,7 @@ const CategoryForm: React.FC = () => {
                 {...register({ id: category.id, name: 'category-tag' })}
                 key={category.id}
                 text={category.text}
-                externalAction={() => removeCustomCategory(category.id)}
+                externalAction={() => removeCategory(category.id)}
               />
             );
           })}
@@ -168,7 +183,7 @@ const CategoryForm: React.FC = () => {
       </div>
       <ErrorMessage message={errorMessage} />
       <OpenClassifyBookmarkForm
-        disabled={categories.length === 0}
+        disabled={isDisabled}
         externalAction={handleSubmitClassifyFolder}
         etcStyles={{
           width: '100%',
@@ -176,13 +191,13 @@ const CategoryForm: React.FC = () => {
       >
         <ModalLayer.Closer
           modalType="sidebar-panel"
-          disabled={categories.length === 0}
+          disabled={isDisabled}
           etcStyles={{
             width: '100%',
           }}
         >
           <Button
-            disabled={categories.length === 0}
+            disabled={isDisabled}
             kind={'default'}
             etcStyles={{
               width: '100%',

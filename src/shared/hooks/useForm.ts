@@ -63,6 +63,10 @@ export const useForm = () => {
     return formRefs.current[id];
   };
 
+  const watchAll = () => {
+    return formRefs.current;
+  };
+
   const register = ({
     id,
     customValidate = {
@@ -88,14 +92,14 @@ export const useForm = () => {
       onInput: () => {
         const element = formRefs.current[id].element;
         const customValidate = formRefs.current[id].customValidate;
-
         customValidateElement({ element, customValidate });
+        setErrorMessage('');
       },
       onFocus: () => {
         const element = formRefs.current[id].element;
         const customValidate = formRefs.current[id].customValidate;
-
         customValidateElement({ element, customValidate });
+        setErrorMessage('');
       },
       ...attribute,
     };
@@ -149,5 +153,12 @@ export const useForm = () => {
     handleOnAction({ action, wholeValidate });
   };
 
-  return { errorMessage, register, handleOnSubmit, watch, handleOnAction };
+  return {
+    errorMessage,
+    register,
+    handleOnSubmit,
+    watch,
+    watchAll,
+    handleOnAction,
+  };
 };
