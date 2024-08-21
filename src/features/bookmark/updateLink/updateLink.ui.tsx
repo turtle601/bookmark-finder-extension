@@ -1,13 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import Button from '@/shared/ui/button';
-import Input from '@/shared/ui/input';
+
 import Spacer from '@/shared/ui/spacer';
 import ModalLayer from '@/shared/ui/modalLayer';
+import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { color, spacer } from '@/shared/config/styles';
+import { spacer } from '@/shared/config/styles';
 
 import { useUpdateBookmarkMutation } from '@/entities/bookmark';
+import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
+import { FormRefValueType, useForm } from '@/shared/hooks/useForm';
+import Flex from '@/shared/ui/flex';
 
 interface IUpdateLink {
   id: string;
@@ -17,60 +21,81 @@ interface IUpdateLink {
 }
 
 const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
-  const inputRefList = useRef<(HTMLInputElement | null)[]>([]);
+  const { errorMessage, register, handleOnSubmit, watch } = useForm();
 
   const { mutate: updateLink } = useUpdateBookmarkMutation();
 
   const submitUpdateLink: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    if (inputRefList.current[0] && inputRefList.current[1]) {
+    const action = (formRefValue: FormRefValueType) => {
       updateLink({
         id,
         parentId,
-        title: inputRefList.current[0]?.value,
-        url: inputRefList.current[1]?.value,
+        title: formRefValue['update-link-title'].element.value,
+        url: formRefValue['update-link-url'].element.value,
       });
-    }
+    };
+
+    handleOnSubmit({
+      action,
+    });
   };
+
+  useEffect(() => {
+    watch({ id: 'update-link-title' }).element.value = title;
+    watch({ id: 'update-link-url' }).element.value = url;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      <Spacer direction="vertical" space={spacer.spacing3} />
+      <Spacer direction="vertical" space={spacer.spacing2} />
       <form onSubmit={submitUpdateLink}>
         <Input
-          inputName="update-link-title"
-          inputValue={title}
-          validate={(value) => value.length === 0}
-        >
-          <Input.Field
-            ref={(el) => (inputRefList.current[0] = el)}
-            kind={'outline'}
-            placeholder="링크 제목"
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-        </Input>
+          placeholder="링크 제목을 지어주세요"
+          {...register({
+            id: 'update-link-title',
+            customValidate: {
+              fn: (el) => {
+                return el.value.length > 0;
+              },
+              errorMessage: '링크 제목을 한 글자 이상 입력해주세요',
+            },
+          })}
+          etcStyles={{
+            width: '100%',
+            ...getOutlineFieldStyle(),
+          }}
+        />
         <Spacer direction="vertical" space={spacer.spacing3} />
-        <Input inputName="update-link-url" inputValue={url}>
-          <Input.Field
-            ref={(el) => (inputRefList.current[1] = el)}
-            kind={'outline'}
-            placeholder="링크 URL"
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-        </Input>
+        <Input
+          placeholder="링크 URL을 입력해주세요"
+          {...register({
+            id: 'update-link-url',
+            customValidate: {
+              fn: (el) => {
+                return el.value.length > 0;
+              },
+              errorMessage: '링크 URL을 한 글자 이상 입력해주세요',
+            },
+          })}
+          etcStyles={{
+            width: '100%',
+            ...getOutlineFieldStyle(),
+          }}
+        />
+        <Spacer direction="vertical" space={spacer.spacing3} />
       </form>
-      <Spacer direction="vertical" space={spacer.spacing3} />
+      <Flex
+        align={'center'}
+        etcStyles={{
+          height: '36px',
+        }}
+      >
+        <ErrorMessage message={errorMessage} />
+      </Flex>
       <ModalLayer.Closer
         modalType="sidebar-panel"
         etcStyles={{ width: '100%' }}

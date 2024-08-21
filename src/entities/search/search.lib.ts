@@ -16,6 +16,8 @@ export const mapSearchLinks = (bookmarkNodes: Bookmark[]): IMapSearchLink[] => {
   });
 };
 
-export const mapAISearchLinks = (context: string): IMapSearchLink[] => {
-  return JSON.parse(context) as IMapSearchLink[];
+export const mapAISearchLinks = (aiResponse: string): IMapSearchLink[] => {
+  const result = aiResponse.replace(/^```json|```$/g, '');
+
+  return JSON.parse(result);
 };

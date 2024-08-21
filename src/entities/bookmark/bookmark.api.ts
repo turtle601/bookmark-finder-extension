@@ -1,6 +1,8 @@
+import { chromeError } from '@/shared/lib/fetch/fetch.error';
 import { createChromeRequest } from '@/shared/lib/fetch';
 
 import type { Bookmark } from '@/entities/bookmark';
+import type { ICategoryBookmark } from '@/entities/classify';
 
 interface IBookmarkQueryResponse {
   isSuccess: boolean;
@@ -97,26 +99,100 @@ export const moveBookmarkMutation = async (
   });
 };
 
-// export const createNewChromeBookmarksMutation = async (
-//   selectedBookmarks: Bookmark[],
-// ) => {
-//   const createNewBookmarks = async (bookmark: Bookmark) => {
-//     const { parentId, title, url } = bookmark;
+interface IGetBookmarkChildrenMutationParameter {
+  folderId: string;
+}
 
-//     await createBoomarkMutation({ parentId: parentId as string, title, url });
-//   };
+interface IGetBookmarkChildrenMutationReturnType {
+  isSuccess: boolean;
+  data: Bookmark[];
+}
 
-//   const removeOldBookmarks = async (bookmark: Bookmark) => {
-//     const { id } = bookmark;
+export const getBookmarkChildrenMutation = async (
+  payload: IGetBookmarkChildrenMutationParameter,
+): Promise<IGetBookmarkChildrenMutationReturnType> => {
+  return await createChromeRequest({
+    action: 'getBookmarkChildren',
+    payload: { ...payload },
+  });
+};
 
-//     await deleteBookmarkMutation({ bookmarkId: id });
-//   };
+const removeChildren = async ({ folderId }: { folderId: string }) => {
+  const { data: bookmarkbarFolderChildren } = await getBookmarkChildrenMutation(
+    {
+      folderId,
+    },
+  );
 
-//   const chromeBookmarks = bookmarkService.getCache();
+  for (const bookmark of bookmarkbarFolderChildren) {
+    if (bookmark.url) {
+      await deleteBookmarkLinkMutation({ bookmarkId: bookmark.id });
+    } else {
+      await deleteBookmarkFolderMutation({ folderId: bookmark.id });
+    }
+  }
+};
 
-//   if (chromeBookmarks) {
-//     await traverseBookmarks(chromeBookmarks, removeOldBookmarks);
-//   }
+const removeAllBookmark = async () => {
+  await removeChildren({ folderId: '1' });
+  await removeChildren({ folderId: '2' });
+};
 
-//   await traverseBookmarks(selectedBookmarks, createNewBookmarks);
-// };
+interface ICreateAIBookmarkParameter {
+  parentId: '1' | '2';
+  aiBookmarkData: ICategoryBookmark[];
+}
+
+const createAiBookmark = async ({
+  parentId,
+  aiBookmarkData,
+}: ICreateAIBookmarkParameter) => {
+  for (const aiBookmark of aiBookmarkData) {
+    const { bookmark: folder } = await createBoomarkMutation({
+      parentId,
+      title: aiBookmark.category,
+    });
+
+    for (const bookmark of aiBookmark.bookmark) {
+      await createBoomarkMutation({
+        parentId: folder.id,
+        title: bookmark.title,
+        url: bookmark.url,
+      });
+    }
+  }
+};
+
+interface IUpdateAIBookmarkMutationParameter {
+  type: string;
+  aiBookmarkData: ICategoryBookmark[];
+}
+
+export const updateAIBookmarkMutation = async ({
+  type,
+  aiBookmarkData,
+}: IUpdateAIBookmarkMutationParameter) => {
+  try {
+    switch (type) {
+      case 'TYPE-1':
+        await removeAllBookmark();
+        await createAiBookmark({ parentId: '1', aiBookmarkData });
+        break;
+      case 'TYPE-2':
+        await removeAllBookmark();
+        await createAiBookmark({ parentId: '2', aiBookmarkData });
+        console.log('Mutation 성공');
+        break;
+      case 'TYPE-3':
+        await createAiBookmark({ parentId: '2', aiBookmarkData });
+        break;
+      default:
+        throw chromeError({
+          isSuccess: false,
+          error: Error('북마크 수정 하는 도중 에러가 발생하였습니다'),
+        });
+    }
+  } catch (err: unknown) {
+    throw chromeError({ isSuccess: false, error: err });
+  }
+};

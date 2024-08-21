@@ -1,32 +1,42 @@
-import React, { FormEventHandler, useRef } from 'react';
+import React from 'react';
 
+import { spacer } from '@/shared/config/styles';
+
+import Flex from '@/shared/ui/flex';
 import Button from '@/shared/ui/button';
-import Input from '@/shared/ui/input';
 import Spacer from '@/shared/ui/spacer';
 import ModalLayer from '@/shared/ui/modalLayer';
+import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { color, spacer } from '@/shared/config/styles';
+import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
 
+import { useForm } from '@/shared/hooks/useForm';
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
 
-import type { Bookmark } from '@/entities/bookmark';
+import type { FormRefValueType } from '@/shared/hooks/useForm';
 
 interface ICreateFolder {
-  title: Bookmark['title'];
   parentId: string;
 }
 
-const CreateFolder: React.FC<ICreateFolder> = ({ title, parentId }) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+const CreateFolder: React.FC<ICreateFolder> = ({ parentId }) => {
+  const { errorMessage, register, handleOnSubmit } = useForm();
 
   const { mutate: createBookmark } = useCreateBookmarkMutation();
 
-  const submitFolder: FormEventHandler = (e) => {
+  const submitFolder: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    if (inputRef.current && !inputRef.current.checkValidity()) {
-      createBookmark({ title: inputRef.current.value, parentId });
-    }
+    const action = (formRefValue: FormRefValueType) => {
+      createBookmark({
+        title: formRefValue['create-folder'].element.value,
+        parentId,
+      });
+    };
+
+    handleOnSubmit({
+      action,
+    });
   };
 
   return (
@@ -34,24 +44,25 @@ const CreateFolder: React.FC<ICreateFolder> = ({ title, parentId }) => {
       <form onSubmit={submitFolder}>
         <Spacer direction="vertical" space={spacer.spacing2} />
         <Input
-          inputName="createBookmark"
-          inputValue=""
-          validate={(value) => value.length === 0}
-        >
-          <Input.Field
-            ref={inputRef}
-            kind={'outline'}
-            placeholder={`폴더의 이름을 작성해주세요`}
-            paddingLeft={'8px'}
-            etcStyles={{
-              width: '100%',
-              padding: '8px',
-              color: color.gray,
-            }}
-          />
-          <Input.ErrorMessage message="폴더 이름은 한 글자 이상 입력하세요" />
-        </Input>
+          required
+          placeholder="폴더의 이름을 작성해주세요."
+          {...register({
+            id: 'create-folder',
+          })}
+          etcStyles={{
+            ...getOutlineFieldStyle(),
+            width: '100%',
+          }}
+        />
       </form>
+      <Flex
+        align={'center'}
+        etcStyles={{
+          height: '36px',
+        }}
+      >
+        <ErrorMessage message={errorMessage} />
+      </Flex>
       <ModalLayer.Closer
         modalType="sidebar-panel"
         etcStyles={{ width: '100%' }}

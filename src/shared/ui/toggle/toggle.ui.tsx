@@ -1,44 +1,39 @@
-import { CSSObject, css } from '@emotion/react';
+import React, { forwardRef } from 'react';
 
-import React, {
-  ComponentPropsWithoutRef,
-  forwardRef,
-  MouseEventHandler,
-} from 'react';
+import { css } from '@emotion/react';
+
+import { Input } from '@/shared/ui/input';
 
 import {
   getToggleButtonStyle,
   getToggleSwitchStyle,
 } from '@/shared/ui/toggle/toggle.style';
 
-interface IToggleProps extends ComponentPropsWithoutRef<'button'> {
-  id?: string;
+interface IToggleProps extends React.ComponentPropsWithoutRef<'input'> {
   isChecked: boolean;
-  onClick: MouseEventHandler;
-  etcStyles?: CSSObject;
+  onClick: React.MouseEventHandler;
 }
 
 const ToggleComponent = (
-  { id, isChecked, onClick, etcStyles = {}, ...attribute }: IToggleProps,
+  { isChecked, onClick, ...attribute }: IToggleProps,
   ref: React.Ref<HTMLInputElement>,
 ) => {
   return (
     <>
-      <input
-        id={id || 'toggle'}
+      <Input
+        readOnly
         ref={ref}
         checked={isChecked}
         type="checkbox"
+        {...attribute}
         css={css({
           display: 'none',
         })}
-      ></input>
-      <button onClick={onClick} {...attribute}>
+      />
+      <button aria-label="toggle" onClick={onClick}>
         <label
-          htmlFor={id || 'toggle'}
           css={css({
             ...getToggleSwitchStyle(isChecked),
-            ...etcStyles,
           })}
         >
           <span

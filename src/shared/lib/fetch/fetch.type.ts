@@ -6,7 +6,7 @@ export interface IGenericError<T extends string> {
 export const CHROME = 'CHROME' as const;
 export interface IChromeError extends IGenericError<typeof CHROME> {
   isSuccess: boolean;
-  error: chrome.runtime.LastError;
+  error: chrome.runtime.LastError | unknown;
 }
 
 export const GEMINI = 'GEMINI' as const;

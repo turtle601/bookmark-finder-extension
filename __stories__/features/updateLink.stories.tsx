@@ -14,6 +14,7 @@ import * as bookmarkApi from '@/entities/bookmark/bookmark.api';
 import UpdateLink from '@/features/bookmark/updateLink';
 
 import { makeBookmarkMockData } from '@/entities/bookmark';
+import ModalLayer from '@/shared/ui/modalLayer';
 
 const meta: Meta<typeof UpdateLink> = {
   title: 'features/UpdateLink',
@@ -30,7 +31,9 @@ const meta: Meta<typeof UpdateLink> = {
           height: '210px',
         })}
       >
-        <Story />
+        <ModalLayer.Provider>
+          <Story />
+        </ModalLayer.Provider>
       </div>
     ),
   ],
@@ -71,13 +74,19 @@ export const DefaultInteraction: Story = {
 
     const textElementList = canvas.getAllByRole('textbox');
 
+    await sleep(1000);
+
     await userEvent.clear(textElementList[0]);
+
+    await sleep(1000);
 
     await userEvent.type(textElementList[0], '수정한 링크', {
       delay: 100,
     });
 
     await userEvent.clear(textElementList[1]);
+
+    await sleep(1000);
 
     await userEvent.type(textElementList[1], 'https://www.naver.com', {
       delay: 100,

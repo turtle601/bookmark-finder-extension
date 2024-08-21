@@ -1,39 +1,30 @@
-import { css, CSSObject } from '@emotion/react';
+import React, { forwardRef, useCallback, useState } from 'react';
 
-import React, {
-  ComponentPropsWithoutRef,
-  forwardRef,
-  ReactNode,
-  Ref,
-  useCallback,
-  useState,
-} from 'react';
+import { css } from '@emotion/react';
+
+import XIcon from '@/shared/config/assets/x.svg';
 
 import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
-import XIcon from '@/shared/config/assets/x.svg';
+import Spacer from '@/shared/ui/spacer';
 
-import { color } from '@/shared/config/styles';
-import { getTagStyle } from '@/shared/ui/tag/tag.style';
+import { Input } from '@/shared/ui/input';
 
-interface ITagProps extends ComponentPropsWithoutRef<'button'> {
-  id?: string;
-  label: string;
-  children?: ReactNode;
+import { color, spacer } from '@/shared/config/styles';
+
+import { getTagStyle } from './tag.style';
+
+import type { CSSObject } from '@emotion/react';
+
+interface ITagProps extends React.ComponentPropsWithoutRef<'input'> {
+  text: string;
   etcStyles?: CSSObject;
   externalAction?: () => void;
 }
 
 const TagComponent = (
-  {
-    id,
-    label,
-    children,
-    externalAction,
-    etcStyles = {},
-    ...attribute
-  }: ITagProps,
-  ref: Ref<HTMLInputElement>,
+  { text, externalAction, etcStyles = {}, ...attribute }: ITagProps,
+  ref: React.Ref<HTMLInputElement>,
 ) => {
   const [isShow, setIsShow] = useState(true);
 
@@ -46,40 +37,34 @@ const TagComponent = (
   return (
     isShow && (
       <>
-        <input
-          id={label}
+        <Input
           ref={ref}
-          value={label}
-          checked={isShow}
+          value={text}
+          checked
           type="checkbox"
-          css={css({
-            display: 'none',
-          })}
+          {...attribute}
+          css={css({ display: 'none' })}
+          readOnly
         />
         <Flex
-          as="button"
-          justify="space-between"
           align="center"
-          gap="12px"
           etcStyles={{
             ...getTagStyle(),
             ...etcStyles,
           }}
-          {...attribute}
         >
-          <label htmlFor={label}>
-            <Text
-              label={label}
-              type="sm"
-              fontWeightType="semibold"
-              textColor={color.white}
-              etcStyles={{
-                fontSize: '12px',
-                lineHeight: 0,
-              }}
-            />
-          </label>
-          <button type="button" onClick={closeTag}>
+          <Text
+            label={text}
+            type="sm"
+            fontWeightType="semibold"
+            textColor={color.white}
+          />
+          <Spacer direction="horizontal" space={spacer['spacing2.5']} />
+          <button
+            css={css({ width: 'min-content' })}
+            type="button"
+            onClick={closeTag}
+          >
             <XIcon />
           </button>
         </Flex>

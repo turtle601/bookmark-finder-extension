@@ -1,6 +1,7 @@
 import type { Bookmark } from '@/entities/bookmark';
 
-export interface IClassifiedBookmark {
-  type: string;
-  bookmarks: Bookmark[];
+export interface ICategoryBookmark {
+  id: string;
+  category: string;
+  bookmark: Bookmark[];
 }

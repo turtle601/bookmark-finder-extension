@@ -2,7 +2,7 @@ import type { IChromeError, IGeminiError } from '@/shared/lib/fetch/fetch.type';
 
 export function chromeError(response: {
   isSuccess: boolean;
-  error: chrome.runtime.LastError;
+  error: chrome.runtime.LastError | unknown;
 }): IChromeError {
   return {
     ...response,

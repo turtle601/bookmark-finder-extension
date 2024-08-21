@@ -7,7 +7,6 @@ import ModalLayer from '@/shared/ui/modalLayer';
 import CategoryForm from '@/features/autoCategorization/categoryForm';
 
 import * as categoryApi from '@/entities/category/category.api';
-import * as classifyApi from '@/entities/classify/classify.api';
 
 import { createMock } from 'storybook-addon-module-mock';
 import { queryClient } from '@/shared/lib/react-query';
@@ -46,7 +45,6 @@ export const TypingCategories: Story = {
     moduleMock: {
       mock: () => {
         const mock1 = createMock(categoryApi, 'categoryAIQuery');
-        const mock2 = createMock(classifyApi, 'createAIBookmarksTypesMutation');
 
         mock1.mockResolvedValue([
           { id: '노션', text: '노션' },
@@ -54,7 +52,7 @@ export const TypingCategories: Story = {
           { id: 'CS', text: 'CS' },
         ]);
 
-        return [mock1, mock2];
+        return [mock1];
       },
     },
   },
@@ -72,10 +70,10 @@ export const TypingCategories: Story = {
 
     userEvent.type(textElement, '{enter}');
 
-    const categoryList = await canvas.findByTestId('categoryList');
+    const ul = canvas.getByRole('list');
 
     await waitFor(() => {
-      expect(categoryList).toHaveTextContent(/헬스/);
+      expect(ul).toHaveTextContent(/헬스/);
     });
   },
 };
@@ -86,14 +84,14 @@ export const ToggleAI: Story = {
     moduleMock: {
       mock: () => {
         const mock1 = createMock(categoryApi, 'categoryAIQuery');
-        const mock2 = createMock(classifyApi, 'createAIBookmarksTypesMutation');
+        // const mock2 = createMock(classifyApi, 'createAIBookmarksTypesMutation');
 
         mock1.mockResolvedValue([
           { id: '노션', text: '노션' },
           { id: '여행', text: '여행' },
         ]);
 
-        return [mock1, mock2];
+        return [mock1];
       },
     },
   },
@@ -103,14 +101,15 @@ export const ToggleAI: Story = {
 
     const canvas = within(canvasElement);
 
-    const toggleButton = await canvas.findByTestId('toggle');
+    const toggleButton = canvas.getByRole('button', { name: /toggle/i });
 
-    await userEvent.click(toggleButton, { delay: 500 });
+    await userEvent.click(toggleButton, { delay: 1000 });
 
-    const categoryList = await canvas.findByTestId('categoryList');
+    const ul = canvas.getByRole('list');
 
     await waitFor(() => {
-      expect(categoryList).not.toHaveTextContent(/노션/);
+      expect(ul).not.toHaveTextContent(/노션/);
+      expect(ul).not.toHaveTextContent(/여행/);
     });
   },
 };
