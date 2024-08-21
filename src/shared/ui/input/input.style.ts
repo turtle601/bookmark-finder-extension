@@ -22,13 +22,14 @@ export const getOutlineFieldStyle = (): CSSObject => {
 
 export const getFlushedFieldStyle = (): CSSObject => {
   return {
-    padding: '8px',
+    width: '100%',
+    padding: '20px',
+    paddingLeft: '48px',
     color: color.gray,
     '&::placeholder': {
       color: color.gray300,
     },
-    border: `4px solid ${color.gray}`,
-    borderRadius: borderRadius.small,
+    borderBottom: `4px solid ${color.gray}`,
     '&:focus:invalid': {
       borderBottom: `4px solid ${color.red}`,
     },
