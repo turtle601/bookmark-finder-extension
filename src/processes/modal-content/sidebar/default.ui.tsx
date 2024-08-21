@@ -17,6 +17,8 @@ import SidebarWidget from '@/widget/sidebar';
 import ModalLayer from '@/shared/ui/modalLayer';
 import OpenSearchModal from '@/app/modal-router/openSearchModal.ui';
 import OpenCreateFolderCategoryForm from '@/app/modal-router/openCreateFolderCategoryForm.ui';
+import Spinner from '@/shared/ui/spinner';
+import Center from '@/shared/ui/center';
 
 export type SidebarDefaultFC = React.FC;
 
@@ -59,7 +61,18 @@ const Default: SidebarDefaultFC = () => {
               </Button>
             </OpenCreateFolderCategoryForm>
             <Spacer direction="vertical" space={spacer.spacing4} />
-            <Suspense fallback={<></>}>
+            <Suspense
+              fallback={
+                <Center
+                  etcStyles={{
+                    width: '100%',
+                    height: 'calc(100vh - 280px)',
+                  }}
+                >
+                  <Spinner />
+                </Center>
+              }
+            >
               <Accordion.Provider>
                 <BookmarkAccordian />
               </Accordion.Provider>

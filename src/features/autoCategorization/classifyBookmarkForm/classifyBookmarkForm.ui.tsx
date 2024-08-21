@@ -27,6 +27,8 @@ import { ClassifiedBookmarkFolder } from './classifiedBookmarkFolder.ui';
 import { useCheckedBookmarkStructure } from './classifyBookmarkForm.hook';
 
 import type { Bookmark } from '@/entities/bookmark';
+import Center from '@/shared/ui/center';
+import Spinner from '@/shared/ui/spinner';
 
 const ClassifyBookmarkForm: React.FC = () => {
   const {
@@ -36,7 +38,17 @@ const ClassifyBookmarkForm: React.FC = () => {
     submitCheckedBookmarkStructure,
   } = useCheckedBookmarkStructure();
 
-  if (!classifiedAIBookmarks) return <></>;
+  if (!classifiedAIBookmarks)
+    return (
+      <Center
+        etcStyles={{
+          width: '100%',
+          height: 'calc(100vh - 280px)',
+        }}
+      >
+        <Spinner />
+      </Center>
+    );
 
   const bookmarkCache = bookmarkService.getCache() as Bookmark[];
 
