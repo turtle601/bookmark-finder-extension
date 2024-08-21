@@ -11,8 +11,12 @@ import Flex from '@/shared/ui/flex';
 import Text from '@/shared/ui/text';
 import Spacer from '@/shared/ui/spacer';
 import Button from '@/shared/ui/button';
-import Radio from '@/shared/ui/radio';
 import Accordion from '@/shared/ui/accordion';
+import Center from '@/shared/ui/center';
+import Spinner from '@/shared/ui/spinner';
+
+import { Input } from '@/shared/ui/input';
+
 import { OpenSidebarDefault } from '@/app/modal-router';
 
 import {
@@ -21,14 +25,13 @@ import {
   addEtcBookmarkToDefault,
   getClassifedBookmarkGuideText,
 } from './classifyBookmarkForm.lib';
+import { getRadioStyle } from '@/shared/ui/input/input.style';
 
 import { ClassifiedBookmarkFolder } from './classifiedBookmarkFolder.ui';
 
 import { useCheckedBookmarkStructure } from './classifyBookmarkForm.hook';
 
 import type { Bookmark } from '@/entities/bookmark';
-import Center from '@/shared/ui/center';
-import Spinner from '@/shared/ui/spinner';
 
 const ClassifyBookmarkForm: React.FC = () => {
   const {
@@ -108,11 +111,13 @@ const ClassifyBookmarkForm: React.FC = () => {
                       />
                     </div>
                   </Flex>
-                  <Radio
+                  <Input
+                    type="radio"
                     {...register({
                       id: `TYPE-${idx + 1}`,
                       name: 'classify-bookmark',
                     })}
+                    etcStyles={{ ...getRadioStyle() }}
                   />
                 </Flex>
                 <Accordion.Panel id={`TYPE-${idx + 1}`}>

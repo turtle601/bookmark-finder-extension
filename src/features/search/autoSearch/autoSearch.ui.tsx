@@ -20,6 +20,8 @@ import NameSearchIcon from '@/shared/config/assets/name-search.svg';
 import AutoSearchList from '@/features/search/autoSearch/autoSearchList.ui';
 import { Input } from '@/shared/ui/input';
 
+import { getFlushedFieldStyle } from '@/shared/ui/input/input.style';
+
 const AutoSearch = () => {
   const [isAI, setIsAI] = useState(false);
 
@@ -81,9 +83,7 @@ const AutoSearch = () => {
             placeholder={placeholderText}
             onChange={handleChangeText}
             etcStyles={{
-              width: '100%',
-              padding: '20px',
-              paddingLeft: '48px',
+              ...getFlushedFieldStyle(),
             }}
           />
         </div>
