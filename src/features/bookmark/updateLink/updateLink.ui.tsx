@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 
-import Button from '@/shared/ui/button';
-
-import Spacer from '@/shared/ui/spacer';
-import ModalLayer from '@/shared/ui/modalLayer';
-import { ErrorMessage, Input } from '@/shared/ui/input';
-
 import { spacer } from '@/shared/config/styles';
 
-import { useUpdateBookmarkMutation } from '@/entities/bookmark';
-import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
-import { FormRefValueType, useForm } from '@/shared/hooks/useForm';
+import Button from '@/shared/ui/button';
+import Spacer from '@/shared/ui/spacer';
+import ModalLayer from '@/shared/ui/modalLayer';
 import Flex from '@/shared/ui/flex';
+import { ErrorMessage, Input } from '@/shared/ui/input';
+
+import { useUpdateBookmarkMutation } from '@/entities/bookmark';
+import { FormRefValueType, useForm } from '@/shared/hooks/useForm';
 
 interface IUpdateLink {
   id: string;
@@ -54,6 +52,7 @@ const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
       <Spacer direction="vertical" space={spacer.spacing2} />
       <form onSubmit={submitUpdateLink}>
         <Input
+          kind="outline"
           placeholder="링크 제목을 지어주세요"
           {...register({
             id: 'update-link-title',
@@ -66,11 +65,11 @@ const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
           })}
           etcStyles={{
             width: '100%',
-            ...getOutlineFieldStyle(),
           }}
         />
         <Spacer direction="vertical" space={spacer.spacing3} />
         <Input
+          kind="outline"
           placeholder="링크 URL을 입력해주세요"
           {...register({
             id: 'update-link-url',
@@ -83,7 +82,6 @@ const UpdateLink: React.FC<IUpdateLink> = ({ id, parentId, url, title }) => {
           })}
           etcStyles={{
             width: '100%',
-            ...getOutlineFieldStyle(),
           }}
         />
         <Spacer direction="vertical" space={spacer.spacing3} />

@@ -8,8 +8,6 @@ import Spacer from '@/shared/ui/spacer';
 import ModalLayer from '@/shared/ui/modalLayer';
 import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
-
 import { useForm } from '@/shared/hooks/useForm';
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
 
@@ -44,13 +42,12 @@ const CreateFolder: React.FC<ICreateFolder> = ({ parentId }) => {
       <form onSubmit={submitFolder}>
         <Spacer direction="vertical" space={spacer.spacing2} />
         <Input
-          required
-          placeholder="폴더의 이름을 작성해주세요."
           {...register({
             id: 'create-folder',
           })}
+          kind="outline"
+          placeholder="폴더의 이름을 작성해주세요."
           etcStyles={{
-            ...getOutlineFieldStyle(),
             width: '100%',
           }}
         />

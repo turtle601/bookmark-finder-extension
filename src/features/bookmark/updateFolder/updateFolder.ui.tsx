@@ -9,8 +9,6 @@ import ModalLayer from '@/shared/ui/modalLayer';
 import { ErrorMessage, Input } from '@/shared/ui/input';
 
 import { useForm } from '@/shared/hooks/useForm';
-import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
-
 import { useUpdateBookmarkMutation } from '@/entities/bookmark';
 
 import type { FormRefValueType } from '@/shared/hooks/useForm';
@@ -53,6 +51,9 @@ const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
       <Spacer direction="vertical" space={spacer.spacing3} />
       <form onSubmit={submitFolder}>
         <Input
+          kind="outline"
+          placeholder="폴더의 이름을 작성해주세요."
+          defaultValue={title}
           {...register({
             id: 'update-folder',
             customValidate: {
@@ -62,10 +63,7 @@ const UpdateFolder: React.FC<IUpdateFolder> = ({ id, parentId, title }) => {
               errorMessage: '폴더 이름을 한 글자 이상 입력해주세요',
             },
           })}
-          defaultValue={title}
-          placeholder="폴더의 이름을 작성해주세요."
           etcStyles={{
-            ...getOutlineFieldStyle(),
             width: '100%',
           }}
         />

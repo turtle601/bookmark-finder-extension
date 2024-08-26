@@ -7,7 +7,6 @@ import ModalLayer from '@/shared/ui/modalLayer';
 import { ErrorMessage, Input } from '@/shared/ui/input';
 
 import { spacer } from '@/shared/config/styles';
-import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
 
 import { useForm } from '@/shared/hooks/useForm';
 import { useCreateBookmarkMutation } from '@/entities/bookmark';
@@ -44,6 +43,7 @@ const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
       <form onSubmit={submitNewLink}>
         <Spacer direction="vertical" space={spacer.spacing2} />
         <Input
+          kind="outline"
           placeholder="링크 제목을 지어주세요"
           {...register({
             id: 'create-link-title',
@@ -55,12 +55,12 @@ const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
             },
           })}
           etcStyles={{
-            ...getOutlineFieldStyle(),
             width: '100%',
           }}
         />
         <Spacer direction="vertical" space={spacer.spacing3} />
         <Input
+          kind="outline"
           placeholder="링크 URL을 입력해주세요"
           {...register({
             id: 'create-link-url',
@@ -72,7 +72,6 @@ const CreateLink: React.FC<ICreateLinkProps> = ({ parentId }) => {
             },
           })}
           etcStyles={{
-            ...getOutlineFieldStyle(),
             width: '100%',
           }}
         />
