@@ -7,13 +7,11 @@ import { THIRD_LAYER_ZIDENX } from '@/shared/config/constant';
 import type { CSSObject } from '@emotion/react';
 
 interface IPointerContentProps extends ComponentPropsWithoutRef<'div'> {
-  dragEndType?: 'reset' | 'leftSide';
   customStyle?: (mouseX?: number, mouseY?: number) => CSSObject;
 }
 
 const PointerContentComponent: React.FC<IPointerContentProps> = ({
   customStyle = () => {},
-  dragEndType = 'reset',
   ...attribute
 }) => {
   const { mousePosition, dragStartContent } = useDnDContext();
