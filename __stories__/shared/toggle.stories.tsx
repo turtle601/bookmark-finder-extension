@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Toggle> = {
   title: 'shared/Toggle',
   component: Toggle,
+  tags: ['autodocs'],
   argTypes: {
     isChecked: {
       description: '체크된 상태',
