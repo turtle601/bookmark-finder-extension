@@ -1,7 +1,5 @@
-import { spacer } from '@/shared/config/styles';
 import Flex from '@/shared/ui/flex';
 import Tag from '@/shared/ui/tag';
-import { css } from '@emotion/react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -16,7 +14,7 @@ export default meta;
 
 type Story = StoryObj<typeof Tag>;
 
-export const Default: Story = {
+export const TagList: Story = {
   render: () => {
     return (
       <Flex
