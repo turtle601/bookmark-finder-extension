@@ -3,7 +3,6 @@ import SkeletonTag from '@/shared/ui/skeleton/skeletonTag';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SkeletonTag> = {
-  title: 'shared/SkeletonTag',
   component: SkeletonTag,
   parameters: {
     layout: 'centered',

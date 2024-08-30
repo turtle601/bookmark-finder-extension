@@ -25,7 +25,6 @@ import {
   addEtcBookmarkToDefault,
   getClassifedBookmarkGuideText,
 } from './classifyBookmarkForm.lib';
-import { getRadioStyle } from '@/shared/ui/input/input.style';
 
 import { ClassifiedBookmarkFolder } from './classifiedBookmarkFolder.ui';
 
@@ -117,7 +116,6 @@ const ClassifyBookmarkForm: React.FC = () => {
                       id: `TYPE-${idx + 1}`,
                       name: 'classify-bookmark',
                     })}
-                    etcStyles={{ ...getRadioStyle() }}
                   />
                 </Flex>
                 <Accordion.Panel id={`TYPE-${idx + 1}`}>

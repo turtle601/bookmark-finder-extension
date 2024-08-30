@@ -18,9 +18,8 @@ import Flex from '@/shared/ui/flex';
 import Toggle from '@/shared/ui/toggle';
 import NameSearchIcon from '@/shared/config/assets/name-search.svg';
 import AutoSearchList from '@/features/search/autoSearch/autoSearchList.ui';
-import { Input } from '@/shared/ui/input';
 
-import { getFlushedFieldStyle } from '@/shared/ui/input/input.style';
+import { Input } from '@/shared/ui/input';
 
 const AutoSearch = () => {
   const [isAI, setIsAI] = useState(false);
@@ -80,10 +79,13 @@ const AutoSearch = () => {
             {isAI ? <AISearchIcon /> : <NameSearchIcon />}
           </div>
           <Input
+            kind="flushed"
             placeholder={placeholderText}
             onChange={handleChangeText}
             etcStyles={{
-              ...getFlushedFieldStyle(),
+              width: '100%',
+              padding: '20px',
+              paddingLeft: '48px',
             }}
           />
         </div>

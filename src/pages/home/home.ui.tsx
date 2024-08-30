@@ -31,7 +31,7 @@ const Home: React.FC = () => {
               pointerEvents: 'auto',
             }}
           >
-            <DnD.Dragable dragEndType="leftSide">
+            <DnD.Dragable isMoved>
               {({ isDrag }) => {
                 return (
                   <div

@@ -17,7 +17,6 @@ import OpenClassifyBookmarkForm from '@/app/modal-router/openClassifyBookmarkFor
 
 import { ErrorMessage, Input } from '@/shared/ui/input';
 
-import { getOutlineFieldStyle } from '@/shared/ui/input/input.style';
 import { useForm } from '@/shared/hooks/useForm';
 import { useArray } from '@/shared/hooks/useArray';
 import { useBoolean } from '@/shared/hooks/useBoolean';
@@ -141,11 +140,9 @@ const CategoryForm: React.FC = () => {
         <Input
           {...register({ id: 'category-form' })}
           type="text"
+          kind={'outline'}
           placeholder="카테고리를 입력하세요"
           onKeyUp={handleInputEnter}
-          etcStyles={{
-            ...getOutlineFieldStyle(),
-          }}
         />
         <Flex align={'center'} gap={spacer.spacing2}>
           <AIIcon />

@@ -1,0 +1,118 @@
+import { Canvas } from '@storybook/addon-docs';
+
+# ModalLayer
+
+<br />
+
+## Overview
+
+`ModalLayer` 컴포넌트는 모달과 사이드바 같은 레이어를 쉽게 구현할 수 있는 컴포넌트입니다. 모달이나 사이드바를 열고 닫는 기능을 제공하며, 다양한 컨텐츠를 레이어에 담아 사용자와 상호작용할 수 있도록 합니다.
+
+<br />
+
+## Usage
+
+```tsx
+<Flex>
+  <ModalLayer.Provider>
+    <ModalLayer.Opener
+      modalType="sidebar"
+      modalContent={
+        <SidebarWidget.Wrapper>
+          <SidebarWidget.Header />
+          사이드바 내용입니다.
+        </SidebarWidget.Wrapper>
+      }
+    >
+      <Button
+        kind="default"
+        etcStyles={{
+          width: '100px',
+          height: '50px',
+        }}
+      >
+        사이드바 열기
+      </Button>
+    </ModalLayer.Opener>
+    <ModalLayer.Wrapper />
+  </ModalLayer.Provider>
+  <Spacer direction="horizontal" space={spacer['spacing2.5']} />
+  <ModalLayer.Provider>
+    <ModalLayer.Opener
+      modalType="modal"
+      modalContent={<ModalWidget.Wrapper>모달 내용입니다.</ModalWidget.Wrapper>}
+    >
+      <Button
+        kind="default"
+        etcStyles={{
+          width: '100px',
+          height: '50px',
+        }}
+      >
+        모달 열기
+      </Button>
+    </ModalLayer.Opener>
+    <ModalLayer.Wrapper />
+  </ModalLayer.Provider>
+</Flex>
+```
+
+ModalLayer 컴포넌트의 활용 예시는 **Example**을 통해 확인 가능합니다.
+
+<br />
+
+## ModalLayer.Provider
+
+설명: ModalLayer.Provider는 모달 레이어 컨텍스트를 제공합니다. 이를 통해 내부의 ModalLayer 아이템들이 서로 연동됩니다
+
+<br />
+
+## ModalLayer.Wrapper
+
+설명: ModalLayer.Wrapper는 실제 모달이나 사이드바의 내용을 표시하는 컴포넌트입니다. ModalLayer.Opener에 의해 열리고 ModalLayer.Closer에 의해 닫힙니다.
+
+<br />
+
+## ModalLayer.Opener
+
+설명: ModalLayer.Opener는 모달이나 사이드바와 같은 모달 형태를 열기 위한 트리거 컴포넌트입니다. modalType 속성으로 모달 또는 사이드바를 지정하고, modalContent 속성으로 레이어에 표시될 내용을 정의할 수 있습니다.
+
+### Props
+
+```tsx
+export interface IOpenerProps extends React.ComponentPropsWithoutRef<'button'> {
+  /** modal의 종류를 선언 (ex. modal, sidebar, sidebar-panel) */
+  modalType: IModalLayerState['modalType'];
+  /** 새로 띄울 modal 컴포넌트 선언 */
+  modalContent: IModalLayerState['content'];
+  /** ModalLayer.Opener 안의 내용 */
+  children: React.ReactNode;
+  /** 그 외 커스텀 스타일 */
+  etcStyles?: CSSObject;
+  /** modal를 여는 행위 외의 다른 추가 액션 실행 */
+  externalAction?: (e: React.MouseEvent) => void | Promise<void>;
+}
+```
+
+<br />
+
+## ModalLayer.Closer
+
+설명: ModalLayer.Closer 모달이나 사이드바와 같은 모달 형태를 닫기 위한 트리거 컴포넌트입니다. modalType 속성으로 모달 또는 사이드바를 지정하고, modalContent 속성으로 레이어에 표시될 내용을 정의할 수 있습니다.
+
+### Props
+
+```tsx
+export interface ICloserProps extends ComponentPropsWithoutRef<'button'> {
+  /** modal의 종류를 선언 (ex. modal, sidebar, sidebar-panel) */
+  modalType: IModalLayerState['modalType'];
+  /** ModalLayer.Closer 안의 내용 */
+  children: React.ReactNode;
+  /** 그 외 커스텀 스타일 */
+  etcStyles?: CSSObject;
+  /** modal를 여는 행위 외의 다른 추가 액션 실행 */
+  externalAction?: (e?: MouseEvent) => void | Promise<void>;
+}
+```
+
+<br />

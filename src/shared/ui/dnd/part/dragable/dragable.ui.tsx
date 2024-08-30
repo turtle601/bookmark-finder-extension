@@ -7,7 +7,7 @@ import type { DragEventHandler, ReactNode, Ref } from 'react';
 
 export interface IDragableProps {
   children: (props: { isDrag: boolean }) => ReactNode;
-  dragEndType?: 'reset' | 'leftSide';
+  isMoved?: boolean;
   dragAction?: DragEventHandler;
   etcStyles?: CSSObject;
 }
@@ -15,7 +15,7 @@ export interface IDragableProps {
 const DragableComponent = (
   {
     children,
-    dragEndType = 'reset',
+    isMoved = false,
     dragAction = () => {},
     etcStyles = {},
   }: IDragableProps,
@@ -30,7 +30,7 @@ const DragableComponent = (
   } = useDragable({
     dragAction,
     children,
-    dragEndType,
+    isMoved,
   });
 
   const handleDragOver: React.DragEventHandler = (e) => {
@@ -52,7 +52,7 @@ const DragableComponent = (
       css={css({
         display: 'inline-block',
         cursor: 'grab',
-        ...(dragEndType === 'leftSide' && {
+        ...(isMoved && {
           position: 'absolute',
           top: positionY,
           left: positionX,

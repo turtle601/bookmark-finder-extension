@@ -22,9 +22,7 @@ export const getOutlineFieldStyle = (): CSSObject => {
 
 export const getFlushedFieldStyle = (): CSSObject => {
   return {
-    width: '100%',
-    padding: '20px',
-    paddingLeft: '48px',
+    padding: '8px',
     color: color.gray,
     '&::placeholder': {
       color: color.gray300,
@@ -39,13 +37,13 @@ export const getFlushedFieldStyle = (): CSSObject => {
   };
 };
 
-export const getRadioStyle = (): CSSObject => {
+export const getCheckBoxStyle = (): CSSObject => {
   return {
     position: 'relative',
     cursor: 'pointer',
     appearance: 'none',
-    width: '1.25rem',
-    height: '1.25rem',
+    width: '18px',
+    height: '18px',
     border: `2px solid ${color.gray}`,
     borderRadius: '4px',
     backgroundColor: color.white,

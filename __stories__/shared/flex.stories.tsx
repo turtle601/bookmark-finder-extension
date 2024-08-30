@@ -5,7 +5,6 @@ import Flex from '@/shared/ui/flex';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Flex> = {
-  title: 'shared/Flex',
   parameters: {
     layout: 'centered',
   },
