@@ -4,14 +4,14 @@ import Accordion from '@/shared/ui/accordion';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Accordion> = {
-  title: 'shared/Accordion',
+  // title: 'shared/Accordion',
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Accordion>;
 
-export const Index: Story = {
+export const Example: Story = {
   render: () => {
     return (
       <Accordion.Provider>
