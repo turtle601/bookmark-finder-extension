@@ -10,13 +10,6 @@ import Spacer from '@/shared/ui/spacer';
 import { spacer } from '@/shared/config/styles';
 
 const meta: Meta<typeof ModalLayer> = {
-  title: 'shared/ModalLayer',
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      inlineStories: true,
-    },
-  },
   decorators: [
     // eslint-disable-next-line @typescript-eslint/naming-convention
     (Story) => (
