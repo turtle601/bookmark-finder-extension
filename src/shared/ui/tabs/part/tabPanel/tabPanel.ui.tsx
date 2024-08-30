@@ -5,6 +5,7 @@ import { useTabsContext } from '@/shared/ui/tabs/model';
 
 export interface ITabPanelProps extends ComponentPropsWithoutRef<'div'> {
   etcStyles?: CSSObject;
+  children: React.ReactNode;
 }
 
 const TabPanel: FC<ITabPanelProps> = ({ id, etcStyles = {}, children }) => {

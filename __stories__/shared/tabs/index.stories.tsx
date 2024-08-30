@@ -2,18 +2,13 @@ import Tabs from '@/shared/ui/tabs';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof Tabs> = {
-  title: 'shared/Tabs',
-  parameters: {
-    layout: 'centered',
-  },
-};
+const meta: Meta<typeof Tabs> = {};
 
 export default meta;
 
 type Story = StoryObj<typeof Tabs>;
 
-export const Index: Story = {
+export const Example: Story = {
   render: () => {
     return (
       <Tabs>
