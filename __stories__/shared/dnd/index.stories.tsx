@@ -12,7 +12,6 @@ import Dropable from '@/shared/ui/dnd/part/dropable';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof DnD> = {
-  title: 'shared/DragDrop',
   decorators: [
     // eslint-disable-next-line @typescript-eslint/naming-convention
     (Story) => (
@@ -115,7 +114,7 @@ const DnDComponent: React.FC = () => {
   );
 };
 
-export const Index: Story = {
+export const Example: Story = {
   render: () => {
     return <DnDComponent />;
   },
