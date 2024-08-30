@@ -5,7 +5,6 @@ import { color, spacer } from '@/shared/config/styles';
 import type { StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'shared/spacing',
   tags: ['autodocs'],
 } as const;
 

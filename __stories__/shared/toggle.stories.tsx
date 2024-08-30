@@ -7,7 +7,6 @@ import Toggle from '@/shared/ui/toggle';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Toggle> = {
-  title: 'shared/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   argTypes: {

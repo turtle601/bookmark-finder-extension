@@ -6,7 +6,6 @@ import { css } from '@emotion/react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Text> = {
-  title: 'shared/Text',
   component: Text,
   tags: ['autodocs'],
 };

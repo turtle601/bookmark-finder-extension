@@ -6,7 +6,6 @@ import type { StoryObj } from '@storybook/react';
 import Center from '@/shared/ui/center';
 
 const meta = {
-  title: 'shared/borderRadius',
   tags: ['autodocs'],
 } as const;
 

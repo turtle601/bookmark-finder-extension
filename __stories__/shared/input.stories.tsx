@@ -13,7 +13,6 @@ import Spacer from '@/shared/ui/spacer';
 import Flex from '@/shared/ui/flex';
 
 const meta: Meta<typeof Input> = {
-  title: 'shared/Input',
   component: Input,
   tags: ['autodocs'],
 };

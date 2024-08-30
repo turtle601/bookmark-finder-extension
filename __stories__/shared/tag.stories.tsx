@@ -4,7 +4,6 @@ import Tag from '@/shared/ui/tag';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Tag> = {
-  title: 'shared/Tag',
   parameters: {
     layout: 'centered',
   },
