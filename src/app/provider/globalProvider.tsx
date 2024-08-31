@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Global } from '@emotion/react';
-import { globalStyle } from '@/shared/config/styles/global';
-import { QueryClientProvider } from '@/app/provider/queryClientProvider';
-
 import ModalLayer from '@/shared/ui/modalLayer';
+
+import { ShadowProvider } from '@/app/provider/shadowProvider';
+import { QueryClientProvider } from '@/app/provider/queryClientProvider';
 
 interface IGlobalProviderProps {
   children: React.ReactNode;
@@ -16,8 +15,7 @@ export const GlobalProvider: React.FC<IGlobalProviderProps> = ({
   return (
     <QueryClientProvider>
       <ModalLayer.Provider>
-        <Global styles={globalStyle} />
-        {children}
+        <ShadowProvider>{children}</ShadowProvider>
         <ModalLayer.Wrapper />
       </ModalLayer.Provider>
     </QueryClientProvider>
