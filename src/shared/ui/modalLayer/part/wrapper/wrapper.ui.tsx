@@ -1,5 +1,4 @@
 import React from 'react';
-import root from 'react-shadow/emotion';
 
 import { css } from '@emotion/react';
 
@@ -16,8 +15,7 @@ import {
   getScreenOverlayStyle,
   getScreenWrapperStyle,
 } from '@/shared/ui/modalLayer/part/wrapper/style';
-
-import { GlobalProvider } from '@/app/provider';
+import { ShadowProvider } from '@/app/provider/shadowProvider';
 
 const Wrapper: React.FC = () => {
   const modalLayerStateList = useModalLayerContext();
@@ -28,19 +26,17 @@ const Wrapper: React.FC = () => {
   return (
     modalLayerStateList.length > 0 &&
     createPortal(
-      <root.div id="shadow-root">
-        <GlobalProvider>
-          <main css={css({ ...getScreenWrapperStyle() })}>
-            <div
-              css={css({ ...getScreenOverlayStyle() })}
-              onClick={popModal}
-            ></div>
-            {modalLayerStateList.map((modalState) => {
-              return modalState.content;
-            })}
-          </main>
-        </GlobalProvider>
-      </root.div>,
+      <ShadowProvider>
+        <main css={css({ ...getScreenWrapperStyle() })}>
+          <div
+            css={css({ ...getScreenOverlayStyle() })}
+            onClick={popModal}
+          ></div>
+          {modalLayerStateList.map((modalState) => {
+            return modalState.content;
+          })}
+        </main>
+      </ShadowProvider>,
       document.getElementById('screen') as HTMLElement,
     )
   );
