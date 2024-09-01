@@ -32,7 +32,7 @@ const AutoSearch = () => {
     ? 'AI로 찾고 싶은 북마크를 물어보세요'
     : '링크를 검색하세요';
 
-  const searchDelay = isAI ? 1500 : 500;
+  const searchDelay = isAI ? 1000 : 500;
 
   const { mutate: searchBookmark } = useAutoSearchMutation(isAI);
 
@@ -82,6 +82,7 @@ const AutoSearch = () => {
             kind="flushed"
             placeholder={placeholderText}
             onChange={handleChangeText}
+            onKeyDown={(e) => e.stopPropagation()}
             etcStyles={{
               width: '100%',
               padding: '20px',

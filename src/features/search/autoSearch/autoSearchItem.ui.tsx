@@ -31,17 +31,12 @@ const AutoSearchLinkItem = ({ bookmark }: IAutoSearchLinkItem) => {
         padding: spacer.spacing3,
         '&:hover': {
           backgroundColor: color.gray100,
+          cursor: bookmark.url ? 'pointer' : 'auto',
         },
       })}
     >
       {bookmark.url ? (
-        <Flex
-          align={'center'}
-          gap={'12px'}
-          etcStyles={{
-            cursor: 'pointer',
-          }}
-        >
+        <Flex align={'center'} gap={'12px'}>
           <Center
             css={css({
               width: '24px',

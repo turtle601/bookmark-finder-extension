@@ -89,7 +89,9 @@ export const useForm = () => {
           customValidate,
         };
       },
-      onInput: () => {
+      onInput: (e) => {
+        e.stopPropagation();
+
         const element = formRefs.current[id].element;
         const customValidate = formRefs.current[id].customValidate;
         customValidateElement({ element, customValidate });
@@ -100,6 +102,9 @@ export const useForm = () => {
         const customValidate = formRefs.current[id].customValidate;
         customValidateElement({ element, customValidate });
         setErrorMessage('');
+      },
+      onKeyDown: (e) => {
+        e.stopPropagation();
       },
       ...attribute,
     };
