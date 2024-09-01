@@ -1,8 +1,11 @@
 <h1> 📚 Bookmark AI Finder</h1>
 
+<br />
+<br />
 <p align="center">
   <img width="128" alt="extension_icon" src="https://github.com/user-attachments/assets/fd3d69ea-6ac6-4d7f-bdbf-6e4082ca7ebd" />
 </p>
+<br />
 
 ## Overview
 
