@@ -48,7 +48,10 @@ module.exports = {
     }),
     new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'public/manifest.json', to: 'manifest.json' }],
+      patterns: [
+        { from: 'public/manifest.json', to: 'manifest.json' },
+        { from: 'public/icons', to: 'icons' },
+      ],
     }),
     new webpack.DefinePlugin({
       'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY),
