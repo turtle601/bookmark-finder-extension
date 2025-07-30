@@ -106,6 +106,15 @@ export const useForm = () => {
       onKeyDown: (e) => {
         e.stopPropagation();
       },
+      onKeyUp: (e) => {
+        if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+          setTimeout(() => {
+            if (formRefs.current[id]?.element) {
+              formRefs.current[id].element.value = '';
+            }
+          }, 0);
+        }
+      },
       ...attribute,
     };
   };
