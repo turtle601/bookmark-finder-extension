@@ -25,7 +25,11 @@ export const useArray = <T extends IArrayItem>(initialValue: T[] = []) => {
     );
   };
 
+  const removeAll = () => {
+    setValue([]);
+  };
+
   const isEmpty = () => value.length === 0;
 
-  return { value, setValue, push, unshift, remove, isEmpty };
+  return { value, setValue, push, unshift, remove, isEmpty, removeAll };
 };

@@ -57,7 +57,7 @@ const Default: SidebarDefaultFC = () => {
                   padding: spacer.spacing3,
                 }}
               >
-                AI로 북마크 자동 분류
+                북마크 자동 분류
               </Button>
             </OpenCreateFolderCategoryForm>
             <Spacer direction="vertical" space={spacer.spacing4} />

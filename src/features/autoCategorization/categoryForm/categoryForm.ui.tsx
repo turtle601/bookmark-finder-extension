@@ -8,8 +8,11 @@ import Flex from '@/shared/ui/flex';
 
 import Spacer from '@/shared/ui/spacer';
 
-import ModalLayer from '@/shared/ui/modalLayer';
 import Button from '@/shared/ui/button';
+import Center from '@/shared/ui/center';
+import ModalLayer from '@/shared/ui/modalLayer';
+import RefreshIcon from '@/shared/config/assets/reset.svg';
+
 import OpenClassifyBookmarkForm from '@/app/modal-router/openClassifyBookmarkForm.ui';
 
 import { ErrorMessage, Input } from '@/shared/ui/input';
@@ -31,6 +34,7 @@ const CategoryForm: React.FC = () => {
     value: categories,
     unshift: addCategory,
     remove: removeCategory,
+    removeAll: removeAllCategories,
   } = useArray<ICategory>([]);
 
   const isDisabled = categories.length === 0;
@@ -87,36 +91,49 @@ const CategoryForm: React.FC = () => {
   };
 
   const handleSubmitClassifyFolder = () => {
-    const submitedCategories = categories.map((category) => category.text);
+    const submitCategories = categories.map((category) => category.text);
 
     classifyAIBookmarks({
-      categories: submitedCategories,
+      categories: submitCategories,
     });
   };
 
   return (
     <Flex as="article" direction="column">
-      <Flex align={'center'} justify={'space-between'}>
+      <Flex align={'center'} gap={spacer['spacing2.5']}>
         <Input
           {...register({ id: 'category-form' })}
           type="text"
           kind={'outline'}
           placeholder="카테고리를 입력하세요"
           onKeyDown={handleInputEnter}
+          etcStyles={{
+            flex: 1,
+          }}
         />
+        <Center
+          as="button"
+          etcStyles={{
+            cursor: 'pointer',
+          }}
+          onClick={removeAllCategories}
+        >
+          <RefreshIcon width={16} height={16} fill={'#6C757D'} />
+        </Center>
       </Flex>
       <Spacer direction="vertical" space={spacer['spacing2.5']} />
       <div
         css={css({
           width: '100%',
-          height: '120px',
+          minHeight: '120px',
+          maxHeight: '300px',
         })}
       >
         <Flex
           as="ul"
           etcStyles={{
             gap: '4px',
-            maxHeight: '120px',
+            maxHeight: '300px',
             flexWrap: 'wrap',
             overflow: 'auto',
           }}
@@ -146,6 +163,7 @@ const CategoryForm: React.FC = () => {
           disabled={isDisabled}
           etcStyles={{
             width: '100%',
+            marginTop: '12px',
           }}
         >
           <Button
