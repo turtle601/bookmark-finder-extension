@@ -55,9 +55,15 @@ const TagComponent = (
         >
           <Text
             label={text}
-            type="sm"
-            fontWeightType="semibold"
+            fontWeightType="regular"
             textColor={color.white}
+            etcStyles={{
+              fontSize: '12px',
+              maxWidth: '92px',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+            }}
           />
           <Spacer direction="horizontal" space={spacer['spacing2.5']} />
           <button
