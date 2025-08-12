@@ -1,15 +1,5 @@
-import React from 'react';
-
-import { GlobalProvider } from './provider';
-
-import Home from '@/pages/home';
-
 const App: React.FC = () => {
-  return (
-    <GlobalProvider>
-      <Home />
-    </GlobalProvider>
-  );
+  return <div>안녕하세요</div>;
 };
 
 export default App;

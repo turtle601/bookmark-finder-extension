@@ -3,7 +3,10 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@background/*": ["background/*"],
+      "@contentScript/*": ["contentScript/*"],
+      "@popup/*": ["popup/*"]
     },
     "target": "ES6",
     "module": "ESNext",
@@ -23,6 +26,14 @@
     "strict": true,
     "alwaysStrict": true
   },
-  "include": ["__stories__/**/*", "global.d.ts", "src/**/*"],
+  "include": [
+    "__stories__/**/*",
+    "global.d.ts",
+    "src/**/*",
+    "popup/**/*",
+    "background/**/*",
+    "contentScript/**/*",
+    "popup/**/*"
+  ],
   "exclude": ["node_modules", "webpack.config.js"]
 }

@@ -9,8 +9,9 @@ require('dotenv').config({ path: './.env' });
 
 module.exports = {
   entry: {
-    background: path.resolve('src/background/index.ts'),
-    contentScript: path.resolve('src/contentScript/index.tsx'),
+    background: path.resolve('/background/index.ts'),
+    contentScript: path.resolve('/contentScript/index.tsx'),
+    popup: path.resolve('/popup/index.tsx'),
   },
   output: {
     filename: '[name].js',
@@ -20,6 +21,9 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src/'),
+      '@background': path.resolve(__dirname, 'background'),
+      '@contentScript': path.resolve(__dirname, 'contentScript'),
+      '@popup': path.resolve(__dirname, 'popup'),
     },
     extensions: ['.ts', '.tsx', '.js', 'jsx'],
   },
@@ -45,6 +49,7 @@ module.exports = {
       title: 'BookMark Chrome Extensions',
       filename: 'popup.html',
       chunks: ['popup'],
+      template: path.resolve('public/popup.html'),
     }),
     new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
@@ -52,9 +57,6 @@ module.exports = {
         { from: 'public/manifest.json', to: 'manifest.json' },
         { from: 'public/icons', to: 'icons' },
       ],
-    }),
-    new webpack.DefinePlugin({
-      'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY),
     }),
   ],
 };
