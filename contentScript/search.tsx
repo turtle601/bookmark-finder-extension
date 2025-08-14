@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
-import { IBookmarkLink } from '@background/bookmark';
+import { IAIBookmarkLink, IBookmarkLink } from '@background/bookmark';
 import { createChromeRequest } from '@/shared/lib/fetch';
+import Toggle from '@/shared/ui/toggle';
 
 interface ISearchProps {
   inputRef: React.RefObject<HTMLInputElement>;
@@ -14,7 +15,6 @@ function Search({ inputRef, onChange }: ISearchProps) {
     <div
       css={css({
         position: 'relative',
-        marginBottom: '16px',
       })}
     >
       <input
@@ -147,7 +147,14 @@ function SearchResult({ bookmarks }: ISearchResultProps) {
   console.log(bookmarks, 'bookmarks');
 
   return (
-    <div>
+    <div
+      css={css({
+        width: '100%',
+        height: '200px',
+        maxHeight: '200px',
+        overflowY: 'auto',
+      })}
+    >
       {bookmarks.map((bookmark) => (
         <BookmarkLink key={bookmark.id} bookmark={bookmark} />
       ))}
@@ -155,28 +162,89 @@ function SearchResult({ bookmarks }: ISearchResultProps) {
   );
 }
 
-const searchQuery = async (payload: {
-  text: string;
-}): Promise<IBookmarkLink[]> => {
-  const response = await createChromeRequest<{
-    isSuccess: boolean;
-    data: IBookmarkLink[];
-  }>({
-    action: 'searchBookmarks',
-    payload: { ...payload },
-  });
-
-  return response.data;
-};
+function CheckAI({
+  isChecked,
+  onClick,
+}: {
+  isChecked: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      css={css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '10px 14px',
+        background: 'rgba(59, 130, 246, 0.05)',
+        borderRadius: '8px',
+        border: '1px solid rgba(59, 130, 246, 0.1)',
+      })}
+    >
+      <div
+        css={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2px',
+          fontSize: '12px',
+          color: '#475569',
+          fontWeight: '500',
+        })}
+      >
+        <span>🤖</span>
+        <span>AI 스마트 검색</span>
+      </div>
+      <Toggle size="sm" isChecked={isChecked} onClick={onClick} />
+    </div>
+  );
+}
 
 function SearchSection() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [debouncedSearchText, setDebouncedSearchText] = useState('');
+  const [isAI, setIsAI] = useState(false);
+
+  const searchQuery = async (payload: {
+    text: string;
+  }): Promise<IBookmarkLink[]> => {
+    const response = await createChromeRequest<{
+      isSuccess: boolean;
+      data: IBookmarkLink[];
+    }>({
+      action: 'searchBookmarks',
+      payload: { ...payload },
+    });
+
+    return response.data;
+  };
+
+  const searchAIQuery = async (payload: {
+    text: string;
+  }): Promise<IAIBookmarkLink[]> => {
+    const response = await createChromeRequest<{
+      isSuccess: boolean;
+      data: IAIBookmarkLink[];
+    }>({
+      action: 'searchAIBookmarks',
+      payload: { ...payload },
+    });
+
+    return response.data;
+  };
+
+  const isSearchBookmarkEnabled = debouncedSearchText !== '' && !isAI;
+  const isSearchAIBookmarkEnabled = debouncedSearchText !== '' && isAI;
 
   const { data: bookmarks } = useQuery({
     queryKey: ['searchAllBookmarks', debouncedSearchText],
     queryFn: () => searchQuery({ text: debouncedSearchText }),
-    enabled: debouncedSearchText !== '',
+    enabled: isSearchBookmarkEnabled,
+  });
+
+  const { data: aiBookmarks } = useQuery({
+    queryKey: ['searchAIBookmarks', debouncedSearchText],
+    queryFn: () => searchAIQuery({ text: debouncedSearchText }),
+    enabled: isSearchAIBookmarkEnabled,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,7 +254,22 @@ function SearchSection() {
   return (
     <div>
       <Search inputRef={inputRef} onChange={handleChange} />
-      <SearchResult bookmarks={bookmarks ?? []} />
+      <div
+        css={css({
+          marginTop: '12px',
+        })}
+      >
+        <CheckAI
+          isChecked={isAI}
+          onClick={() => {
+            setIsAI(!isAI);
+          }}
+        />
+      </div>
+      {isSearchBookmarkEnabled && <SearchResult bookmarks={bookmarks ?? []} />}
+      {isSearchAIBookmarkEnabled && (
+        <SearchResult bookmarks={aiBookmarks ?? []} />
+      )}
     </div>
   );
 }

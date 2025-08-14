@@ -103,11 +103,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  if (message.type === 'getAllBookmarks') {
-    const bookmarks = await Bookmark.getAllBookmarkLinks();
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'searchAIBookmarks') {
+    const text = message.payload.text;
 
-    sendResponse({ success: true, bookmarks });
+    chrome.bookmarks.getTree(async (nodes) => {
+      const result = await Bookmark.searchBookmarksWithAI(nodes, text);
+
+      console.log(result, "Rest");
+
+      sendResponse({
+        isSuccess: true,
+        data: result,
+      });
+    });
+
+    return true;
   }
 });
 

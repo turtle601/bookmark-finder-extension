@@ -64,21 +64,17 @@ function A() {
       <div
         css={css({
           width: '400px',
-          height: '600px',
-          maxHeight: '800px',
+          height: '640px',
+          maxHeight: '640px',
           borderRadius: '12px',
           padding: '12px',
           backgroundColor: slate['50'],
         })}
-        onClick={(e) => {
-          e.stopPropagation();
-          console.log('inside');
-        }}
       >
         <div
           css={css({
             background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
-            padding: '20px',
+            padding: '12px',
             borderBottom: '1px solid #e2e8f0',
           })}
         >
@@ -87,7 +83,6 @@ function A() {
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              marginBottom: '20px',
             })}
           >
             <div
@@ -118,17 +113,15 @@ function A() {
           </div>
           <div
             css={css({
-              marginBottom: '12px',
+              marginTop: '12px',
             })}
           >
-            <div>
-              <Tabs />
-            </div>
+            <Tabs />
           </div>
         </div>
         <div
           css={css({
-            padding: '20px',
+            padding: '12px',
             color: slate['900'],
           })}
         >

@@ -167,7 +167,6 @@ function Tabs() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'between',
-          marginBottom: '12px',
         })}
       >
         <span
@@ -194,22 +193,28 @@ function Tabs() {
           {data?.tabs.length}
         </span>
       </div>
-      <Flex
-        direction="column"
-        gap="4px"
+      <div
         css={css({
-          height: '120px',
-          overflowY: 'auto',
+          marginTop: '12px',
         })}
       >
-        {data?.tabs.map((tab) => (
-          <TabItem
-            key={tab.id}
-            tab={tab}
-            tabRef={(el) => (refs.current[tab.id!] = el)}
-          />
-        ))}
-      </Flex>
+        <Flex
+          direction="column"
+          gap="4px"
+          css={css({
+            height: '150px',
+            overflowY: 'auto',
+          })}
+        >
+          {data?.tabs.map((tab) => (
+            <TabItem
+              key={tab.id}
+              tab={tab}
+              tabRef={(el) => (refs.current[tab.id!] = el)}
+            />
+          ))}
+        </Flex>
+      </div>
     </>
   );
 }
