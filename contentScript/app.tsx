@@ -8,6 +8,8 @@ import { css } from '@emotion/react';
 import { slate } from '@/shared/config/styles';
 import Tabs from '@contentScript/tabs';
 
+import SearchSection from '@contentScript/search';
+
 function ContentScript() {
   const queryClient = useQueryClient();
 
@@ -116,13 +118,21 @@ function A() {
           </div>
           <div
             css={css({
-              marginBottom: '16px',
+              marginBottom: '12px',
             })}
           >
             <div>
               <Tabs />
             </div>
           </div>
+        </div>
+        <div
+          css={css({
+            padding: '20px',
+            color: slate['900'],
+          })}
+        >
+          <SearchSection />
         </div>
       </div>
     </div>

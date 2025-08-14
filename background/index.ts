@@ -1,3 +1,4 @@
+import Bookmark, { IBookmarkLink } from '@background/bookmark';
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
 chrome.action.onClicked.addListener(async (tab) => {
@@ -56,6 +57,57 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
 
     return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'searchBookmarks') {
+    chrome.bookmarks.search(message.text, (bookmarks) => {
+      sendResponse({ success: true, bookmarks });
+    });
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'searchBookmarks') {
+    const text = message.payload.text;
+
+    chrome.bookmarks.search(text, (nodes) => {
+      const stack = [...nodes];
+      const links: IBookmarkLink[] = [];
+
+      while (stack.length > 0) {
+        const node = stack.pop()!;
+
+        if (node.url) {
+          links.push({
+            id: node.id,
+            title: node.title,
+            url: node.url,
+            faviconUrl: `${new URL(node.url).origin}/favicon.ico`,
+          });
+        }
+
+        if (node.children) {
+          stack.push(...node.children);
+        }
+      }
+
+      sendResponse({
+        isSuccess: true,
+        data: links,
+      });
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.type === 'getAllBookmarks') {
+    const bookmarks = await Bookmark.getAllBookmarkLinks();
+
+    sendResponse({ success: true, bookmarks });
   }
 });
 
