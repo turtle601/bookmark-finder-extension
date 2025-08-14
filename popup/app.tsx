@@ -1,4 +1,7 @@
 import GlobalProvider from '@/app/provider/globalProvider';
+import Flex from '@/shared/ui/flex';
+import Text from '@/shared/ui/text';
+import Toggle from '@/shared/ui/toggle';
 
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
@@ -31,10 +34,25 @@ const Popup = () => {
   }
 
   return (
-    <div>
-      <button onClick={() => toggle()}>Toggle</button>
-      <div>{data.isVisible ? 'Visible' : 'Hidden'}</div>
-    </div>
+    <Flex
+      justify="space-between"
+      etcStyles={{
+        width: '200px',
+        height: '100px',
+      }}
+    >
+      <Flex
+        justify="space-between"
+        align="center"
+        etcStyles={{
+          width: '100%',
+          height: '50px',
+        }}
+      >
+        <Text label="북마크 AI 파인더 켜기/끄기" />
+        <Toggle onClick={() => toggle()} isChecked={data.isVisible} size="sm" />
+      </Flex>
+    </Flex>
   );
 };
 

@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "Bookmark AI Finder Chrome Extension",
   "manifest_version": 3,
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
   "background": {
     "service_worker": "background.js"
   },

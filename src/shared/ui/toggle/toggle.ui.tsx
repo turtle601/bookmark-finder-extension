@@ -1,23 +1,47 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 
 import { css } from '@emotion/react';
 
 import { Input } from '@/shared/ui/input';
 
-import {
-  getToggleButtonStyle,
-  getToggleSwitchStyle,
-} from '@/shared/ui/toggle/toggle.style';
+import { color } from '@/shared/config/styles';
 
-interface IToggleProps extends React.ComponentPropsWithoutRef<'input'> {
+interface IToggleProps extends Omit<React.ComponentProps<'input'>, 'size'> {
   isChecked: boolean;
   onClick: React.MouseEventHandler;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-const ToggleComponent = (
-  { isChecked, onClick, ...attribute }: IToggleProps,
-  ref: React.Ref<HTMLInputElement>,
-) => {
+const sizeConfig = {
+  sm: {
+    width: '32px',
+    height: '16px',
+    thumbSize: '12px',
+    thumbOffset: '2px',
+  },
+  md: {
+    width: '40px',
+    height: '20px',
+    thumbSize: '16px',
+    thumbOffset: '2px',
+  },
+  lg: {
+    width: '48px',
+    height: '24px',
+    thumbSize: '20px',
+    thumbOffset: '2px',
+  },
+} as const;
+
+const Toggle = ({
+  isChecked,
+  onClick,
+  size = 'md',
+  ref,
+  ...attribute
+}: IToggleProps) => {
+  const config = sizeConfig[size];
+
   return (
     <>
       <Input
@@ -33,12 +57,30 @@ const ToggleComponent = (
       <button aria-label="toggle" onClick={onClick}>
         <label
           css={css({
-            ...getToggleSwitchStyle(isChecked),
+            display: 'block',
+            position: 'relative',
+            width: config.width,
+            height: config.height,
+            borderRadius: '30px',
+            backgroundColor: isChecked ? color.green : color.white,
+            boxShadow: '0 0 16px 4px rgba(0 0 0 / 10%)',
+            cursor: 'pointer',
+            transition: 'all 0.1s ease-in',
           })}
         >
           <span
             css={css({
-              ...getToggleButtonStyle(isChecked),
+              width: config.thumbSize,
+              height: config.thumbSize,
+              position: 'absolute',
+              top: '50%',
+              left: isChecked
+                ? `calc(100% - ${config.thumbSize} - ${config.thumbOffset})`
+                : config.thumbOffset,
+              transform: 'translateY(-50%)',
+              borderRadius: '50%',
+              background: isChecked ? color.gray100 : color.green,
+              transition: 'all 0.1s ease-in',
             })}
           ></span>
         </label>
@@ -46,11 +88,5 @@ const ToggleComponent = (
     </>
   );
 };
-
-export type IToggle = React.ForwardRefExoticComponent<
-  IToggleProps & React.RefAttributes<HTMLInputElement>
->;
-
-const Toggle: IToggle = forwardRef(ToggleComponent);
 
 export default Toggle;

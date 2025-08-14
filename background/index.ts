@@ -21,4 +21,42 @@ chrome.action.onClicked.addListener(async (tab) => {
   }
 });
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'getTabs') {
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+      sendResponse({
+        success: true,
+        tabs,
+      });
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'switchTab') {
+    chrome.tabs.update(message.tabId, { active: true }, (tab) => {
+      sendResponse({
+        success: true,
+        tab,
+      });
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'closeTab') {
+    chrome.tabs.remove(message.tabId, () => {
+      sendResponse({
+        success: true,
+      });
+    });
+
+    return true;
+  }
+});
+
 ContentScriptToggleSingleton.addListener();
