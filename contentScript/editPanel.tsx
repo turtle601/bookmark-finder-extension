@@ -16,11 +16,12 @@ import {
   EditBookmarkFolder,
   EditBookmarkLink,
 } from '@contentScript/bookmark/bookmarkFolder';
+import { IExtendedBookmarkTreeNode } from '@background/bookmark';
 
-const getBookmarks = async (): Promise<chrome.bookmarks.BookmarkTreeNode[]> => {
+const getBookmarks = async (): Promise<IExtendedBookmarkTreeNode[]> => {
   const response = await createChromeRequest<{
     isSuccess: boolean;
-    data: chrome.bookmarks.BookmarkTreeNode[];
+    data: IExtendedBookmarkTreeNode[];
   }>({
     action: 'getBookmarks',
   });
@@ -35,14 +36,12 @@ function EditBookmark() {
   });
 
   const rootBookmarkChildren = bookmarks?.[0]
-    ?.children as chrome.bookmarks.BookmarkTreeNode[];
-
-  console.log(rootBookmarkChildren, 'rootBookmarkChildren');
+    ?.children as IExtendedBookmarkTreeNode[];
 
   if (!rootBookmarkChildren) return null;
 
   return (
-    <>
+    <div>
       {rootBookmarkChildren.map((bookmark) => (
         <>
           {bookmark.children ? (
@@ -52,7 +51,7 @@ function EditBookmark() {
           )}
         </>
       ))}
-    </>
+    </div>
   );
 }
 
@@ -74,6 +73,9 @@ function EditPanel() {
           <Spacer space={'12px'} direction="vertical" />
           <div
             css={css({
+              width: '100%',
+              height: '360px',
+              overflow: 'auto',
               color: slate['900'],
             })}
           >

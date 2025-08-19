@@ -5,6 +5,10 @@ import Accordion from '@/shared/ui/accordion';
 import { useAccordionActionContext } from '@/shared/ui/accordion/model';
 import DnD from '@/shared/ui/dnd';
 import Text from '@/shared/ui/text';
+
+import { IExtendedBookmarkTreeNode } from '@/utils/bookmark';
+
+import BookmarkDraggable from '@contentScript/bookmark/bookmarkDraggable';
 import { css, CSSObject } from '@emotion/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +20,13 @@ const moveBookmarkMutation = async (payload: {
 }) => {
   return await createChromeRequest({
     action: 'moveBookmark',
+    payload: { ...payload },
+  });
+};
+
+const toggleBookmarksMutation = async (payload: { nodeId: string }) => {
+  return await createChromeRequest({
+    action: 'toggleBookmarks',
     payload: { ...payload },
   });
 };
@@ -50,17 +61,42 @@ function BookmarkDroppable({
 export function EditBookmarkLink({
   link,
 }: {
-  link: chrome.bookmarks.BookmarkTreeNode;
+  link: IExtendedBookmarkTreeNode;
 }) {
+  const queryClient = useQueryClient();
+
+  const { mutate: toggleBookmarks } = useMutation({
+    mutationKey: ['toggleBookmarks'],
+    mutationFn: toggleBookmarksMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+    },
+  });
+
+  const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+
+    if (e.shiftKey && e.button === 0) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      toggleBookmarks({ nodeId: link.id });
+    } else {
+      console.log('좌클릭:', link.title, link.url);
+    }
+  };
+
   return (
     <>
       <div
         css={css({
           position: 'relative',
         })}
+        onClick={handleSelectClick}
       >
-        <DnD.Draggable
-          dragAction={(e) => {
+        <BookmarkDraggable
+          id={link.id}
+          onDrag={(e) => {
             e.dataTransfer.setData(
               DND_BOOKMARK_KEY,
               JSON.stringify({
@@ -69,9 +105,7 @@ export function EditBookmarkLink({
               }),
             );
           }}
-          etcStyles={{
-            width: '100%',
-          }}
+          isSelected={link.isSelected ?? false}
         >
           {({ isDrag }) => {
             return (
@@ -82,22 +116,19 @@ export function EditBookmarkLink({
                   gap: '10px',
                   padding: '8px 12px',
                   background: isDrag ? '#3b82f6' : 'white',
-                  border: '1px solid #e2e8f0',
+                  border: `1px solid ${link.isSelected ? (isDrag ? '#3b82f6' : '#f59e0b') : slate['200']}`,
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  color: slate['600'],
+                  color: isDrag ? 'white' : slate['600'],
                   transition: 'all 0.2s ease',
                   position: 'relative',
                   boxShadow: 'none',
-                  '&:hover': {
-                    background: slate['50'],
-                    borderColor: slate['300'],
-                    color: slate['600'],
-                  },
-                  '&:active': {
-                    background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-                    color: 'white',
-                  },
+                  ...(!isDrag && {
+                    '&:hover': {
+                      background: slate['50'],
+                      color: slate['600'],
+                    },
+                  }),
                 })}
               >
                 <div
@@ -148,7 +179,7 @@ export function EditBookmarkLink({
               </div>
             );
           }}
-        </DnD.Draggable>
+        </BookmarkDraggable>
       </div>
     </>
   );
@@ -157,16 +188,32 @@ export function EditBookmarkLink({
 export function EditBookmarkFolder({
   folder,
 }: {
-  folder: chrome.bookmarks.BookmarkTreeNode;
+  folder: IExtendedBookmarkTreeNode;
 }) {
   const queryClient = useQueryClient();
 
   const [isDragEnter, setIsDragEnter] = useState(false);
   const { openAccordion } = useAccordionActionContext();
 
+  useEffect(() => {
+    if (isDragEnter) {
+      openAccordion(Number(folder.id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragEnter]);
+
   const { mutate: moveBookmark } = useMutation({
-    mutationKey: ['moveBookmark'],
+    mutationKey: ['moveBookmark', folder.id],
     mutationFn: moveBookmarkMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+      console.log('성공', folder.id);
+    },
+  });
+
+  const { mutate: toggleBookmarks } = useMutation({
+    mutationKey: ['toggleBookmarks', folder.id],
+    mutationFn: toggleBookmarksMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
     },
@@ -176,14 +223,16 @@ export function EditBookmarkFolder({
     setIsDragEnter(isDragEnter);
   };
 
-  useEffect(() => {
-    if (isDragEnter) {
-      openAccordion(Number(folder.id));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDragEnter]);
+  const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
 
-  console.log(folder, 'folder');
+    if (e.shiftKey && e.button === 0) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      toggleBookmarks({ nodeId: folder.id });
+    }
+  };
 
   return (
     <>
@@ -192,14 +241,17 @@ export function EditBookmarkFolder({
           width: '100%',
           height: '100%',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-          border: `2px solid ${isDragEnter ? '#3b82f6' : '#f1f5f9'}`,
           borderRadius: '4px',
+          border: `2px solid ${'transparent'}`,
+          ...(folder.isSelected && {
+            border: `2px solid ${'#f59e0b'}`,
+          }),
         })}
+        onClick={handleSelectClick}
       >
         <BookmarkDroppable
           onDrop={(e) => {
             const { id } = JSON.parse(e.dataTransfer.getData(DND_BOOKMARK_KEY));
-
             moveBookmark({
               id,
               parentId: folder.id,
@@ -208,44 +260,51 @@ export function EditBookmarkFolder({
           }}
           onDragEnter={handleDragEnter}
         >
-          <DnD.Draggable
-            dragAction={(e) => {
+          <BookmarkDraggable
+            id={folder.id}
+            onDrag={(e) => {
               e.dataTransfer.setData(
                 DND_BOOKMARK_KEY,
                 JSON.stringify({ type: 'folder', id: folder.id }),
               );
             }}
-            etcStyles={{
-              width: '100%',
-            }}
+            isSelected={folder.isSelected ?? false}
           >
             {({ isDrag }) => {
               return (
-                <>
+                <div
+                  css={css({
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    borderRadius: '2px',
+                    padding: '4px 8px',
+                    border: `2px solid ${isDragEnter ? '#3b82f6' : slate['200']}`,
+                    background: isDrag ? '#3b82f6' : slate['200'],
+                    width: '100%',
+                  })}
+                >
                   <Accordion.Button
                     id={folder.id}
                     etcStyles={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      padding: '4px 8px',
                       color: slate['900'],
                       fontSize: '12px',
                       lineHeight: '16px',
-                      backgroundColor: isDrag ? '#3b82f6' : slate['200'],
-                      borderRadius: '4px',
-                      gap: '4px',
-                      overflow: 'hidden',
                     }}
                   >
                     <Accordion.Icon id={folder.id} size={8} strokeWidth="8" />
-                    <Text label={folder.title} type="sm" />
+                    <div
+                      css={css({
+                        marginLeft: '4px',
+                      })}
+                    >
+                      <Text label={folder.title} type="sm" />
+                    </div>
                   </Accordion.Button>
-                </>
+                </div>
               );
             }}
-          </DnD.Draggable>
+          </BookmarkDraggable>
         </BookmarkDroppable>
         <Accordion.Panel id={folder.id}>
           <div

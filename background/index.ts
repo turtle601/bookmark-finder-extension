@@ -1,3 +1,4 @@
+import { bookmarkUtils } from '@/utils/bookmark';
 import Bookmark, { IBookmarkLink } from '@background/bookmark';
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
@@ -129,11 +130,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           error: chrome.runtime.lastError.message,
         });
       } else {
+        bookmarkUtils.initialize(tree);
+
         sendResponse({
           isSuccess: true,
-          data: tree,
+          data: bookmarkUtils.getBookmarks(),
         });
       }
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'toggleBookmarks') {
+    const { nodeId } = message.payload;
+
+    bookmarkUtils.toggleSelection(nodeId);
+
+    sendResponse({
+      isSuccess: true,
     });
 
     return true;

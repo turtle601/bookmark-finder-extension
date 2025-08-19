@@ -25,7 +25,7 @@ interface ITabsContextProps {
 const TabsContext: Context<ITabsContextProps | null> =
   createContext<ITabsContextProps | null>(null);
 
-const useTabsContext = () => {
+export const useTabsContext = () => {
   const state = useContext(TabsContext);
   if (state === null) throw new Error('Cannot find TabsContext');
   return state;
@@ -169,12 +169,10 @@ const TabPanels: FC<ITabPanelsProps> = ({ etcStyles = {}, children }) => {
   );
 };
 
-const Tabs = {
+export const Tabs = {
   Provider: TabsProvider,
   TabList,
   Tab,
   TabPanels,
   TabPanel,
 } as const;
-
-export default Tabs;

@@ -1,18 +1,15 @@
+import { useEffect } from 'react';
+import { css } from '@emotion/react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
 import GlobalProvider from '@/app/provider/globalProvider';
-import { useEffect, useRef } from 'react';
-import { css } from '@emotion/react';
 import { slate } from '@/shared/config/styles';
 
-import SearchSection from '@contentScript/search';
+import { Tabs, useTabsContext } from '@/tabs';
 
-import Tabs from '@/tabs';
-
-import ActiveTabs from './tabs';
-import Spacer from '@/shared/ui/spacer';
 import SearchPanel from '@contentScript/searchPanel';
 import EditPanel from '@contentScript/editPanel';
 
@@ -47,82 +44,98 @@ function ContentScript() {
   return data.isVisible && <A />;
 }
 
-function A() {
+function EditSection() {
+  const { selectedId } = useTabsContext();
+
   return (
     <div
       css={css({
-        position: 'fixed',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        top: 0,
-        left: 0,
-        zIndex: 2147483846,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        width: '160px',
+        height: '50px',
+        borderRadius: '12px',
+        backgroundColor: selectedId === '1' ? slate['50'] : 'transparent',
       })}
-      onClick={(e) => {
-        e.stopPropagation();
-        console.log('outside');
-      }}
-    >
+    ></div>
+  );
+}
+
+function A() {
+  return (
+    <Tabs.Provider>
       <div
         css={css({
-          width: '400px',
-          height: '640px',
-          maxHeight: '640px',
-          borderRadius: '12px',
-          padding: '12px',
-          backgroundColor: slate['50'],
+          position: 'fixed',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top: 0,
+          left: 0,
+          zIndex: 2147483846,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
         })}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log('outside');
+        }}
       >
         <div
           css={css({
-            background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
+            width: '400px',
+            height: '640px',
+            maxHeight: '640px',
+            borderRadius: '12px',
             padding: '12px',
-            height: '100%',
+            backgroundColor: slate['50'],
           })}
         >
           <div
             css={css({
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
+              background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
+              padding: '12px',
+              height: '100%',
             })}
           >
             <div
               css={css({
-                width: '28px',
-                height: '28px',
-                background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-                borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: 'bold',
+                gap: '10px',
               })}
             >
-              🔖
+              <div
+                css={css({
+                  width: '28px',
+                  height: '28px',
+                  background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                })}
+              >
+                🔖
+              </div>
+              <span
+                css={css({
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: slate['900'],
+                })}
+              >
+                Bookmark Finder
+              </span>
             </div>
-            <span
+            <div
               css={css({
-                fontSize: '18px',
-                fontWeight: '600',
-                color: slate['900'],
+                marginTop: '12px',
               })}
             >
-              Bookmark Finder
-            </span>
-          </div>
-          <div
-            css={css({
-              marginTop: '12px',
-            })}
-          >
-            <Tabs.Provider>
               <Tabs.TabList
                 etcStyles={{
                   display: 'flex',
@@ -200,11 +213,18 @@ function A() {
                   <EditPanel />
                 </Tabs.TabPanel>
               </Tabs.TabPanels>
-            </Tabs.Provider>
+            </div>
           </div>
         </div>
+        <div
+          css={css({
+            marginTop: '24px',
+          })}
+        >
+          <EditSection />
+        </div>
       </div>
-    </div>
+    </Tabs.Provider>
   );
 }
 
