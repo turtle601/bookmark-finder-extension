@@ -9,10 +9,8 @@ export const useDragEnd = () => {
   const { setMousePosition, setDragStartContent } = useDnDActionContext();
 
   const dragEnd = (mousePosition: IUseMousePositionParameter | null) => {
-    requestAnimationFrame(() => {
-      setDragStartContent(null);
-      setMousePosition(mousePosition);
-    });
+    setDragStartContent(null);
+    setMousePosition(mousePosition);
   };
 
   return {

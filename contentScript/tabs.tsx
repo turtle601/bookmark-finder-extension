@@ -41,13 +41,14 @@ function TabItem({ tab, tabRef }: ITabItemProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: '4px',
-        width: 'calc(100% - 2px)',
+        width: '100%',
       })}
       onClick={() => switchTab()}
     >
       <div
         css={css({
           display: 'flex',
+          marginTop: '2px',
           alignItems: 'center',
           gap: '10px',
           padding: '8px 12px',
@@ -66,7 +67,7 @@ function TabItem({ tab, tabRef }: ITabItemProps) {
           '&:hover': {
             background: slate['50'],
             borderColor: slate['300'],
-            transform: 'translateX(2px)',
+            transform: 'translateY(-2px)',
             color: slate['600'],
           },
           '&:active': {
@@ -202,7 +203,7 @@ function Tabs() {
           direction="column"
           gap="4px"
           css={css({
-            height: '150px',
+            height: '100px',
             overflowY: 'auto',
           })}
         >

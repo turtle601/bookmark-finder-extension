@@ -43,7 +43,7 @@ export const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
   };
 
   return (
-    <DnD.Dragable
+    <DnD.Draggable
       dragAction={handleDrag}
       etcStyles={{
         width: '100%',
@@ -106,6 +106,6 @@ export const BookmarkLink: React.FC<IBookmarkLinkProps> = ({ bookmark }) => {
           </li>
         );
       }}
-    </DnD.Dragable>
+    </DnD.Draggable>
   );
 };

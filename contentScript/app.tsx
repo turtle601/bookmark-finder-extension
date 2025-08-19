@@ -3,12 +3,18 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
 import GlobalProvider from '@/app/provider/globalProvider';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { css } from '@emotion/react';
 import { slate } from '@/shared/config/styles';
-import Tabs from '@contentScript/tabs';
 
 import SearchSection from '@contentScript/search';
+
+import Tabs from '@/tabs';
+
+import ActiveTabs from './tabs';
+import Spacer from '@/shared/ui/spacer';
+import SearchPanel from '@contentScript/searchPanel';
+import EditPanel from '@contentScript/editPanel';
 
 function ContentScript() {
   const queryClient = useQueryClient();
@@ -75,7 +81,7 @@ function A() {
           css={css({
             background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
             padding: '12px',
-            borderBottom: '1px solid #e2e8f0',
+            height: '100%',
           })}
         >
           <div
@@ -116,16 +122,86 @@ function A() {
               marginTop: '12px',
             })}
           >
-            <Tabs />
+            <Tabs.Provider>
+              <Tabs.TabList
+                etcStyles={{
+                  display: 'flex',
+                  background: slate['200'],
+                  borderRadius: '8px',
+                  padding: '4px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <Tabs.Tab
+                  etcStyles={(isActive) => {
+                    return {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1,
+                      padding: '4px 8px',
+                      border: 'none',
+                      background: isActive ? '#3b82f6' : 'transparent',
+                      color: isActive ? 'white' : slate['400'],
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      position: 'relative',
+                      borderTopLeftRadius: '6px',
+                      borderBottomLeftRadius: '6px',
+                      zIndex: 2,
+                      '&:active': {
+                        color: 'white',
+                        background: '#3b82f6',
+                        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)',
+                      },
+                    };
+                  }}
+                >
+                  검색모드
+                </Tabs.Tab>
+                <Tabs.Tab
+                  etcStyles={(isActive) => {
+                    return {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1,
+                      padding: '4px 8px',
+                      border: 'none',
+                      background: isActive ? '#3b82f6' : 'transparent',
+                      color: isActive ? 'white' : slate['400'],
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      borderTopRightRadius: '6px',
+                      borderBottomRightRadius: '6px',
+                      position: 'relative',
+                      zIndex: 2,
+                      '&:active': {
+                        color: 'white',
+                        background: '#3b82f6',
+                        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)',
+                      },
+                    };
+                  }}
+                >
+                  편집모드
+                </Tabs.Tab>
+              </Tabs.TabList>
+              <Tabs.TabPanels>
+                <Tabs.TabPanel>
+                  <SearchPanel />
+                </Tabs.TabPanel>
+                <Tabs.TabPanel>
+                  <EditPanel />
+                </Tabs.TabPanel>
+              </Tabs.TabPanels>
+            </Tabs.Provider>
           </div>
-        </div>
-        <div
-          css={css({
-            padding: '12px',
-            color: slate['900'],
-          })}
-        >
-          <SearchSection />
         </div>
       </div>
     </div>

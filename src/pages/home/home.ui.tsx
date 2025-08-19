@@ -31,7 +31,7 @@ const Home: React.FC = () => {
               pointerEvents: 'auto',
             }}
           >
-            <DnD.Dragable isMoved>
+            <DnD.Draggable isMoved>
               {({ isDrag }) => {
                 return (
                   <div
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
                   </div>
                 );
               }}
-            </DnD.Dragable>
+            </DnD.Draggable>
           </OpenSidebarDefault>
         </DnD.Boundary>
       </DnD.Provider>

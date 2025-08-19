@@ -110,13 +110,57 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.bookmarks.getTree(async (nodes) => {
       const result = await Bookmark.searchBookmarksWithAI(nodes, text);
 
-      console.log(result, "Rest");
-
       sendResponse({
         isSuccess: true,
         data: result,
       });
     });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'getBookmarks') {
+    chrome.bookmarks.getTree((tree) => {
+      if (chrome.runtime.lastError) {
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        sendResponse({
+          isSuccess: true,
+          data: tree,
+        });
+      }
+    });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'moveBookmark') {
+    const destination = {
+      parentId: message.payload.parentId,
+      index: message.payload.index,
+    };
+
+    chrome.bookmarks.move(
+      message.payload.id,
+      { ...destination },
+      (bookmarkList) => {
+        if (chrome.runtime.lastError) {
+          sendResponse({
+            isSuccess: false,
+            error: chrome.runtime.lastError.message,
+          });
+        } else {
+          sendResponse({ isSuccess: true });
+        }
+      },
+    );
 
     return true;
   }

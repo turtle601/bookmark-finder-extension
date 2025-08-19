@@ -20,7 +20,7 @@ const PointerContentComponent: React.FC<IPointerContentProps> = ({
   const mouseY = mousePosition?.y;
 
   const isShow = Boolean(
-    dragStartContent && mouseX !== undefined && mouseY !== undefined,
+    !!dragStartContent && mouseX !== undefined && mouseY !== undefined,
   );
 
   return (
@@ -28,6 +28,7 @@ const PointerContentComponent: React.FC<IPointerContentProps> = ({
       <div
         css={css({
           position: 'absolute',
+          maxWidth: '200px',
           transform: `translate(${mouseX}px, ${mouseY}px)`,
           zIndex: `${THIRD_LAYER_ZIDENX}`,
           pointerEvents: 'none',

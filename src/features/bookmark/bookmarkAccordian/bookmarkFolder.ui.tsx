@@ -63,7 +63,7 @@ export const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
 
   return (
     <li>
-      <DnD.Dropable dropAction={handleDrop}>
+      <DnD.Droppable dropAction={handleDrop}>
         {({ isDragEnter }) => {
           return (
             <Flex
@@ -87,7 +87,7 @@ export const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
               >
                 <Accordion.Icon id={folderData.id} size={12} strokeWidth="12" />
               </Accordion.Button>
-              <DnD.Dragable
+              <DnD.Draggable
                 dragAction={handleDrag}
                 etcStyles={{ width: '100%' }}
               >
@@ -144,11 +144,11 @@ export const BookmarkFolder: React.FC<IBookmarkFolderProps> = ({
                     </Flex>
                   );
                 }}
-              </DnD.Dragable>
+              </DnD.Draggable>
             </Flex>
           );
         }}
-      </DnD.Dropable>
+      </DnD.Droppable>
       <Accordion.Panel id={folderData.id}>
         {bookmarks.map((bookmark, idx) => {
           return (

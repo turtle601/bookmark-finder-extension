@@ -32,7 +32,7 @@ export const BookmarkDropArea: React.FC<IBookmarkDropAreaProps> = ({
   };
 
   return (
-    <DnD.Dropable dropAction={handleDrop}>
+    <DnD.Droppable dropAction={handleDrop}>
       {({ isDragEnter }) => {
         return (
           <div
@@ -44,6 +44,6 @@ export const BookmarkDropArea: React.FC<IBookmarkDropAreaProps> = ({
           ></div>
         );
       }}
-    </DnD.Dropable>
+    </DnD.Droppable>
   );
 };

@@ -74,8 +74,6 @@ function BookmarkLink({ bookmark }: { bookmark: IBookmarkLink }) {
         borderRadius: '6px',
         '&:hover': {
           background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-          margin: '0 -12px',
-          padding: '10px 12px',
           borderBottom: '1px solid transparent',
           boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         },
@@ -143,8 +141,6 @@ function BookmarkLink({ bookmark }: { bookmark: IBookmarkLink }) {
 
 function SearchResult({ bookmarks }: ISearchResultProps) {
   if (bookmarks.length === 0) return <div>검색 결과가 없습니다.</div>;
-
-  console.log(bookmarks, 'bookmarks');
 
   return (
     <div
