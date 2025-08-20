@@ -14,7 +14,8 @@ const PointerContentComponent: React.FC<IPointerContentProps> = ({
   customStyle = () => {},
   ...attribute
 }) => {
-  const { mousePosition, dragStartContent } = useDnDContext();
+  const { mousePosition, dragStartContent, dragStartContentSize } =
+    useDnDContext();
 
   const mouseX = mousePosition?.x;
   const mouseY = mousePosition?.y;
@@ -28,7 +29,8 @@ const PointerContentComponent: React.FC<IPointerContentProps> = ({
       <div
         css={css({
           position: 'absolute',
-          maxWidth: '200px',
+          width: `${dragStartContentSize.width}px`,
+          height: `${dragStartContentSize.height}px`,
           transform: `translate(${mouseX}px, ${mouseY}px)`,
           zIndex: `${THIRD_LAYER_ZIDENX}`,
           pointerEvents: 'none',

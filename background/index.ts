@@ -245,4 +245,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'resetBookmarks') {
+    chrome.bookmarks.getTree((tree) => {
+      bookmarkUtils.reset(tree);
+      sendResponse({ isSuccess: true });
+    });
+    return true;
+  }
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  console.log(changeInfo, 'changeInfo');
+
+  if (changeInfo.status === 'complete') {
+    chrome.bookmarks.getTree((tree) => {
+      bookmarkUtils.reset(tree);
+    });
+
+    return true;
+  }
+});
+
 ContentScriptToggleSingleton.addListener();

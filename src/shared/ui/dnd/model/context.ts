@@ -9,11 +9,21 @@ export interface IDnDContextProps {
   boundaryRef: React.RefObject<HTMLDivElement>;
   mousePosition: IMousePosition | null;
   dragStartContent: ReactNode;
+  dragStartContentSize: {
+    width: number;
+    height: number;
+  };
 }
 
 export interface IDnDActionContextProps {
   setMousePosition: React.Dispatch<React.SetStateAction<IMousePosition | null>>;
   setDragStartContent: React.Dispatch<React.SetStateAction<ReactNode>>;
+  setDragStartContentSize: React.Dispatch<
+    React.SetStateAction<{
+      width: number;
+      height: number;
+    }>
+  >;
 }
 
 export const DnDContext: Context<IDnDContextProps | null> =

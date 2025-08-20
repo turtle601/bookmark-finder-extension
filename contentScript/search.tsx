@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
-import { IAIBookmarkLink, IBookmarkLink } from '@background/bookmark';
+
 import { createChromeRequest } from '@/shared/lib/fetch';
 import Toggle from '@/shared/ui/toggle';
+import { IAIBookmarkLink, IBookmarkLink } from '@background/bookmark';
 
 interface ISearchProps {
   inputRef: React.RefObject<HTMLInputElement>;

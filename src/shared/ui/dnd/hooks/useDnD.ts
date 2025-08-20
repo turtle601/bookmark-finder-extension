@@ -15,11 +15,21 @@ export const useDnD = () => {
     null,
   );
 
+  const [dragStartContentSize, setDragStartContentSize] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: 0,
+    height: 0,
+  });
+
   return {
     boundaryRef,
     mousePosition,
     dragStartContent,
+    dragStartContentSize,
     setMousePosition,
     setDragStartContent,
+    setDragStartContentSize,
   };
 };

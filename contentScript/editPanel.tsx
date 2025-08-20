@@ -16,7 +16,8 @@ import {
   EditBookmarkFolder,
   EditBookmarkLink,
 } from '@contentScript/bookmark/bookmarkFolder';
-import { IExtendedBookmarkTreeNode } from '@background/bookmark';
+
+import type { IExtendedBookmarkTreeNode } from '@/utils/bookmark';
 
 const getBookmarks = async (): Promise<IExtendedBookmarkTreeNode[]> => {
   const response = await createChromeRequest<{

@@ -1,7 +1,7 @@
 import { DragEventHandler, ReactNode, useState } from 'react';
 
 import { useDragEnd, useDragStart } from '@/shared/ui/dnd/hooks';
-import { useDnDContext } from '@/shared/ui/dnd/model';
+import { useDnDActionContext, useDnDContext } from '@/shared/ui/dnd/model';
 
 interface IUseDragableParameter {
   children: (props: { isDrag: boolean }) => ReactNode;
@@ -17,6 +17,8 @@ export const useDragable = ({
   isMoved,
 }: IUseDragableParameter) => {
   const { mousePosition } = useDnDContext();
+  const { setDragStartContentSize } = useDnDActionContext();
+
   const [isDrag, setIsDrag] = useState(false);
   const [isDragStartCount, setIsDragStartCount] = useState(0);
 
@@ -24,6 +26,11 @@ export const useDragable = ({
   const { dragEnd } = useDragEnd();
 
   const handleDragStart: React.DragEventHandler = (e) => {
+    setDragStartContentSize({
+      width: e.currentTarget.getBoundingClientRect().width ?? 0,
+      height: e.currentTarget.getBoundingClientRect().height ?? 0,
+    });
+
     dragStart(children({ isDrag }))(e);
     setIsDrag(true);
     setIsDragStartCount((prev) => prev + 1);

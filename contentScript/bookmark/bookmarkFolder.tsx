@@ -126,99 +126,97 @@ export function EditBookmarkLink({
   };
 
   return (
-    <>
-      <div
-        css={css({
-          position: 'relative',
-        })}
-        onClick={handleSelectClick}
+    <div
+      css={css({
+        position: 'relative',
+      })}
+      onClick={handleSelectClick}
+    >
+      <BookmarkDraggable
+        isSelected={link.isSelected ?? false}
+        onDragStart={() => {
+          selectBookmarks({ id: link.id });
+        }}
+        onDragEnd={() => {
+          setTimeout(() => {
+            deselectAllBookmarks();
+          }, 100);
+        }}
       >
-        <BookmarkDraggable
-          isSelected={link.isSelected ?? false}
-          onDragStart={() => {
-            selectBookmarks({ id: link.id });
-          }}
-          onDragEnd={() => {
-            setTimeout(() => {
-              deselectAllBookmarks();
-            }, 100);
-          }}
-        >
-          {({ isDrag }) => {
-            return (
+        {({ isDrag }) => {
+          return (
+            <div
+              css={css({
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '8px 12px',
+                background: isDrag ? '#3b82f6' : 'white',
+                border: `1px solid ${link.isSelected ? '#3b82f6' : slate['200']}`,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                color: isDrag ? 'white' : slate['600'],
+                transition: 'all 0.2s ease',
+                position: 'relative',
+                boxShadow: 'none',
+                ...(!isDrag && {
+                  '&:hover': {
+                    background: slate['50'],
+                    color: slate['600'],
+                  },
+                }),
+              })}
+            >
               <div
                 css={css({
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '3px',
+                  fontSize: '10px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
-                  padding: '8px 12px',
-                  background: isDrag ? '#3b82f6' : 'white',
-                  border: `1px solid ${link.isSelected ? '#3b82f6' : slate['200']}`,
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  color: isDrag ? 'white' : slate['600'],
-                  transition: 'all 0.2s ease',
-                  position: 'relative',
-                  boxShadow: 'none',
-                  ...(!isDrag && {
-                    '&:hover': {
-                      background: slate['50'],
-                      color: slate['600'],
-                    },
-                  }),
+                  justifyContent: 'center',
+                  flexShrink: 0,
                 })}
               >
-                <div
+                <img
+                  src={`${new URL(link.url!).origin}/favicon.ico`}
+                  alt={`${link.title} 아이콘`}
                   css={css({
                     width: '16px',
                     height: '16px',
-                    borderRadius: '3px',
-                    fontSize: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
+                    objectFit: 'contain',
+                    verticalAlign: 'middle',
                   })}
-                >
-                  <img
-                    src={`${new URL(link.url!).origin}/favicon.ico`}
-                    alt={`${link.title} 아이콘`}
-                    css={css({
-                      width: '16px',
-                      height: '16px',
-                      objectFit: 'contain',
-                      verticalAlign: 'middle',
-                    })}
-                  />
-                </div>
-                <p
-                  css={css({
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    flex: 1,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  })}
-                >
-                  {link.title}
-                </p>
-                <div
-                  css={css({
-                    cursor: 'pointer',
-                  })}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  ×
-                </div>
+                />
               </div>
-            );
-          }}
-        </BookmarkDraggable>
-      </div>
-    </>
+              <p
+                css={css({
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  flex: 1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                })}
+              >
+                {link.title}
+              </p>
+              <div
+                css={css({
+                  cursor: 'pointer',
+                })}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                ☰
+              </div>
+            </div>
+          );
+        }}
+      </BookmarkDraggable>
+    </div>
   );
 }
 
@@ -386,7 +384,7 @@ export function EditBookmarkFolder({
                         moveBookmark({
                           id,
                           parentId: folder.id,
-                          index: 0 + indexing,
+                          index: index + indexing,
                         });
                       });
                     }}

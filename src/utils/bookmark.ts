@@ -18,6 +18,20 @@ class BookmarkUtils {
     return !this._nonSelectableIds.includes(nodeId);
   }
 
+  public reset(bookmarkTree: chrome.bookmarks.BookmarkTreeNode[]): void {
+    const processNode = (
+      node: chrome.bookmarks.BookmarkTreeNode,
+    ): IExtendedBookmarkTreeNode => {
+      return {
+        ...node,
+        isSelected: false,
+        children: node.children ? node.children.map(processNode) : undefined,
+      };
+    };
+
+    this._bookmarks = bookmarkTree.map(processNode);
+  }
+
   /**
    * 북마크 트리를 초기화하고 내부 상태에 저장
    */
