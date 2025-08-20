@@ -9,6 +9,7 @@ export interface IDragableProps {
   children: (props: { isDrag: boolean }) => ReactNode;
   isMoved?: boolean;
   dragAction?: DragEventHandler;
+  dragEndAction?: DragEventHandler;
   etcStyles?: CSSObject;
 }
 
@@ -17,6 +18,7 @@ const DragableComponent = (
     children,
     isMoved = false,
     dragAction = () => {},
+    dragEndAction = () => {},
     etcStyles = {},
   }: IDragableProps,
   ref: Ref<HTMLDivElement>,
@@ -29,6 +31,7 @@ const DragableComponent = (
     mousePosition,
   } = useDragable({
     dragAction,
+    dragEndAction,
     children,
     isMoved,
   });

@@ -184,6 +184,30 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'selectBookmarks') {
+    const { id } = message.payload;
+
+    bookmarkUtils.selectNode(id);
+
+    sendResponse({ isSuccess: true });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'deselectBookmarks') {
+    const { id } = message.payload;
+
+    bookmarkUtils.deselectNode(id);
+
+    sendResponse({ isSuccess: true });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'selectAllBookmarks') {
     bookmarkUtils.selectAll();
 
@@ -209,6 +233,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     sendResponse({ isSuccess: true, data: { hasSelected } });
 
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'getTopLevelSelectedNodes') {
+    const selectedNodes = bookmarkUtils.getTopLevelSelectedNodes();
+    sendResponse({ isSuccess: true, data: selectedNodes });
     return true;
   }
 });

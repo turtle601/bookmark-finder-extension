@@ -1,4 +1,3 @@
-import { DND_BOOKMARK_KEY } from '@/shared/config/constant';
 import { slate } from '@/shared/config/styles';
 import { createChromeRequest } from '@/shared/lib/fetch';
 import Accordion from '@/shared/ui/accordion';
@@ -7,12 +6,13 @@ import DnD from '@/shared/ui/dnd';
 import Text from '@/shared/ui/text';
 
 import { IExtendedBookmarkTreeNode } from '@/utils/bookmark';
-
 import BookmarkDraggable from '@contentScript/bookmark/bookmarkDraggable';
+
 import { css, CSSObject } from '@emotion/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
+// 단체 이동으로 변경
 const moveBookmarkMutation = async (payload: {
   id: string;
   parentId: string;
@@ -28,6 +28,28 @@ const toggleBookmarksMutation = async (payload: { nodeId: string }) => {
   return await createChromeRequest({
     action: 'toggleBookmarks',
     payload: { ...payload },
+  });
+};
+
+const selectBookmarksMutation = async (payload: { id: string }) => {
+  return await createChromeRequest({
+    action: 'selectBookmarks',
+    payload: { ...payload },
+  });
+};
+
+const deselectAllBookmarksMutation = async () => {
+  return await createChromeRequest({
+    action: 'deselectAllBookmarks',
+  });
+};
+
+const getTopLevelSelectedNodes = async () => {
+  return await createChromeRequest<{
+    isSuccess: boolean;
+    data: string[];
+  }>({
+    action: 'getTopLevelSelectedNodes',
   });
 };
 
@@ -66,7 +88,7 @@ export function EditBookmarkLink({
   const queryClient = useQueryClient();
 
   const { mutate: toggleBookmarks } = useMutation({
-    mutationKey: ['toggleBookmarks'],
+    mutationKey: ['toggleBookmarks', link.id],
     mutationFn: toggleBookmarksMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
@@ -74,8 +96,21 @@ export function EditBookmarkLink({
   });
 
   // 선택 mutation api
+  const { mutate: selectBookmarks } = useMutation({
+    mutationKey: ['selectBookmarks', link.id],
+    mutationFn: selectBookmarksMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+    },
+  });
 
-  // 선택 취소 mutation api
+  const { mutate: deselectAllBookmarks } = useMutation({
+    mutationKey: ['deselectAllBookmarks'],
+    mutationFn: deselectAllBookmarksMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+    },
+  });
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -99,17 +134,15 @@ export function EditBookmarkLink({
         onClick={handleSelectClick}
       >
         <BookmarkDraggable
-          id={link.id}
-          onDrag={(e) => {
-            e.dataTransfer.setData(
-              DND_BOOKMARK_KEY,
-              JSON.stringify({
-                type: 'link',
-                id: link.id,
-              }),
-            );
-          }}
           isSelected={link.isSelected ?? false}
+          onDragStart={() => {
+            selectBookmarks({ id: link.id });
+          }}
+          onDragEnd={() => {
+            setTimeout(() => {
+              deselectAllBookmarks();
+            }, 100);
+          }}
         >
           {({ isDrag }) => {
             return (
@@ -120,7 +153,7 @@ export function EditBookmarkLink({
                   gap: '10px',
                   padding: '8px 12px',
                   background: isDrag ? '#3b82f6' : 'white',
-                  border: `1px solid ${link.isSelected ? (isDrag ? '#3b82f6' : '#f59e0b') : slate['200']}`,
+                  border: `1px solid ${link.isSelected ? '#3b82f6' : slate['200']}`,
                   borderRadius: '8px',
                   cursor: 'pointer',
                   color: isDrag ? 'white' : slate['600'],
@@ -212,13 +245,31 @@ export function EditBookmarkFolder({
     mutationFn: moveBookmarkMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
-      console.log('성공', folder.id);
     },
   });
 
   const { mutate: toggleBookmarks } = useMutation({
     mutationKey: ['toggleBookmarks', folder.id],
     mutationFn: toggleBookmarksMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTopLevelSelectedNodes'] });
+    },
+  });
+
+  // 선택 mutation api
+  const { mutate: selectBookmarks } = useMutation({
+    mutationKey: ['selectBookmarks', folder.id],
+    mutationFn: selectBookmarksMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTopLevelSelectedNodes'] });
+    },
+  });
+
+  const { mutate: deselectAllBookmarks } = useMutation({
+    mutationKey: ['deselectAllBookmarks'],
+    mutationFn: deselectAllBookmarksMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
     },
@@ -250,31 +301,35 @@ export function EditBookmarkFolder({
           border: `2px solid ${'transparent'}`,
           ...(folder.isSelected &&
             !isWholeDrag && {
-              border: `2px solid ${'#f59e0b'}`,
+              border: `2px solid ${'#3b82f6'}`,
             }),
         })}
         onClick={handleSelectClick}
       >
         <BookmarkDroppable
-          onDrop={(e) => {
-            const { id } = JSON.parse(e.dataTransfer.getData(DND_BOOKMARK_KEY));
-            moveBookmark({
-              id,
-              parentId: folder.id,
-              index: 0,
+          onDrop={async (e) => {
+            const selectedTopLevelNodes = await getTopLevelSelectedNodes();
+
+            selectedTopLevelNodes?.data?.forEach((id, indexing) => {
+              moveBookmark({
+                id,
+                parentId: folder.id,
+                index: 0,
+              });
             });
           }}
           onDragEnter={handleDragEnter}
         >
           <BookmarkDraggable
-            id={folder.id}
-            onDrag={(e) => {
-              e.dataTransfer.setData(
-                DND_BOOKMARK_KEY,
-                JSON.stringify({ type: 'folder', id: folder.id }),
-              );
-            }}
             isSelected={folder.isSelected ?? false}
+            onDragStart={() => {
+              selectBookmarks({ id: folder.id });
+            }}
+            onDragEnd={() => {
+              setTimeout(() => {
+                deselectAllBookmarks();
+              }, 500);
+            }}
           >
             {({ isDrag }) => {
               setIsWholeDrag(isDrag);
@@ -323,15 +378,16 @@ export function EditBookmarkFolder({
               return (
                 <React.Fragment key={child.id}>
                   <DnD.Droppable
-                    dropAction={(e) => {
-                      const { id } = JSON.parse(
-                        e.dataTransfer.getData(DND_BOOKMARK_KEY),
-                      );
+                    dropAction={async (e) => {
+                      const selectedTopLevelNodes =
+                        await getTopLevelSelectedNodes();
 
-                      moveBookmark({
-                        id,
-                        parentId: folder.id,
-                        index,
+                      selectedTopLevelNodes?.data?.forEach((id, indexing) => {
+                        moveBookmark({
+                          id,
+                          parentId: folder.id,
+                          index: 0 + indexing,
+                        });
                       });
                     }}
                   >
@@ -360,15 +416,15 @@ export function EditBookmarkFolder({
             })}
           </div>
           <DnD.Droppable
-            dropAction={(e) => {
-              const { id } = JSON.parse(
-                e.dataTransfer.getData(DND_BOOKMARK_KEY),
-              );
+            dropAction={async (e) => {
+              const selectedTopLevelNodes = await getTopLevelSelectedNodes();
 
-              moveBookmark({
-                id,
-                parentId: folder.id,
-                index: folder.children?.length ?? 0,
+              selectedTopLevelNodes?.data?.forEach((id, indexing) => {
+                moveBookmark({
+                  id,
+                  parentId: folder.id,
+                  index: (folder.children?.length ?? 0) + indexing,
+                });
               });
             }}
           >

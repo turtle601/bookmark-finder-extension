@@ -180,8 +180,8 @@ class BookmarkUtils {
       this._setChildrenSelection(targetNode, true);
     }
 
-    // 상위 폴더들의 선택 상태 업데이트
-    this._updateParentSelection(nodeId);
+    // // 상위 폴더들의 선택 상태 업데이트
+    // this._updateParentSelection(nodeId);
 
     return true;
   }
@@ -340,6 +340,26 @@ class BookmarkUtils {
     };
 
     this._bookmarks.forEach(selectNode);
+  }
+
+  public getTopLevelSelectedNodes(): string[] {
+    const selectedNodes: IExtendedBookmarkTreeNode[] = [];
+
+    const collectSelected = (nodes: IExtendedBookmarkTreeNode[]): void => {
+      nodes.forEach((node) => {
+        if (node.isSelected && this._isNodeSelectable(node.id)) {
+          selectedNodes.push(node);
+        }
+
+        if (node.children && !node.isSelected) {
+          collectSelected(node.children);
+        }
+      });
+    };
+
+    collectSelected(this._bookmarks);
+
+    return selectedNodes.map((node) => node.id);
   }
 }
 

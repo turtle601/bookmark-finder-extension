@@ -2,16 +2,16 @@ import DnD from '@/shared/ui/dnd';
 import { useDnDContext } from '@/shared/ui/dnd/model';
 
 interface IBookmarkDraggableProps {
-  id: string;
   isSelected: boolean;
-  onDrag: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
   children: ({ isDrag }: { isDrag: boolean }) => React.ReactNode;
 }
 
 function BookmarkDraggable({
-  id,
   isSelected,
-  onDrag,
+  onDragStart,
+  onDragEnd,
   children,
 }: IBookmarkDraggableProps) {
   const { mousePosition } = useDnDContext();
@@ -20,7 +20,8 @@ function BookmarkDraggable({
 
   return (
     <DnD.Draggable
-      dragAction={onDrag}
+      dragAction={onDragStart}
+      dragEndAction={onDragEnd}
       etcStyles={{
         width: '100%',
       }}

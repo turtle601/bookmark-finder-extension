@@ -6,12 +6,14 @@ import { useDnDContext } from '@/shared/ui/dnd/model';
 interface IUseDragableParameter {
   children: (props: { isDrag: boolean }) => ReactNode;
   dragAction: DragEventHandler;
+  dragEndAction: DragEventHandler;
   isMoved: boolean;
 }
 
 export const useDragable = ({
   children,
   dragAction,
+  dragEndAction,
   isMoved,
 }: IUseDragableParameter) => {
   const { mousePosition } = useDnDContext();
@@ -24,8 +26,9 @@ export const useDragable = ({
   const handleDragStart: React.DragEventHandler = (e) => {
     dragStart(children({ isDrag }))(e);
     setIsDrag(true);
-    dragAction(e);
     setIsDragStartCount((prev) => prev + 1);
+
+    dragAction(e);
   };
 
   const handleDragEnd: React.DragEventHandler = (e) => {
@@ -37,6 +40,8 @@ export const useDragable = ({
     }
 
     dragEnd(null);
+
+    dragEndAction(e);
   };
 
   return {
