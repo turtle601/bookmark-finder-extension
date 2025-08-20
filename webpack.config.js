@@ -9,9 +9,8 @@ require('dotenv').config({ path: './.env' });
 
 module.exports = {
   entry: {
-    background: path.resolve('/background/index.ts'),
-    contentScript: path.resolve('/contentScript/index.tsx'),
-    popup: path.resolve('/popup/index.tsx'),
+    background: path.resolve('./src/v3/background/index.ts'),
+    sidebarPanel: path.resolve('./src/v3/index.tsx'),
   },
   output: {
     filename: '[name].js',
@@ -47,9 +46,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'BookMark Chrome Extensions',
-      filename: 'popup.html',
-      chunks: ['popup'],
-      template: path.resolve('public/popup.html'),
+      filename: 'sidebarPanel.html',
+      chunks: ['sidebarPanel'],
+      template: path.resolve('public/sidebarPanel.html'),
     }),
     new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
