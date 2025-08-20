@@ -73,6 +73,10 @@ export function EditBookmarkLink({
     },
   });
 
+  // 선택 mutation api
+
+  // 선택 취소 mutation api
+
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
@@ -193,6 +197,7 @@ export function EditBookmarkFolder({
   const queryClient = useQueryClient();
 
   const [isDragEnter, setIsDragEnter] = useState(false);
+  const [isWholeDrag, setIsWholeDrag] = useState(false);
   const { openAccordion } = useAccordionActionContext();
 
   useEffect(() => {
@@ -243,9 +248,10 @@ export function EditBookmarkFolder({
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
           borderRadius: '4px',
           border: `2px solid ${'transparent'}`,
-          ...(folder.isSelected && {
-            border: `2px solid ${'#f59e0b'}`,
-          }),
+          ...(folder.isSelected &&
+            !isWholeDrag && {
+              border: `2px solid ${'#f59e0b'}`,
+            }),
         })}
         onClick={handleSelectClick}
       >
@@ -271,6 +277,7 @@ export function EditBookmarkFolder({
             isSelected={folder.isSelected ?? false}
           >
             {({ isDrag }) => {
+              setIsWholeDrag(isDrag);
               return (
                 <div
                   css={css({

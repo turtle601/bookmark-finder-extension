@@ -8,6 +8,16 @@ class BookmarkUtils {
   private _bookmarks: IExtendedBookmarkTreeNode[] = [];
   private _isSelectedAction: boolean = false;
 
+  // 선택 불가능한 ID 목록
+  private readonly _nonSelectableIds: string[] = ['0', '1', '2'];
+
+  /**
+   * 노드가 선택 가능한지 확인
+   */
+  private _isNodeSelectable(nodeId: string): boolean {
+    return !this._nonSelectableIds.includes(nodeId);
+  }
+
   /**
    * 북마크 트리를 초기화하고 내부 상태에 저장
    */
@@ -153,6 +163,10 @@ class BookmarkUtils {
    * 특정 노드를 선택
    */
   public selectNode(nodeId: string): boolean {
+    if (!this._isNodeSelectable(nodeId)) {
+      return false;
+    }
+
     const targetNode = this.findNodeById(nodeId);
 
     if (!targetNode || targetNode.isSelected) {
@@ -176,6 +190,10 @@ class BookmarkUtils {
    * 특정 노드의 선택을 해제
    */
   public deselectNode(nodeId: string): boolean {
+    if (!this._isNodeSelectable(nodeId)) {
+      return false;
+    }
+
     const targetNode = this.findNodeById(nodeId);
 
     if (!targetNode || !targetNode.isSelected) {
@@ -199,6 +217,10 @@ class BookmarkUtils {
    * 특정 노드의 선택 상태를 토글
    */
   public toggleSelection(nodeId: string): boolean {
+    if (!this._isNodeSelectable(nodeId)) {
+      return false;
+    }
+
     const targetNode = this.findNodeById(nodeId);
 
     if (!targetNode) {
@@ -216,7 +238,9 @@ class BookmarkUtils {
    * 여러 노드를 한번에 선택
    */
   public selectMultiple(nodeIds: string[]): void {
-    nodeIds.forEach((nodeId) => this.selectNode(nodeId));
+    nodeIds
+      .filter((id) => this._isNodeSelectable(id))
+      .forEach((nodeId) => this.selectNode(nodeId));
   }
 
   /**
@@ -241,7 +265,7 @@ class BookmarkUtils {
 
     const collectSelected = (nodes: IExtendedBookmarkTreeNode[]): void => {
       nodes.forEach((node) => {
-        if (node.isSelected) {
+        if (node.isSelected && this._isNodeSelectable(node.id)) {
           selectedNodes.push(node);
         }
         if (node.children) {
@@ -272,8 +296,50 @@ class BookmarkUtils {
    * 특정 노드가 선택되어 있는지 확인
    */
   public isNodeSelected(nodeId: string): boolean {
+    if (!this._isNodeSelectable(nodeId)) {
+      return false;
+    }
+
     const node = this.findNodeById(nodeId);
     return node ? !!node.isSelected : false;
+  }
+
+  /**
+   * 모든 노드를 선택
+   */
+  public selectAll(): void {
+    const selectNode = (node: IExtendedBookmarkTreeNode): void => {
+      if (this._isNodeSelectable(node.id)) {
+        node.isSelected = true;
+      }
+
+      if (node.children) {
+        node.children.forEach(selectNode);
+      }
+    };
+
+    this._bookmarks.forEach(selectNode);
+  }
+
+  /**
+   * 선택된 노드가 있는지 확인
+   */
+  public hasSelectedNodes(): boolean {
+    return this.getSelectedCount() > 0;
+  }
+
+  /**
+   * 모든 노드를 선택
+   */
+  public deselectAll(): void {
+    const selectNode = (node: IExtendedBookmarkTreeNode): void => {
+      node.isSelected = false;
+      if (node.children) {
+        node.children.forEach(selectNode);
+      }
+    };
+
+    this._bookmarks.forEach(selectNode);
   }
 }
 

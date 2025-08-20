@@ -183,4 +183,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'selectAllBookmarks') {
+    bookmarkUtils.selectAll();
+
+    sendResponse({ isSuccess: true });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'deselectAllBookmarks') {
+    bookmarkUtils.deselectAll();
+
+    sendResponse({ isSuccess: true });
+
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'hasSelectedBookmarks') {
+    const hasSelected = bookmarkUtils.hasSelectedNodes();
+
+    sendResponse({ isSuccess: true, data: { hasSelected } });
+
+    return true;
+  }
+});
+
 ContentScriptToggleSingleton.addListener();

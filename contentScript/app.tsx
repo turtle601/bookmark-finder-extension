@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import ContentScriptToggleSingleton from '@background/contentScriptToggleManager';
 
@@ -12,6 +12,29 @@ import { Tabs, useTabsContext } from '@/tabs';
 
 import SearchPanel from '@contentScript/searchPanel';
 import EditPanel from '@contentScript/editPanel';
+import Flex from '@/shared/ui/flex';
+import { createChromeRequest } from '@/shared/lib/fetch';
+
+const selectAllBookmarksMutation = async () => {
+  return await createChromeRequest({
+    action: 'selectAllBookmarks',
+  });
+};
+
+const deselectAllBookmarksMutation = async () => {
+  return await createChromeRequest({
+    action: 'deselectAllBookmarks',
+  });
+};
+
+const hasSelectedBookmarksMutation = async () => {
+  return await createChromeRequest<{
+    isSuccess: boolean;
+    data: { hasSelected: boolean };
+  }>({
+    action: 'hasSelectedBookmarks',
+  });
+};
 
 function ContentScript() {
   const queryClient = useQueryClient();
@@ -44,18 +67,149 @@ function ContentScript() {
   return data.isVisible && <A />;
 }
 
+const getActionButtonStyle = (): CSSObject => {
+  return {
+    width: '96px',
+    height: '36px',
+    border: '1px solid #dadce0',
+    padding: '4px 8px',
+    borderRadius: '6px',
+    background: 'white',
+    color: '#3c4043',
+    fontSize: '13px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    '&:hover': {
+      background: '#f8f9fa',
+      borderColor: '#c1c7cd',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    },
+    '&:active': {
+      background: '#f1f3f4',
+    },
+  };
+};
+
 function EditSection() {
+  const queryClient = useQueryClient();
+
   const { selectedId } = useTabsContext();
 
+  const { data } = useQuery<{
+    isSuccess: boolean;
+    data: { hasSelected: boolean };
+  }>({
+    queryKey: ['hasSelectedBookmarks'],
+    queryFn: () => hasSelectedBookmarksMutation(),
+  });
+
+  const { mutate: selectAllBookmarks } = useMutation({
+    mutationKey: ['selectAllBookmarks'],
+    mutationFn: () => selectAllBookmarksMutation(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+      queryClient.invalidateQueries({ queryKey: ['hasSelectedBookmarks'] });
+    },
+  });
+
+  const { mutate: deselectAllBookmarks } = useMutation({
+    mutationKey: ['deselectAllBookmarks'],
+    mutationFn: () => deselectAllBookmarksMutation(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarks'] });
+      queryClient.invalidateQueries({ queryKey: ['hasSelectedBookmarks'] });
+    },
+  });
+
+  if (selectedId !== '1') {
+    return (
+      <div
+        css={css({
+          width: '320px',
+          height: '50px',
+          backgroundColor: 'transparent',
+        })}
+      ></div>
+    );
+  }
+
   return (
-    <div
-      css={css({
-        width: '160px',
+    <Flex
+      etcStyles={{
+        width: '320px',
         height: '50px',
         borderRadius: '12px',
-        backgroundColor: selectedId === '1' ? slate['50'] : 'transparent',
-      })}
-    ></div>
+        backgroundColor: slate['50'],
+        justifyContent: 'space-around',
+        alignItems: 'center',
+      }}
+    >
+      <button
+        css={css({
+          ...getActionButtonStyle(),
+          background: '#e8f0fe',
+          borderColor: '#4285f4',
+          color: '#1967d2',
+          '&:hover': {
+            background: '#d2e3fc',
+          },
+        })}
+        onClick={() => {
+          selectAllBookmarks();
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg>
+        전체선택
+      </button>
+
+      <button
+        disabled={!data?.data.hasSelected}
+        css={css({
+          ...getActionButtonStyle(),
+          '&:disabled': {
+            opacity: 0.5,
+            pointerEvents: 'none',
+          },
+        })}
+        onClick={() => {
+          deselectAllBookmarks();
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+        </svg>
+        선택해제
+      </button>
+
+      <button
+        disabled={!data?.data.hasSelected}
+        css={css({
+          ...getActionButtonStyle(),
+          background: '#fce8e6',
+          borderColor: '#ea4335',
+          color: '#d33b2c',
+          '&:hover': {
+            background: '#f9d4d2',
+          },
+          '&:disabled': {
+            opacity: 0.5,
+            pointerEvents: 'none',
+          },
+        })}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+        </svg>
+        삭제
+      </button>
+    </Flex>
   );
 }
 
