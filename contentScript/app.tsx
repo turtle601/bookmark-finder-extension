@@ -8,7 +8,7 @@ import ContentScriptToggleSingleton from '@background/contentScriptToggleManager
 import GlobalProvider from '@/app/provider/globalProvider';
 import { slate } from '@/shared/config/styles';
 
-import { Tabs, useTabsContext } from '@/tabs';
+import { Tabs, useTabsContext } from '@/v3/shared/ui/tabs';
 
 import SearchPanel from '@contentScript/searchPanel';
 import EditPanel from '@contentScript/editPanel';
