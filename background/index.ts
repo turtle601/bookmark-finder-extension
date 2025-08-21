@@ -26,10 +26,17 @@ chrome.action.onClicked.addListener(async (tab) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'getTabs') {
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
-      sendResponse({
-        success: true,
-        tabs,
-      });
+      if (chrome.runtime.lastError) {
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        sendResponse({
+          isSuccess: true,
+          tabs,
+        });
+      }
     });
 
     return true;
@@ -39,10 +46,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'switchTab') {
     chrome.tabs.update(message.tabId, { active: true }, (tab) => {
-      sendResponse({
-        success: true,
-        tab,
-      });
+      if (chrome.runtime.lastError) {
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        sendResponse({
+          isSuccess: true,
+          tab,
+        });
+      }
     });
 
     return true;
@@ -52,9 +66,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'closeTab') {
     chrome.tabs.remove(message.tabId, () => {
-      sendResponse({
-        success: true,
-      });
+      if (chrome.runtime.lastError) {
+        sendResponse({
+          isSuccess: false,
+          error: chrome.runtime.lastError.message,
+        });
+      } else {
+        sendResponse({
+          isSuccess: true,
+        });
+      }
     });
 
     return true;

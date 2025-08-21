@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { css, CSSObject, Global } from '@emotion/react';
 
@@ -10,6 +10,7 @@ import { Tabs } from '@/v3/shared/ui/tabs';
 import Spacer from '@/v3/shared/ui/layout/spacer';
 import Header from '@/v3/widgets/ui/header';
 import PanelLayout from '@/v3/widgets/ui/panelLayout';
+import ActiveTabs from '@/v3/features/chromeTab/activeTabs';
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -105,10 +106,17 @@ function App() {
             </Tabs.TabList>
             <Tabs.TabPanels>
               <Tabs.TabPanel>
-                <PanelLayout topArticle={<>안</>} bottomArticle={<></>} />
+                <PanelLayout topArticle={<>안녕</>} bottomArticle={<></>} />
               </Tabs.TabPanel>
               <Tabs.TabPanel>
-                <PanelLayout topArticle={<>녕</>} bottomArticle={<></>} />
+                <PanelLayout
+                  topArticle={
+                    <Suspense fallback={<>정말로 렌더링</>}>
+                      <ActiveTabs />
+                    </Suspense>
+                  }
+                  bottomArticle={<></>}
+                />
               </Tabs.TabPanel>
             </Tabs.TabPanels>
           </Tabs.Provider>
