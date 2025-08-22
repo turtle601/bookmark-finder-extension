@@ -1,6 +1,6 @@
-import { createChromeRequest } from '@/v3/shared/request';
+import { createChromeRequest } from '@/v3/shared/utils/request';
 
-import type { IGenericResponse } from '@/v3/shared/request/type';
+import type { IGenericResponse } from '@/v3/shared/utils/request/type';
 
 export interface ITabsResponse extends IGenericResponse {
   tabs: chrome.tabs.Tab[];

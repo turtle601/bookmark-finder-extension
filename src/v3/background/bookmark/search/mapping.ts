@@ -14,7 +14,7 @@ export const extractSearchBookmarkLinks = (
         id: node.id,
         title: node.title,
         url: node.url,
-        faviconUrl: `${new URL(node.url).hostname}/favicon.ico`,
+        faviconUrl: `https://www.google.com/s2/favicons?domain=${new URL(node.url).hostname}&sz=32`,
       });
     }
 

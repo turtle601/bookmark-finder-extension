@@ -9,7 +9,7 @@ import Spacer from '@/v3/shared/ui/layout/spacer';
 import { useTabsQuery } from '@/v3/entities/chromeTab/request';
 import { useActiveTabListener } from '@/v3/entities/chromeTab/listener';
 
-import ActiveTab from '@/v3/features/chromeTab/activeTab';
+import ActiveTab from '@/v3/features/search/chromeTab/activeTab';
 
 function ActiveTabs() {
   const { activeTabsRef } = useActiveTabListener();

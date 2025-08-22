@@ -4,3 +4,7 @@ export interface ISearchBookmarkLink {
   url: string;
   faviconUrl: string;
 }
+
+export interface ISearchAIBookmarkLink extends ISearchBookmarkLink {
+  score: number;
+}

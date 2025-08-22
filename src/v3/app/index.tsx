@@ -10,7 +10,8 @@ import { Tabs } from '@/v3/shared/ui/tabs';
 import Spacer from '@/v3/shared/ui/layout/spacer';
 import Header from '@/v3/widgets/ui/header';
 import PanelLayout from '@/v3/widgets/ui/panelLayout';
-import ActiveTabs from '@/v3/features/chromeTab/activeTabs';
+import ActiveTabs from '@/v3/features/search/chromeTab/activeTabs';
+import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -106,7 +107,14 @@ function App() {
             </Tabs.TabList>
             <Tabs.TabPanels>
               <Tabs.TabPanel>
-                <PanelLayout topArticle={<>안녕</>} bottomArticle={<></>} />
+                <PanelLayout
+                  topArticle={<FindBookmark />}
+                  bottomArticle={
+                    <Suspense fallback={<>정말로 렌더링</>}>
+                      <ActiveTabs />
+                    </Suspense>
+                  }
+                />
               </Tabs.TabPanel>
               <Tabs.TabPanel>
                 <PanelLayout
