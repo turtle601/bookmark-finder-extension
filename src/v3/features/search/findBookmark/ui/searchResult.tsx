@@ -6,14 +6,10 @@ import Center from '@/v3/shared/ui/layout/center';
 import type { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
 
 interface IBookmarkResultProps {
-  isLoading?: boolean;
   bookmarks?: ISearchBookmarkLink[];
 }
 
-function SearchResult({
-  bookmarks = [],
-  isLoading = false,
-}: IBookmarkResultProps) {
+function SearchResult({ bookmarks = [] }: IBookmarkResultProps) {
   if (bookmarks.length === 0)
     return (
       <Center
@@ -27,12 +23,6 @@ function SearchResult({
       </Center>
     );
 
-  if (isLoading)
-    return (
-      <Center etcStyles={{ width: '100%', height: '280px', overflowY: 'auto' }}>
-        <span>검색 중입니다...</span>
-      </Center>
-    );
   return (
     <div
       css={css({

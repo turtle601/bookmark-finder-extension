@@ -25,7 +25,6 @@ function FindBookmark() {
     <div>
       <BookmarkSearchField inputRef={inputRef} onChange={handleChange} />
       <Spacer direction="vertical" space={12} />
-
       <SearchResult bookmarks={bookmarks} />
     </div>
   );
