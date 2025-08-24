@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import { css, CSSObject, Global } from '@emotion/react';
 
@@ -12,6 +12,9 @@ import Header from '@/v3/widgets/ui/header';
 import PanelLayout from '@/v3/widgets/ui/panelLayout';
 import ActiveTabs from '@/v3/features/search/chromeTab/activeTabs';
 import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
+import { BookmarkTree } from '@/v3/features/edit/bookmarkTree';
+import DnD from '@/v3/shared/ui/dnd';
+import { Accordion } from '@/v3/shared/ui/accordion';
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -109,22 +112,21 @@ function App() {
               <Tabs.TabPanel>
                 <PanelLayout
                   topArticle={<FindBookmark />}
-                  bottomArticle={
-                    <Suspense fallback={<>정말로 렌더링</>}>
-                      <ActiveTabs />
-                    </Suspense>
-                  }
+                  bottomArticle={<ActiveTabs />}
                 />
               </Tabs.TabPanel>
               <Tabs.TabPanel>
-                <PanelLayout
-                  topArticle={
-                    <Suspense fallback={<>정말로 렌더링</>}>
-                      <ActiveTabs />
-                    </Suspense>
-                  }
-                  bottomArticle={<></>}
-                />
+                <Accordion.Provider>
+                  <DnD.Provider>
+                    <DnD.Boundary width={'100%'} height={'100%'}>
+                      <DnD.PointerContent />
+                      <PanelLayout
+                        topArticle={<BookmarkTree />}
+                        bottomArticle={<ActiveTabs />}
+                      />
+                    </DnD.Boundary>
+                  </DnD.Provider>
+                </Accordion.Provider>
               </Tabs.TabPanel>
             </Tabs.TabPanels>
           </Tabs.Provider>

@@ -1,3 +1,4 @@
+import { bookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import { extractSearchBookmarkLinks } from '@/v3/background/bookmark/search/mapping';
 
 class BookmarkListener {
@@ -33,15 +34,139 @@ class BookmarkListener {
               error: chrome.runtime.lastError.message,
             });
           } else {
+            bookmarkTreeStorage.initialize(nodes);
+
             sendResponse({
               isSuccess: true,
-              data: nodes,
+              data: bookmarkTreeStorage.getBookmarks(),
             });
           }
         });
       }
 
       return true;
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'toggleSelectedBookmark') {
+        const { nodeId } = message.payload;
+
+        bookmarkTreeStorage.toggleSelection(nodeId);
+
+        sendResponse({
+          isSuccess: true,
+        });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'moveBookmark') {
+        const destination = {
+          parentId: message.payload.parentId,
+          index: message.payload.index,
+        };
+
+        chrome.bookmarks.move(
+          message.payload.id,
+          { ...destination },
+          (bookmarkList) => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                isSuccess: false,
+                error: chrome.runtime.lastError.message,
+              });
+            } else {
+              sendResponse({ isSuccess: true });
+            }
+          },
+        );
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'selectBookmark') {
+        const { id } = message.payload;
+
+        bookmarkTreeStorage.selectNode(id);
+
+        sendResponse({ isSuccess: true });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'deselectBookmark') {
+        const { id } = message.payload;
+
+        bookmarkTreeStorage.deselectNode(id);
+
+        sendResponse({ isSuccess: true });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'selectAllBookmarks') {
+        bookmarkTreeStorage.selectAll();
+
+        sendResponse({ isSuccess: true });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'deselectAllBookmarks') {
+        bookmarkTreeStorage.deselectAll();
+
+        sendResponse({ isSuccess: true });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'hasSelectedBookmarks') {
+        const hasSelected = bookmarkTreeStorage.hasSelectedNodes();
+
+        sendResponse({ isSuccess: true, data: { hasSelected } });
+
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'getTopLevelSelectedNodes') {
+        const selectedNodes = bookmarkTreeStorage.getTopLevelSelectedNodes();
+        sendResponse({ isSuccess: true, data: selectedNodes });
+        return true;
+      }
+    });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'resetBookmarks') {
+        chrome.bookmarks.getTree((tree) => {
+          bookmarkTreeStorage.reset(tree);
+          sendResponse({ isSuccess: true });
+        });
+        return true;
+      }
+    });
+
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      if (changeInfo.status === 'complete') {
+        chrome.bookmarks.getTree((tree) => {
+          bookmarkTreeStorage.reset(tree);
+        });
+
+        return true;
+      }
     });
   }
 }

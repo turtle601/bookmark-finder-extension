@@ -15,3 +15,43 @@ export const getBookmarkTree = async (): Promise<
 
   return response.data;
 };
+
+export const moveBookmark = async (payload: {
+  id: string;
+  parentId: string;
+  index: number;
+}) => {
+  return await createChromeRequest({
+    action: 'moveBookmark',
+    payload: { ...payload },
+  });
+};
+
+export const toggleSelectedBookmark = async (payload: { nodeId: string }) => {
+  return await createChromeRequest({
+    action: 'toggleSelectedBookmark',
+    payload: { ...payload },
+  });
+};
+
+export const selectBookmark = async (payload: { id: string }) => {
+  return await createChromeRequest({
+    action: 'selectBookmark',
+    payload: { ...payload },
+  });
+};
+
+export const deselectAllBookmarks = async () => {
+  return await createChromeRequest({
+    action: 'deselectAllBookmarks',
+  });
+};
+
+export const getTopLevelSelectedNodes = async () => {
+  return await createChromeRequest<{
+    isSuccess: boolean;
+    data: string[];
+  }>({
+    action: 'getTopLevelSelectedNodes',
+  });
+};
