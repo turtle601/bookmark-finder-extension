@@ -3,14 +3,19 @@ import { css } from '@emotion/react';
 import BookmarkLink from '@/v3/features/search/findBookmark/ui/bookmarkSearchLink';
 import Center from '@/v3/shared/ui/layout/center';
 
-import type { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
+import { useSearchBookmarksQuery } from '@/v3/entities/bookmark/search/request';
 
 interface IBookmarkResultProps {
-  bookmarks?: ISearchBookmarkLink[];
+  searchText: string;
 }
 
-function SearchResult({ bookmarks = [] }: IBookmarkResultProps) {
-  if (bookmarks.length === 0)
+function SearchResult({ searchText }: IBookmarkResultProps) {
+  const { data: bookmarks = [] } = useSearchBookmarksQuery({
+    text: searchText,
+    isEnabled: searchText !== '',
+  });
+
+  if (bookmarks?.length === 0)
     return (
       <Center
         etcStyles={{
