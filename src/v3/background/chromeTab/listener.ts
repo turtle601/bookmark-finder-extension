@@ -88,6 +88,26 @@ class ChromeTabListener {
         return true;
       }
     });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'addChromeTab') {
+        chrome.tabs.create(
+          { index: message.payload.index, url: message.payload.url },
+          (tab) => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                isSuccess: false,
+                error: chrome.runtime.lastError.message,
+              });
+            } else {
+              sendResponse({
+                isSuccess: true,
+              });
+            }
+          },
+        );
+      }
+    });
   }
 }
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 
 import DnD from '@/v3/shared/ui/dnd';
+import { color } from '@/v3/shared/styles';
 
 import {
   useDeselectAllBookmarksMutation,
@@ -11,7 +12,6 @@ import {
 } from '@/v3/entities/bookmark/tree/request/queries';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
-import { color } from '@/v3/shared/styles';
 
 function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
   const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(
@@ -30,7 +30,7 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
 
       toggleBookmarks({ nodeId: link.id });
     } else {
-      console.log('좌클릭:', link.title, link.url);
+      console.log('좌클릭:', link.title, link.url); // 새 탭 생성
     }
   };
 
@@ -43,7 +43,9 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
     >
       <DnD.MultiDraggable
         isSelected={link.isSelected ?? false}
-        dragAction={() => {
+        dragAction={(e) => {
+          e.dataTransfer.setData('dragType', 'bookmark');
+
           selectBookmarks({ id: link.id });
         }}
         dragEndAction={() => {

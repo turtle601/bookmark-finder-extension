@@ -39,3 +39,13 @@ export const requestMoveTab = async (tabId: number, index: number) => {
     },
   });
 };
+
+export const requestAddChromeTab = async (url: string, index: number) => {
+  return await createChromeRequest<IGenericResponse>({
+    action: 'addChromeTab',
+    payload: {
+      url,
+      index,
+    },
+  });
+};

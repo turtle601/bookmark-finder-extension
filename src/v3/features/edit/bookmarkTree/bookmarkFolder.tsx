@@ -24,6 +24,7 @@ import {
 import { Accordion } from '@/v3/shared/ui/accordion';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkTreeDropArea';
 
 function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
@@ -85,11 +86,14 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
             return (
               <DnD.MultiDraggable
                 isSelected={folder.isSelected ?? false}
-                dragAction={() => {
+                dragAction={(e) => {
+                  e.dataTransfer.setData('dragType', 'bookmark');
+
                   selectBookmarks({ id: folder.id });
                 }}
-                dragEndAction={() => {
+                dragEndAction={(e) => {
                   setTimeout(() => {
+                    e.dataTransfer.clearData();
                     deselectAllBookmarks();
                   }, 500);
                 }}
@@ -170,27 +174,11 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
             {folder.children?.map((child, index) => {
               return (
                 <Fragment key={child.id}>
-                  <DnD.Droppable
-                    dropAction={async (e) => {
-                      moveBookmark({
-                        parentId: folder.id,
-                        startIdx: index,
-                      });
-                    }}
-                    etcStyles={{
-                      width: '100%',
-                    }}
-                  >
-                    {({ isDragEnter }) => {
-                      return (
-                        <BookmarkDropArea
-                          isDragEnter={
-                            isDragEnter || (isFolderDragEnter && index === 0)
-                          }
-                        />
-                      );
-                    }}
-                  </DnD.Droppable>
+                  <BookmarkTreeDropArea
+                    folder={folder}
+                    startIdx={index}
+                    isFolderDragEnter={isFolderDragEnter}
+                  />
                   {child.children ? (
                     <BookmarkFolder folder={child} />
                   ) : (
@@ -199,18 +187,11 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                 </Fragment>
               );
             })}
-            <DnD.Droppable
-              dropAction={async (e) => {
-                moveBookmark({
-                  parentId: folder.id,
-                  startIdx: folder.children?.length ?? 0,
-                });
-              }}
-            >
-              {({ isDragEnter }) => {
-                return <BookmarkDropArea isDragEnter={isDragEnter} />;
-              }}
-            </DnD.Droppable>
+            <BookmarkTreeDropArea
+              folder={folder}
+              startIdx={folder.children?.length ?? 0}
+              isFolderDragEnter={isFolderDragEnter}
+            />
           </div>
         </Accordion.Panel>
       </div>

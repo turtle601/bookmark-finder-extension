@@ -68,3 +68,17 @@ export const deleteBookmark = async (payload: { id: string }) => {
     payload: { ...payload },
   });
 };
+
+export const addBookmark = async (payload: {
+  title: string;
+  url: string;
+  parentId: string;
+  index: number;
+}) => {
+  console.log('payload', payload);
+
+  return await createChromeRequest({
+    action: 'addBookmark',
+    payload: { ...payload },
+  });
+};

@@ -177,22 +177,21 @@ class BookmarkListener {
       }
     });
 
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if (changeInfo.status === 'complete') {
-        chrome.bookmarks.getTree((tree) => {
-          bookmarkTreeStorage.reset(tree);
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'addBookmark') {
+        chrome.bookmarks.create({ ...message.payload }, () => {
+          if (chrome.runtime.lastError) {
+            sendResponse({
+              isSuccess: false,
+              error: chrome.runtime.lastError.message,
+            });
+          } else {
+            sendResponse({ isSuccess: true });
+          }
         });
 
         return true;
       }
-    });
-
-    chrome.bookmarks.onCreated.addListener((node) => {
-      console.log('onCreated', node);
-    });
-
-    chrome.bookmarks.onRemoved.addListener((nodeId) => {
-      console.log('onRemoved', nodeId);
     });
   }
 }

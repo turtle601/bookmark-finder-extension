@@ -1,5 +1,6 @@
 import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import {
+  addBookmark,
   deleteBookmark,
   deselectAllBookmarks,
   getBookmarkTree,
@@ -45,6 +46,31 @@ export const useSelectedBookmarkQuery = () => {
       const collectSelected = (nodes: IBookmarkTreeStorage[]): void => {
         nodes.forEach((node) => {
           if (node.isSelected) {
+            selectedNodes.push(node);
+          }
+
+          if (node.children) {
+            collectSelected(node.children);
+          }
+        });
+      };
+
+      collectSelected(data);
+
+      return selectedNodes;
+    },
+  });
+};
+
+export const useSelectedBookmarkLinkQuery = () => {
+  return useQuery({
+    ...bookmarkSearchService.queryOptions(),
+    select: (data) => {
+      const selectedNodes: IBookmarkTreeStorage[] = [];
+
+      const collectSelected = (nodes: IBookmarkTreeStorage[]): void => {
+        nodes.forEach((node) => {
+          if (node.isSelected && node.url) {
             selectedNodes.push(node);
           }
 
@@ -159,4 +185,26 @@ export const useDeleteBookmarkMutation = () => {
   };
 
   return { deleteBookmark: fn, isDisabled };
+};
+
+export const useAddBookmarkMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['addBookmark'],
+    mutationFn: ({
+      title,
+      url,
+      parentId,
+      index,
+    }: {
+      title: string;
+      url: string;
+      parentId: string;
+      index: number;
+    }) => addBookmark({ url, parentId, index, title }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
 };

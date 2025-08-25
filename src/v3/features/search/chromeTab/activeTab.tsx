@@ -33,11 +33,12 @@ function ActiveTab({ tab, tabRef }: ITabItemProps) {
     >
       <DnD.SingleDraggable
         dragAction={(e) => {
-          e.stopPropagation();
-
+          e.dataTransfer.setData('dragType', 'tab');
           e.dataTransfer.setData('tab', JSON.stringify(tab));
         }}
-        dragEndAction={() => {}}
+        dragEndAction={(e) => {
+          e.dataTransfer.clearData();
+        }}
       >
         {({ isDrag }) => (
           <>

@@ -1,4 +1,6 @@
+import { useSelectedBookmarkLinkQuery } from '@/v3/entities/bookmark/tree/request/queries';
 import {
+  requestAddChromeTab,
   requestCloseTab,
   requestMoveTab,
   requestOpenTab,
@@ -82,4 +84,32 @@ export const useMoveTabMutation = () => {
       });
     },
   });
+};
+
+export const useAddChromeTabMutation = () => {
+  const queryClient = useQueryClient();
+
+  const { data: selectedBookmarks } = useSelectedBookmarkLinkQuery();
+
+  const { mutate } = useMutation({
+    mutationKey: ['addChromeTab'],
+    mutationFn: ({ url, index }: { url: string; index: number }) =>
+      requestAddChromeTab(url, index),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: chromeTabService.queryKey(),
+      });
+    },
+  });
+
+  const fn = (startIdx: number) => {
+    selectedBookmarks?.forEach((bookmark) => {
+      if (bookmark.url) {
+        mutate({ url: bookmark.url, index: startIdx });
+        startIdx++;
+      }
+    });
+  };
+
+  return { addChromeTabs: fn };
 };
