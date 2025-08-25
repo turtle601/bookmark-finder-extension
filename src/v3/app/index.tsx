@@ -12,11 +12,12 @@ import Header from '@/v3/widgets/ui/header';
 import PanelLayout from '@/v3/widgets/ui/panelLayout';
 import ActiveTabs from '@/v3/features/search/chromeTab/activeTabs';
 import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
-import { BookmarkTree } from '@/v3/features/edit/bookmarkTree';
+
 import DnD from '@/v3/shared/ui/dnd';
 
 import { Accordion } from '@/v3/shared/ui/accordion';
-import { BookmarkControls } from '@/v3/features/edit/bookmarkControls';
+
+import { EditBookmark } from '@/v3/features/edit';
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -123,13 +124,7 @@ function App() {
                     <DnD.Boundary width={'100%'} height={'100%'}>
                       <DnD.PointerContent />
                       <PanelLayout
-                        topArticle={
-                          <div>
-                            <BookmarkTree />
-                            <Spacer direction="vertical" space="12px" />
-                            <BookmarkControls />
-                          </div>
-                        }
+                        topArticle={<EditBookmark />}
                         bottomArticle={<ActiveTabs />}
                       />
                     </DnD.Boundary>
