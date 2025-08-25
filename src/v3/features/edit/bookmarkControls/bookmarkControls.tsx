@@ -4,8 +4,13 @@ import Flex from '@/v3/shared/ui/layout/flex';
 import SelectAllBookmarks from '@/v3/features/edit/bookmarkControls/selectAllBookmarks';
 import DeselectAllBookmarks from '@/v3/features/edit/bookmarkControls/deselectAllBookmarks';
 import DeleteSelectedBookmarks from '@/v3/features/edit/bookmarkControls/deleteSelectedBookmarks';
+import { useSelectedBookmarkCountQuery } from '@/v3/entities/bookmark/tree/request/queries';
 
 function BookmarkControls() {
+  const { data: selectedCount } = useSelectedBookmarkCountQuery();
+
+  const isDisabled = selectedCount === 0;
+
   return (
     <Flex
       etcStyles={{
@@ -18,8 +23,8 @@ function BookmarkControls() {
       }}
     >
       <SelectAllBookmarks />
-      <DeselectAllBookmarks isDisabled={true} />
-      <DeleteSelectedBookmarks isDisabled={true} />
+      <DeselectAllBookmarks isDisabled={isDisabled} />
+      <DeleteSelectedBookmarks isDisabled={isDisabled} />
     </Flex>
   );
 }

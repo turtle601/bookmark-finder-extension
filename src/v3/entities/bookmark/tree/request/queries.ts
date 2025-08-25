@@ -1,3 +1,4 @@
+import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import {
   deselectAllBookmarks,
   getBookmarkTree,
@@ -17,6 +18,7 @@ import {
 
 export const keys = {
   bookmarkTree: () => ['getBookmarkTree'],
+  selectedCount: () => ['getSelectedCount'],
 } as const;
 
 export const bookmarkSearchService = {
@@ -31,6 +33,31 @@ export const bookmarkSearchService = {
 
 export const useGetBookmarkTreeQuery = () => {
   return useQuery(bookmarkSearchService.queryOptions());
+};
+
+export const useSelectedBookmarkCountQuery = () => {
+  return useQuery({
+    ...bookmarkSearchService.queryOptions(),
+    select: (data) => {
+      const selectedNodes: IBookmarkTreeStorage[] = [];
+
+      const collectSelected = (nodes: IBookmarkTreeStorage[]): void => {
+        nodes.forEach((node) => {
+          if (node.isSelected) {
+            selectedNodes.push(node);
+          }
+
+          if (node.children) {
+            collectSelected(node.children);
+          }
+        });
+      };
+
+      collectSelected(data);
+
+      return selectedNodes.length;
+    },
+  });
 };
 
 export const useMoveBookmarkMutation = (id: string) => {

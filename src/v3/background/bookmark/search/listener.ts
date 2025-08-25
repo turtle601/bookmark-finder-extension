@@ -132,10 +132,10 @@ class BookmarkListener {
     });
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (message.action === 'hasSelectedBookmarks') {
-        const hasSelected = bookmarkTreeStorage.hasSelectedNodes();
+      if (message.action === 'getSelectedCount') {
+        const count = bookmarkTreeStorage.getSelectedCount();
 
-        sendResponse({ isSuccess: true, data: { hasSelected } });
+        sendResponse({ isSuccess: true, count });
 
         return true;
       }
