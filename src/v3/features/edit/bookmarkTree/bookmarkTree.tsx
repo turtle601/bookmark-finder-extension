@@ -1,10 +1,10 @@
 import { useGetBookmarkTreeQuery } from '@/v3/entities/bookmark/tree/request/queries';
 
-import BookmarkFolder from './bookmarkFolder';
 import BookmarkLink from './bookmarkLink';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import { css } from '@emotion/react';
+import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
 
 function BookmarkTree() {
   const { data: bookmarks } = useGetBookmarkTreeQuery();
@@ -18,14 +18,14 @@ function BookmarkTree() {
     <div
       css={css({
         width: '100%',
-        height: '300px',
+        height: '240px',
         overflowY: 'auto',
       })}
     >
       {rootBookmarkChildren.map((bookmark) => (
         <div key={bookmark.id}>
           {bookmark.children ? (
-            <BookmarkFolder folder={bookmark} />
+            <RootBookmarkFolder folder={bookmark} />
           ) : (
             <BookmarkLink link={bookmark} />
           )}

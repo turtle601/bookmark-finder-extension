@@ -41,6 +41,12 @@ export const selectBookmark = async (payload: { id: string }) => {
   });
 };
 
+export const selectAllBookmarks = async () => {
+  return await createChromeRequest({
+    action: 'selectAllBookmarks',
+  });
+};
+
 export const deselectAllBookmarks = async () => {
   return await createChromeRequest({
     action: 'deselectAllBookmarks',

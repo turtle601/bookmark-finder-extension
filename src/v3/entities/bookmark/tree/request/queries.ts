@@ -3,6 +3,7 @@ import {
   getBookmarkTree,
   getTopLevelSelectedNodes,
   moveBookmark,
+  selectAllBookmarks,
   selectBookmark,
   toggleSelectedBookmark,
 } from '@/v3/entities/bookmark/tree/request/api';
@@ -90,6 +91,18 @@ export const useDeselectAllBookmarksMutation = () => {
   return useMutation({
     mutationKey: ['deselectAllBookmarks'],
     mutationFn: deselectAllBookmarks,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
+};
+
+export const useSelectAllBookmarksMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['selectAllBookmarks'],
+    mutationFn: () => selectAllBookmarks(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },

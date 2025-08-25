@@ -165,7 +165,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'toggleBookmarks') {
+  if (message.action === 'toggleSelectedBookmark') {
     const { nodeId } = message.payload;
 
     bookmarkUtils.toggleSelection(nodeId);
@@ -205,7 +205,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'selectBookmarks') {
+  if (message.action === 'selectBookmark') {
     const { id } = message.payload;
 
     bookmarkUtils.selectNode(id);
@@ -217,7 +217,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'deselectBookmarks') {
+  if (message.action === 'deselectBookmark') {
     const { id } = message.payload;
 
     bookmarkUtils.deselectNode(id);

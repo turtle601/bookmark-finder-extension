@@ -6,9 +6,7 @@ import { Fragment } from 'react';
 import { color } from '@/v3/shared/styles';
 
 import {
-  useDeselectAllBookmarksMutation,
   useMoveBookmarkMutation,
-  useSelectBookmarkMutation,
   useToggleSelectedBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
 
@@ -24,8 +22,9 @@ import {
 import { Accordion } from '@/v3/shared/ui/accordion';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder';
 
-function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
+function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
 
   const { selectedIdSet } = useAccordionContext();
@@ -35,8 +34,6 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(
     folder.id,
   );
-  const { mutate: selectBookmarks } = useSelectBookmarkMutation(folder.id);
-  const { mutate: deselectAllBookmarks } = useDeselectAllBookmarksMutation();
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -83,81 +80,47 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
           {({ isDragEnter }) => {
             setIsFolderDragEnter(isDragEnter);
             return (
-              <DnD.MultiDraggable
-                isSelected={folder.isSelected ?? false}
-                dragAction={() => {
-                  selectBookmarks({ id: folder.id });
-                }}
-                dragEndAction={() => {
-                  setTimeout(() => {
-                    deselectAllBookmarks();
-                  }, 500);
-                }}
-                etcStyles={{
-                  width: '100%',
-                }}
+              <div
+                css={css({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  borderRadius: '2px',
+                  padding: '4px 8px',
+                  border: isFolderDragEnter
+                    ? `2px dashed ${color.slate['500']}`
+                    : `2px dashed ${color.slate['200']}`,
+                  background: color.slate['200'],
+                })}
               >
-                {({ isDrag }) => {
-                  return (
-                    <div
+                <Accordion.Button
+                  id={folder.id}
+                  etcStyles={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    color: color.slate['900'],
+                    fontSize: '12px',
+                    lineHeight: '16px',
+                  }}
+                >
+                  <Accordion.Icon id={folder.id} size={8} strokeWidth="8" />
+                  <div
+                    css={css({
+                      marginLeft: '4px',
+                    })}
+                  >
+                    <p
                       css={css({
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderRadius: '2px',
-                        padding: '4px 8px',
-                        border: isDrag
-                          ? isFolderDragEnter
-                            ? `2px dashed ${color.slate['500']}`
-                            : `2px dashed ${color.primary}`
-                          : isFolderDragEnter
-                            ? `2px dashed ${color.slate['500']}`
-                            : `2px dashed ${color.slate['200']}`,
-                        background: isDrag ? '#3b82f6' : color.slate['200'],
+                        fontSize: '12px',
+                        lineHeight: '16px',
                       })}
                     >
-                      <Accordion.Button
-                        id={folder.id}
-                        etcStyles={{
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          color: color.slate['900'],
-                          fontSize: '12px',
-                          lineHeight: '16px',
-                        }}
-                      >
-                        <Accordion.Icon
-                          id={folder.id}
-                          size={8}
-                          strokeWidth="8"
-                        />
-                        <div
-                          css={css({
-                            marginLeft: '4px',
-                          })}
-                        >
-                          <p
-                            css={css({
-                              fontSize: '12px',
-                              lineHeight: '16px',
-                            })}
-                          >
-                            {folder.title}
-                          </p>
-                        </div>
-                      </Accordion.Button>
-                      <div
-                        css={css({
-                          cursor: 'pointer',
-                        })}
-                      >
-                        ☰
-                      </div>
-                    </div>
-                  );
-                }}
-              </DnD.MultiDraggable>
+                      {folder.title}
+                    </p>
+                  </div>
+                </Accordion.Button>
+              </div>
             );
           }}
         </DnD.Droppable>
@@ -218,4 +181,4 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   );
 }
 
-export default BookmarkFolder;
+export default RootBookmarkFolder;
