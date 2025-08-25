@@ -29,3 +29,13 @@ export const requestCloseTab = async (tabId: number) => {
     },
   });
 };
+
+export const requestMoveTab = async (tabId: number, index: number) => {
+  return await createChromeRequest<IGenericResponse>({
+    action: 'moveTab',
+    payload: {
+      tabId,
+      index,
+    },
+  });
+};

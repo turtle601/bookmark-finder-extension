@@ -1,5 +1,6 @@
 import {
   requestCloseTab,
+  requestMoveTab,
   requestOpenTab,
   requestTabs,
 } from '@/v3/entities/chromeTab/request/api';
@@ -17,6 +18,12 @@ export const keys = {
   root: () => ['getTabs'],
   openTab: (tabId: number) => [...keys.root(), 'openTab', tabId],
   closeTab: (tabId: number) => [...keys.root(), 'closeTab', tabId],
+  moveTab: (tabId: number, index: number) => [
+    ...keys.root(),
+    'moveTab',
+    tabId,
+    index,
+  ],
 } as const;
 
 export const chromeTabService = {
@@ -54,6 +61,21 @@ export const useOpenTabMutation = (tabId: number) => {
   return useMutation({
     mutationKey: keys.openTab(tabId),
     mutationFn: requestOpenTab,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: chromeTabService.queryKey(),
+      });
+    },
+  });
+};
+
+export const useMoveTabMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['moveTab'],
+    mutationFn: ({ tabId, index }: { tabId: number; index: number }) =>
+      requestMoveTab(tabId, index),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: chromeTabService.queryKey(),

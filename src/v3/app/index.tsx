@@ -115,7 +115,14 @@ function App() {
               <Tabs.TabPanel>
                 <PanelLayout
                   topArticle={<FindBookmark />}
-                  bottomArticle={<ActiveTabs />}
+                  bottomArticle={
+                    <DnD.Provider>
+                      <DnD.Boundary width={'100%'} height={'100%'}>
+                        <DnD.PointerContent />
+                        <ActiveTabs />
+                      </DnD.Boundary>
+                    </DnD.Provider>
+                  }
                 />
               </Tabs.TabPanel>
               <Tabs.TabPanel>

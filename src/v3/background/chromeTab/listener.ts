@@ -63,6 +63,31 @@ class ChromeTabListener {
         return true;
       }
     });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'moveTab') {
+        chrome.tabs.move(
+          message.payload.tabId,
+          {
+            index: message.payload.index,
+          },
+          () => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                isSuccess: false,
+                error: chrome.runtime.lastError.message,
+              });
+            } else {
+              sendResponse({
+                isSuccess: true,
+              });
+            }
+          },
+        );
+
+        return true;
+      }
+    });
   }
 }
 
