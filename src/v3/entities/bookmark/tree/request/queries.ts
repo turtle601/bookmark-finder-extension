@@ -1,5 +1,6 @@
 import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import {
+  deleteBookmark,
   deselectAllBookmarks,
   getBookmarkTree,
   getTopLevelSelectedNodes,
@@ -35,7 +36,7 @@ export const useGetBookmarkTreeQuery = () => {
   return useQuery(bookmarkSearchService.queryOptions());
 };
 
-export const useSelectedBookmarkCountQuery = () => {
+export const useSelectedBookmarkQuery = () => {
   return useQuery({
     ...bookmarkSearchService.queryOptions(),
     select: (data) => {
@@ -55,7 +56,7 @@ export const useSelectedBookmarkCountQuery = () => {
 
       collectSelected(data);
 
-      return selectedNodes.length;
+      return selectedNodes;
     },
   });
 };
@@ -134,4 +135,28 @@ export const useSelectAllBookmarksMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
+};
+
+export const useDeleteBookmarkMutation = () => {
+  const queryClient = useQueryClient();
+
+  const { data: selectedBookmarks } = useSelectedBookmarkQuery();
+
+  const isDisabled = selectedBookmarks?.length === 0;
+
+  const { mutate } = useMutation({
+    mutationKey: ['deleteBookmark'],
+    mutationFn: deleteBookmark,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
+
+  const fn = async () => {
+    selectedBookmarks?.forEach((bookmark) => {
+      mutate({ id: bookmark.id });
+    });
+  };
+
+  return { deleteBookmark: fn, isDisabled };
 };

@@ -61,3 +61,10 @@ export const getTopLevelSelectedNodes = async () => {
     action: 'getTopLevelSelectedNodes',
   });
 };
+
+export const deleteBookmark = async (payload: { id: string }) => {
+  return await createChromeRequest({
+    action: 'deleteBookmark',
+    payload: { ...payload },
+  });
+};

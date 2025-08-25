@@ -1,18 +1,19 @@
 import { css } from '@emotion/react';
 
-import { useDeselectAllBookmarksMutation } from '@/v3/entities/bookmark/tree/request/queries';
+import {
+  useDeselectAllBookmarksMutation,
+  useSelectedBookmarkQuery,
+} from '@/v3/entities/bookmark/tree/request/queries';
 import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/\bstyles';
 
-interface IDeselectAllBookmarksProps {
-  isDisabled: boolean;
-}
+function DeselectAllBookmarks() {
+  const { data: selectedBookmarks } = useSelectedBookmarkQuery();
 
-function DeselectAllBookmarks({ isDisabled }: IDeselectAllBookmarksProps) {
   const { mutate: deselectAllBookmarks } = useDeselectAllBookmarksMutation();
 
   return (
     <button
-      disabled={isDisabled}
+      disabled={selectedBookmarks?.length === 0}
       css={css({
         ...getActionButtonStyle(),
         '&:disabled': {
