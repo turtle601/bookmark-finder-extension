@@ -1,6 +1,7 @@
 export interface IBookmarkTreeStorage
   extends chrome.bookmarks.BookmarkTreeNode {
   isSelected?: boolean;
+  faviconUrl?: string;
   children?: IBookmarkTreeStorage[];
 }
 
@@ -25,6 +26,9 @@ class BookmarkTreeStorage {
       return {
         ...node,
         isSelected: false,
+        faviconUrl: node.url
+          ? `https://www.google.com/s2/favicons?domain=${new URL(node.url).hostname}`
+          : undefined,
         children: node.children ? node.children.map(processNode) : undefined,
       };
     };
@@ -42,6 +46,9 @@ class BookmarkTreeStorage {
       return {
         ...node,
         isSelected: this.findNodeById(node.id)?.isSelected ?? false,
+        faviconUrl: node.url
+          ? `https://www.google.com/s2/favicons?domain=${new URL(node.url).hostname}`
+          : undefined,
         children: node.children ? node.children.map(processNode) : undefined,
       };
     };

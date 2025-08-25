@@ -11,6 +11,8 @@ import {
   useToggleSelectedBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
 
+import Image from '@/v3/shared/ui/image';
+
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 
 function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
@@ -94,9 +96,14 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
                   flexShrink: 0,
                 })}
               >
-                <img
-                  src={`${new URL(link.url!).origin}/favicon.ico`}
+                <Image
+                  src={link.faviconUrl}
                   alt={`${link.title} 아이콘`}
+                  fallbackComponent={
+                    <span aria-label={`${link.title} 아이콘`} role="img">
+                      🎮
+                    </span>
+                  }
                   css={css({
                     width: '16px',
                     height: '16px',

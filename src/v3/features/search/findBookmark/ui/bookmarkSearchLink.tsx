@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 import { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
+import Image from '@/v3/shared/ui/image';
 
 interface ISearchBookmarkLinkProps {
   bookmark: ISearchBookmarkLink;
@@ -46,12 +47,19 @@ function BookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
             justifyContent: 'center',
           })}
         >
-          <img
+          <Image
             src={bookmark.faviconUrl}
-            alt="favicon"
+            alt={`${bookmark.title} 아이콘`}
+            fallbackComponent={
+              <span aria-label={`${bookmark.title} 아이콘`} role="img">
+                🎮
+              </span>
+            }
             css={css({
               width: '100%',
               height: '100%',
+              objectFit: 'contain',
+              verticalAlign: 'middle',
             })}
           />
         </div>

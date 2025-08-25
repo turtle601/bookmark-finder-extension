@@ -12,6 +12,7 @@ import Center from '@/v3/shared/ui/layout/center';
 import Flex from '@/v3/shared/ui/layout/flex';
 
 import { css } from '@emotion/react';
+import Image from '@/v3/shared/ui/image';
 
 interface ITabItemProps {
   tab: chrome.tabs.Tab;
@@ -80,24 +81,22 @@ function ActiveTab({ tab, tabRef }: ITabItemProps) {
                   flexShrink: 0,
                 }}
               >
-                {tab.favIconUrl ? (
-                  <img
-                    src={tab.favIconUrl}
-                    alt={`${tab.title} 아이콘`}
-                    css={css({
-                      width: '16px',
-                      height: '16px',
-                      objectFit: 'contain',
-                      verticalAlign: 'middle',
-                    })}
-                  />
-                ) : (
-                  <span aria-label={`${tab.title} 아이콘`} role="img">
-                    🎮
-                  </span>
-                )}
+                <Image
+                  src={`https://www.google.com/s2/favicons?domain=${new URL(tab.url!).hostname}`}
+                  alt={`${tab.title} 아이콘`}
+                  fallbackComponent={
+                    <span aria-label={`${tab.title} 아이콘`} role="img">
+                      🎮
+                    </span>
+                  }
+                  css={css({
+                    width: '16px',
+                    height: '16px',
+                    objectFit: 'contain',
+                    verticalAlign: 'middle',
+                  })}
+                />
               </Center>
-
               <p
                 css={css({
                   fontSize: '13px',
