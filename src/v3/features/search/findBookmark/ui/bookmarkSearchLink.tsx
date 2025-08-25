@@ -7,6 +7,10 @@ interface ISearchBookmarkLinkProps {
 }
 
 function BookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
+  const openChromeLink = () => {
+    chrome.tabs.create({ url: bookmark.url });
+  };
+
   return (
     <div
       css={css({
@@ -21,6 +25,7 @@ function BookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
           boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         },
       })}
+      onClick={openChromeLink}
     >
       <div
         css={css({

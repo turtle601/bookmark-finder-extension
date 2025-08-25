@@ -30,7 +30,7 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
 
       toggleBookmarks({ nodeId: link.id });
     } else {
-      console.log('좌클릭:', link.title, link.url); // 새 탭 생성
+      chrome.tabs.create({ url: link.url });
     }
   };
 
