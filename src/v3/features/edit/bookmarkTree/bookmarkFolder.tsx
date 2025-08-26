@@ -15,7 +15,6 @@ import {
 import DnD from '@/v3/shared/ui/dnd';
 
 import BookmarkLink from './bookmarkLink';
-import BookmarkDropArea from './ui/bookmarkDropArea';
 
 import {
   useAccordionActionContext,
@@ -23,8 +22,81 @@ import {
 } from '@/v3/shared/ui/accordion/model';
 import { Accordion } from '@/v3/shared/ui/accordion';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkTreeDropArea';
+
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import Center from '@/v3/shared/ui/layout/center';
+import { DropDown } from '@/v3/shared/ui/dropdown';
+
+function BookmarkFolderEditButton() {
+  return (
+    <DropDown.Provider>
+      <div
+        css={css({
+          position: 'relative',
+        })}
+      >
+        <DropDown.Trigger aria-label="폴더 수정 버튼">
+          <Center
+            as="button"
+            data-folder-edit-button
+            etcStyles={{
+              width: '12px',
+              height: '100%',
+              opacity: 0,
+              borderRadius: '2px',
+              transition: 'opacity 0.2s ease',
+              background: 'transparent',
+              '&:hover': {
+                background: color.slate['50'],
+                opacity: 1,
+              },
+            }}
+          >
+            ⋮
+          </Center>
+        </DropDown.Trigger>
+
+        <DropDown.Options
+          etcStyles={{
+            position: 'absolute',
+            top: '20px',
+            right: 0,
+            width: '160px',
+            zIndex: 999999,
+            background: color.white,
+            borderRadius: '4px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+            border: `1px solid ${color.slate['200']}`,
+            padding: '4px 8px',
+            'li + li': {
+              borderTop: `1px solid ${color.slate['200']}`,
+            },
+          }}
+        >
+          <DropDown.Option>
+            <p
+              css={css({
+                padding: '4px 0',
+              })}
+            >
+              이름 바꾸기
+            </p>
+          </DropDown.Option>
+          <DropDown.Option>
+            <p
+              css={css({
+                padding: '4px 0',
+              })}
+            >
+              하위 폴더 생성
+            </p>
+          </DropDown.Option>
+        </DropDown.Options>
+      </div>
+    </DropDown.Provider>
+  );
+}
 
 function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
@@ -64,7 +136,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
           height: '100%',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
           borderRadius: '4px',
-          border: `2px solid ${
+          border: `1px solid ${
             folder.isSelected ? color.primary : 'transparent'
           }`,
         })}
@@ -118,6 +190,14 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                             ? `2px dashed ${color.slate['500']}`
                             : `2px dashed ${color.slate['200']}`,
                         background: isDrag ? '#3b82f6' : color.slate['200'],
+                        transition: 'all 0.2s ease',
+                        ...(!isDrag && {
+                          '&:hover': {
+                            '& [data-folder-edit-button]': {
+                              opacity: 1,
+                            },
+                          },
+                        }),
                       })}
                     >
                       <Accordion.Button
@@ -151,13 +231,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                           </p>
                         </div>
                       </Accordion.Button>
-                      <div
-                        css={css({
-                          cursor: 'pointer',
-                        })}
-                      >
-                        ☰
-                      </div>
+                      <BookmarkFolderEditButton />
                     </div>
                   );
                 }}

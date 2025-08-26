@@ -124,16 +124,6 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
               >
                 {link.title}
               </p>
-              <div
-                css={css({
-                  cursor: 'pointer',
-                })}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                ☰
-              </div>
             </div>
           );
         }}
