@@ -11,6 +11,7 @@ import {
   selectAllBookmarks,
   selectBookmark,
   toggleSelectedBookmark,
+  updateBookmarkTitle,
 } from '@/v3/entities/bookmark/tree/request/api';
 import {
   getRootBookmarks,
@@ -193,6 +194,18 @@ export const useResetBookmarkTreeMutation = () => {
   return useMutation({
     mutationKey: ['resetBookmarkTree'],
     mutationFn: resetBookmarkTree,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
+};
+
+export const useUpdateBookmarkTitleMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['updateBookmarkTitle'],
+    mutationFn: updateBookmarkTitle,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 
 import { Fragment } from 'react';
@@ -10,25 +10,132 @@ import {
   useMoveBookmarkMutation,
   useSelectBookmarkMutation,
   useToggleSelectedBookmarkMutation,
+  useUpdateBookmarkTitleMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
-
-import DnD from '@/v3/shared/ui/dnd';
-
-import BookmarkLink from './bookmarkLink';
 
 import {
   useAccordionActionContext,
   useAccordionContext,
 } from '@/v3/shared/ui/accordion/model';
-import { Accordion } from '@/v3/shared/ui/accordion';
 
-import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkTreeDropArea';
-
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import DnD from '@/v3/shared/ui/dnd';
 import Center from '@/v3/shared/ui/layout/center';
+
+import { Accordion } from '@/v3/shared/ui/accordion';
 import { DropDown } from '@/v3/shared/ui/dropdown';
 
-function BookmarkFolderEditButton() {
+import BookmarkLink from './bookmarkLink';
+import BookmarkTreeDropArea from './bookmarkTreeDropArea';
+
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import Flex from '@/v3/shared/ui/layout/flex';
+
+interface IBookmarkFolderFieldProps {
+  folder: IBookmarkTreeStorage;
+  closeEdit: VoidFunction;
+}
+
+function BookmarkFolderField({ folder, closeEdit }: IBookmarkFolderFieldProps) {
+  const [folderName, setFolderName] = useState(folder.title);
+  const { mutate: updateBookmarkTitle } = useUpdateBookmarkTitleMutation();
+
+  const inputRef = useCallback((el: HTMLInputElement) => {
+    let timer: NodeJS.Timeout | null = null;
+
+    if (el) {
+      timer = setTimeout(() => {
+        el.focus();
+        el.select();
+      }, 0);
+    } else {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    }
+  }, []);
+
+  const finishEdit = () => {
+    // 편집 완료, edit모드 종료
+    closeEdit();
+
+    updateBookmarkTitle({
+      id: folder.id,
+      title: folderName,
+    });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Escape') {
+      finishEdit();
+    }
+  };
+
+  const handleBlur = () => {
+    finishEdit();
+  };
+
+  return (
+    <Flex
+      align="center"
+      gap={'4px'}
+      etcStyles={{
+        width: '100%',
+        height: '100%',
+        padding: '4px 8px',
+        background: color.slate['200'],
+        borderRadius: '2px',
+        border: `2px solid ${color.slate['200']}`,
+      }}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+      </svg>
+      <input
+        ref={inputRef}
+        type="text"
+        value={folderName}
+        onChange={(e) => setFolderName(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={handleBlur}
+        css={css({
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          outline: 'none',
+          background: 'white',
+          fontSize: '12px',
+          color: color.slate['900'],
+          border: `2px solid ${color.slate['200']}`,
+          '&::placeholder': {
+            color: color.slate['500'],
+          },
+          '&:focus': {
+            border: `2px solid ${color.primary}`,
+          },
+        })}
+        placeholder="새 폴더"
+      />
+    </Flex>
+  );
+}
+
+interface IBookmarkFolderEditButtonProps {
+  folder: IBookmarkTreeStorage;
+  options: {
+    label: string;
+    action: VoidFunction;
+  }[];
+}
+
+function BookmarkFolderEditButton({ options }: IBookmarkFolderEditButtonProps) {
   return (
     <DropDown.Provider>
       <div
@@ -74,24 +181,19 @@ function BookmarkFolderEditButton() {
             },
           }}
         >
-          <DropDown.Option>
-            <p
-              css={css({
-                padding: '4px 0',
-              })}
-            >
-              이름 바꾸기
-            </p>
-          </DropDown.Option>
-          <DropDown.Option>
-            <p
-              css={css({
-                padding: '4px 0',
-              })}
-            >
-              하위 폴더 생성
-            </p>
-          </DropDown.Option>
+          {options.map((option) => {
+            return (
+              <DropDown.Option
+                key={option.label}
+                onClick={option.action}
+                etcStyles={{
+                  padding: '4px 0',
+                }}
+              >
+                <p>{option.label}</p>
+              </DropDown.Option>
+            );
+          })}
         </DropDown.Options>
       </div>
     </DropDown.Provider>
@@ -99,6 +201,7 @@ function BookmarkFolderEditButton() {
 }
 
 function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
+  const [isEdit, setIsEdit] = useState(false);
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
 
   const { selectedIdSet } = useAccordionContext();
@@ -130,145 +233,169 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
 
   return (
     <>
-      <div
-        css={css({
-          width: '100%',
-          height: '100%',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-          borderRadius: '4px',
-          border: `1px solid ${
-            folder.isSelected ? color.primary : 'transparent'
-          }`,
-        })}
-        onClick={handleSelectClick}
-      >
-        <DnD.Droppable
-          dropAction={async () => {
-            moveBookmark({
-              parentId: folder.id,
-              startIdx: 0,
-            });
-          }}
-          etcStyles={{
-            width: '100%',
-          }}
+      {isEdit ? (
+        <div
+          css={css({
+            border: `1px solid transparent`,
+          })}
         >
-          {({ isDragEnter }) => {
-            setIsFolderDragEnter(isDragEnter);
-            return (
-              <DnD.MultiDraggable
-                isSelected={folder.isSelected ?? false}
-                dragAction={(e) => {
-                  e.dataTransfer.setData('dragType', 'bookmark');
+          <BookmarkFolderField
+            folder={folder}
+            closeEdit={() => setIsEdit(false)}
+          />
+        </div>
+      ) : (
+        <div
+          css={css({
+            width: '100%',
+            height: '100%',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+            borderRadius: '4px',
+            border: `1px solid ${
+              folder.isSelected ? color.primary : 'transparent'
+            }`,
+          })}
+          onClick={handleSelectClick}
+        >
+          <DnD.Droppable
+            dropAction={async () => {
+              moveBookmark({
+                parentId: folder.id,
+                startIdx: 0,
+              });
+            }}
+            etcStyles={{
+              width: '100%',
+            }}
+          >
+            {({ isDragEnter }) => {
+              setIsFolderDragEnter(isDragEnter);
+              return (
+                <DnD.MultiDraggable
+                  isSelected={folder.isSelected ?? false}
+                  dragAction={(e) => {
+                    e.dataTransfer.setData('dragType', 'bookmark');
 
-                  selectBookmarks({ id: folder.id });
-                }}
-                dragEndAction={(e) => {
-                  setTimeout(() => {
-                    e.dataTransfer.clearData();
-                    deselectAllBookmarks();
-                  }, 500);
-                }}
-                etcStyles={{
-                  width: '100%',
-                }}
-              >
-                {({ isDrag }) => {
-                  return (
-                    <div
-                      css={css({
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderRadius: '2px',
-                        padding: '4px 8px',
-                        border: isDrag
-                          ? isFolderDragEnter
-                            ? `2px dashed ${color.slate['500']}`
-                            : `2px dashed ${color.primary}`
-                          : isFolderDragEnter
-                            ? `2px dashed ${color.slate['500']}`
-                            : `2px dashed ${color.slate['200']}`,
-                        background: isDrag ? '#3b82f6' : color.slate['200'],
-                        transition: 'all 0.2s ease',
-                        ...(!isDrag && {
-                          '&:hover': {
-                            '& [data-folder-edit-button]': {
-                              opacity: 1,
-                            },
-                          },
-                        }),
-                      })}
-                    >
-                      <Accordion.Button
-                        id={folder.id}
-                        etcStyles={{
+                    selectBookmarks({ id: folder.id });
+                  }}
+                  dragEndAction={(e) => {
+                    setTimeout(() => {
+                      e.dataTransfer.clearData();
+                      deselectAllBookmarks();
+                    }, 500);
+                  }}
+                  etcStyles={{
+                    width: '100%',
+                  }}
+                >
+                  {({ isDrag }) => {
+                    return (
+                      <div
+                        css={css({
                           display: 'flex',
-                          justifyContent: 'flex-start',
+                          justifyContent: 'space-between',
                           alignItems: 'center',
-                          color: color.slate['900'],
-                          fontSize: '12px',
-                          lineHeight: '16px',
-                        }}
+                          borderRadius: '2px',
+                          padding: '4px 8px',
+                          border: isDrag
+                            ? isFolderDragEnter
+                              ? `2px dashed ${color.slate['500']}`
+                              : `2px dashed ${color.primary}`
+                            : isFolderDragEnter
+                              ? `2px dashed ${color.slate['500']}`
+                              : `2px dashed ${color.slate['200']}`,
+                          background: isDrag ? '#3b82f6' : color.slate['200'],
+                          transition: 'all 0.2s ease',
+                          ...(!isDrag && {
+                            '&:hover': {
+                              '& [data-folder-edit-button]': {
+                                opacity: 1,
+                              },
+                            },
+                          }),
+                        })}
                       >
-                        <Accordion.Icon
+                        <Accordion.Button
                           id={folder.id}
-                          size={8}
-                          strokeWidth="8"
-                        />
-                        <div
-                          css={css({
-                            marginLeft: '4px',
-                          })}
+                          etcStyles={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            color: color.slate['900'],
+                            fontSize: '12px',
+                            lineHeight: '16px',
+                          }}
                         >
-                          <p
+                          <Accordion.Icon
+                            id={folder.id}
+                            size={8}
+                            strokeWidth="8"
+                          />
+                          <div
                             css={css({
-                              fontSize: '12px',
-                              lineHeight: '16px',
+                              marginLeft: '4px',
                             })}
                           >
-                            {folder.title}
-                          </p>
-                        </div>
-                      </Accordion.Button>
-                      <BookmarkFolderEditButton />
-                    </div>
-                  );
-                }}
-              </DnD.MultiDraggable>
-            );
-          }}
-        </DnD.Droppable>
-        <Accordion.Panel id={folder.id}>
-          <div
-            css={css({
-              paddingLeft: '20px',
-            })}
-          >
-            {folder.children?.map((child, index) => {
-              return (
-                <Fragment key={child.id}>
-                  <BookmarkTreeDropArea
-                    folder={folder}
-                    startIdx={index}
-                    isFolderDragEnter={isFolderDragEnter}
-                  />
-                  {child.children ? (
-                    <BookmarkFolder folder={child} />
-                  ) : (
-                    <BookmarkLink link={child} />
-                  )}
-                </Fragment>
+                            <p
+                              css={css({
+                                fontSize: '12px',
+                                lineHeight: '16px',
+                              })}
+                            >
+                              {folder.title}
+                            </p>
+                          </div>
+                        </Accordion.Button>
+                        <BookmarkFolderEditButton
+                          folder={folder}
+                          options={[
+                            {
+                              label: '이름 바꾸기',
+                              action: () => {
+                                setIsEdit(true);
+                              },
+                            },
+                            { label: '하위 폴더 생성', action: () => {} },
+                          ]}
+                        />
+                      </div>
+                    );
+                  }}
+                </DnD.MultiDraggable>
               );
-            })}
-            <BookmarkTreeDropArea
-              folder={folder}
-              startIdx={folder.children?.length ?? 0}
-              isFolderDragEnter={isFolderDragEnter}
-            />
-          </div>
-        </Accordion.Panel>
-      </div>
+            }}
+          </DnD.Droppable>
+          <Accordion.Panel id={folder.id}>
+            <div
+              css={css({
+                paddingLeft: '20px',
+              })}
+            >
+              {folder.children?.map((child, index) => {
+                return (
+                  <Fragment key={child.id}>
+                    <BookmarkTreeDropArea
+                      folder={folder}
+                      startIdx={index}
+                      isFolderDragEnter={isFolderDragEnter}
+                    />
+                    {child.children ? (
+                      <BookmarkFolder folder={child} />
+                    ) : (
+                      <BookmarkLink link={child} />
+                    )}
+                  </Fragment>
+                );
+              })}
+              <BookmarkTreeDropArea
+                folder={folder}
+                startIdx={folder.children?.length ?? 0}
+                isFolderDragEnter={isFolderDragEnter}
+              />
+            </div>
+          </Accordion.Panel>
+        </div>
+      )}
     </>
   );
 }

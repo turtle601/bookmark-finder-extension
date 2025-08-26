@@ -86,3 +86,13 @@ export const resetBookmarkTree = async () => {
     action: 'resetBookmarkTree',
   });
 };
+
+export const updateBookmarkTitle = async (payload: {
+  id: string;
+  title: string;
+}) => {
+  return await createChromeRequest({
+    action: 'updateBookmarkTitle',
+    payload: { ...payload },
+  });
+};

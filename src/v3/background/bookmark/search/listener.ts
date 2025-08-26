@@ -193,6 +193,27 @@ class BookmarkListener {
         return true;
       }
     });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'updateBookmarkTitle') {
+        chrome.bookmarks.update(
+          message.payload.id,
+          {
+            title: message.payload.title,
+          },
+          () => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                isSuccess: false,
+                error: chrome.runtime.lastError.message,
+              });
+            } else {
+              sendResponse({ isSuccess: true });
+            }
+          },
+        );
+      }
+    });
   }
 }
 

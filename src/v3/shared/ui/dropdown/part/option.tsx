@@ -1,11 +1,8 @@
 import { css, CSSObject } from '@emotion/react';
 import { ComponentPropsWithoutRef } from 'react';
 
-import { useDropDownContext } from '@/v3/shared/ui/dropdown/model';
-
 interface IDropDownOptionProps extends ComponentPropsWithoutRef<'li'> {
   children: React.ReactNode;
-  onClick?: (e?: React.MouseEvent<Element, MouseEvent>) => void;
   etcStyles?: CSSObject;
 }
 
@@ -15,16 +12,6 @@ function Option({
   etcStyles = {},
   ...attributes
 }: IDropDownOptionProps) {
-  const { close } = useDropDownContext();
-
-  const handleClick = (e: React.MouseEvent<Element, MouseEvent>) => {
-    close();
-
-    if (onClick) {
-      onClick(e);
-    }
-  };
-
   return (
     <li
       data-testid="dropdown-option"
@@ -32,7 +19,7 @@ function Option({
         cursor: 'pointer',
         ...etcStyles,
       })}
-      onClick={handleClick}
+      onMouseDown={onClick}
       {...attributes}
     >
       {children}
