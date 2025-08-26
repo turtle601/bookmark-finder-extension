@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { css } from '@emotion/react';
 
 import ActiveTabs from './tabs';
@@ -35,6 +33,8 @@ function EditBookmark() {
     queryKey: ['getBookmarks'],
     queryFn: () => getBookmarks(),
   });
+
+  if (!bookmarks) return null;
 
   const rootBookmarkChildren = bookmarks?.[0]
     ?.children as IExtendedBookmarkTreeNode[];

@@ -13,7 +13,6 @@ import {
 import DnD from '@/v3/shared/ui/dnd';
 
 import BookmarkLink from './bookmarkLink';
-import BookmarkDropArea from './ui/bookmarkDropArea';
 
 import {
   useAccordionActionContext,
@@ -52,6 +51,13 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
       openAccordion(Number(folder.id));
     }
   }, [isFolderDragEnter, openAccordion, folder.id, selectedIdSet]);
+
+  useEffect(() => {
+    if (!selectedIdSet.has(Number(folder.id))) {
+      openAccordion(Number(folder.id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

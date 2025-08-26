@@ -1,4 +1,5 @@
 import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+
 import {
   addBookmark,
   deleteBookmark,
@@ -6,10 +7,16 @@ import {
   getBookmarkTree,
   getTopLevelSelectedNodes,
   moveBookmark,
+  resetBookmarkTree,
   selectAllBookmarks,
   selectBookmark,
   toggleSelectedBookmark,
 } from '@/v3/entities/bookmark/tree/request/api';
+import {
+  getRootBookmarks,
+  getSelectedBookmarkLinks,
+  getSelectedBookmarks,
+} from '@/v3/entities/bookmark/tree/request/select';
 
 import {
   queryOptions as tsqQueryOptions,
@@ -26,7 +33,7 @@ export const keys = {
 export const bookmarkSearchService = {
   queryKey: () => keys.bookmarkTree(),
   queryOptions: () => {
-    return tsqQueryOptions<chrome.bookmarks.BookmarkTreeNode[]>({
+    return tsqQueryOptions<IBookmarkTreeStorage[]>({
       queryKey: bookmarkSearchService.queryKey(),
       queryFn: () => getBookmarkTree(),
     });
@@ -40,50 +47,21 @@ export const useGetBookmarkTreeQuery = () => {
 export const useSelectedBookmarkQuery = () => {
   return useQuery({
     ...bookmarkSearchService.queryOptions(),
-    select: (data) => {
-      const selectedNodes: IBookmarkTreeStorage[] = [];
-
-      const collectSelected = (nodes: IBookmarkTreeStorage[]): void => {
-        nodes.forEach((node) => {
-          if (node.isSelected) {
-            selectedNodes.push(node);
-          }
-
-          if (node.children) {
-            collectSelected(node.children);
-          }
-        });
-      };
-
-      collectSelected(data);
-
-      return selectedNodes;
-    },
+    select: getSelectedBookmarks,
   });
 };
 
 export const useSelectedBookmarkLinkQuery = () => {
   return useQuery({
     ...bookmarkSearchService.queryOptions(),
-    select: (data) => {
-      const selectedNodes: IBookmarkTreeStorage[] = [];
+    select: getSelectedBookmarkLinks,
+  });
+};
 
-      const collectSelected = (nodes: IBookmarkTreeStorage[]): void => {
-        nodes.forEach((node) => {
-          if (node.isSelected && node.url) {
-            selectedNodes.push(node);
-          }
-
-          if (node.children) {
-            collectSelected(node.children);
-          }
-        });
-      };
-
-      collectSelected(data);
-
-      return selectedNodes;
-    },
+export const useRootBookmarksQuery = () => {
+  return useQuery({
+    ...bookmarkSearchService.queryOptions(),
+    select: getRootBookmarks,
   });
 };
 
@@ -203,6 +181,18 @@ export const useAddBookmarkMutation = () => {
       parentId: string;
       index: number;
     }) => addBookmark({ url, parentId, index, title }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
+};
+
+export const useResetBookmarkTreeMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['resetBookmarkTree'],
+    mutationFn: resetBookmarkTree,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },

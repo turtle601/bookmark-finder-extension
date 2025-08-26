@@ -1,10 +1,34 @@
 import { css } from '@emotion/react';
 
+import {
+  useRootBookmarksQuery,
+  useSelectAllBookmarksMutation,
+} from '@/v3/entities/bookmark/tree/request/queries';
+
+import {
+  useAccordionActionContext,
+  useAccordionContext,
+} from '@/v3/shared/ui/accordion/model';
+
 import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/\bstyles';
-import { useSelectAllBookmarksMutation } from '@/v3/entities/bookmark/tree/request/queries';
 
 function SelectAllBookmarks() {
   const { mutate: selectAllBookmarks } = useSelectAllBookmarksMutation();
+
+  const { data: rootBookmarks } = useRootBookmarksQuery();
+
+  const { selectedIdSet } = useAccordionContext();
+  const { openAccordion } = useAccordionActionContext();
+
+  const handleSelectAllBookmarks = () => {
+    rootBookmarks?.forEach((bookmark) => {
+      if (!selectedIdSet.has(Number(bookmark.id))) {
+        openAccordion(Number(bookmark.id));
+      }
+    });
+
+    selectAllBookmarks();
+  };
 
   return (
     <button
@@ -17,9 +41,7 @@ function SelectAllBookmarks() {
           background: '#d2e3fc',
         },
       })}
-      onClick={() => {
-        selectAllBookmarks();
-      }}
+      onClick={handleSelectAllBookmarks}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
