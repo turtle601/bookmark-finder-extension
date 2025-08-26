@@ -150,7 +150,7 @@ class BookmarkListener {
     });
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (message.action === 'resetBookmarks') {
+      if (message.action === 'resetBookmarkTree') {
         chrome.bookmarks.getTree((tree) => {
           bookmarkTreeStorage.reset(tree);
           sendResponse({ isSuccess: true });

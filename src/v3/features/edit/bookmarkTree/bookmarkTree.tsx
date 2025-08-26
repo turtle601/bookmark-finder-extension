@@ -1,13 +1,23 @@
-import { useGetBookmarkTreeQuery } from '@/v3/entities/bookmark/tree/request/queries';
+import { css } from '@emotion/react';
+import { useEffect } from 'react';
+import {
+  useGetBookmarkTreeQuery,
+  useResetBookmarkTreeMutation,
+} from '@/v3/entities/bookmark/tree/request/queries';
 
 import BookmarkLink from './bookmarkLink';
+import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
-import { css } from '@emotion/react';
-import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
 
 function BookmarkTree() {
   const { data: bookmarks } = useGetBookmarkTreeQuery();
+  const { mutate: resetBookmarkTree } = useResetBookmarkTreeMutation();
+
+  useEffect(() => {
+    resetBookmarkTree();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const rootBookmarkChildren = bookmarks?.[0]
     ?.children as IBookmarkTreeStorage[]; // 크롬 북마크 root에는 무조건 자식 폴더가 존재함

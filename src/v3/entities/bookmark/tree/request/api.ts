@@ -75,10 +75,14 @@ export const addBookmark = async (payload: {
   parentId: string;
   index: number;
 }) => {
-  console.log('payload', payload);
-
   return await createChromeRequest({
     action: 'addBookmark',
     payload: { ...payload },
+  });
+};
+
+export const resetBookmarkTree = async () => {
+  return await createChromeRequest({
+    action: 'resetBookmarkTree',
   });
 };

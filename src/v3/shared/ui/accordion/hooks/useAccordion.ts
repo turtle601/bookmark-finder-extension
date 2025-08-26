@@ -5,22 +5,24 @@ export const useAccordion = () => {
 
   const openAccordion = useCallback(
     (id: number) => {
-      const copiedSet = new Set([...selectedIdSet]);
-      copiedSet.add(id);
-
-      setSelectedIdSet(copiedSet);
+      setSelectedIdSet((prev) => {
+        const copiedSet = new Set([...prev]);
+        copiedSet.add(id);
+        return copiedSet;
+      });
     },
-    [selectedIdSet],
+    [], // 의존성 배열 비움
   );
 
   const closeAccordion = useCallback(
     (id: number) => {
-      const copiedSet = new Set([...selectedIdSet]);
-      copiedSet.delete(id);
-
-      setSelectedIdSet(copiedSet);
+      setSelectedIdSet((prev) => {
+        const copiedSet = new Set([...prev]);
+        copiedSet.delete(id);
+        return copiedSet;
+      });
     },
-    [selectedIdSet],
+    [], // 의존성 배열 비움
   );
 
   return {
