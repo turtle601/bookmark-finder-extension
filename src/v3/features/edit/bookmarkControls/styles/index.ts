@@ -2,7 +2,8 @@ import { CSSObject } from '@emotion/react';
 
 export const getActionButtonStyle = (): CSSObject => {
   return {
-    width: '96px',
+    minWidth: '88px',
+    flex: '1',
     height: '32px',
     border: '1px solid #dadce0',
     padding: '4px 8px',

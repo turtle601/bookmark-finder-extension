@@ -1,3 +1,5 @@
+import { getSafeHostname } from '@/v3/shared/utils/url';
+
 export interface IBookmarkTreeStorage
   extends chrome.bookmarks.BookmarkTreeNode {
   isSelected?: boolean;
@@ -27,7 +29,7 @@ class BookmarkTreeStorage {
         ...node,
         isSelected: false,
         faviconUrl: node.url
-          ? `https://www.google.com/s2/favicons?domain=${new URL(node.url).hostname}`
+          ? `https://www.google.com/s2/favicons?domain=${getSafeHostname(node.url)}`
           : undefined,
         children: node.children ? node.children.map(processNode) : undefined,
       };
@@ -47,7 +49,7 @@ class BookmarkTreeStorage {
         ...node,
         isSelected: this.findNodeById(node.id)?.isSelected ?? false,
         faviconUrl: node.url
-          ? `https://www.google.com/s2/favicons?domain=${new URL(node.url).hostname}`
+          ? `https://www.google.com/s2/favicons?domain=${getSafeHostname(node.url)}`
           : undefined,
         children: node.children ? node.children.map(processNode) : undefined,
       };

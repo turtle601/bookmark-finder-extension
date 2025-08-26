@@ -1,1 +1,1 @@
-export { default as ActiveTabs } from './activeTabs';
+export { default as CurrentChromeTab } from './currentChromeTab';

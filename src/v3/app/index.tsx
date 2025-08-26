@@ -9,14 +9,14 @@ import { Tabs } from '@/v3/shared/ui/tabs';
 
 import Spacer from '@/v3/shared/ui/layout/spacer';
 import Header from '@/v3/widgets/ui/header';
-import PanelLayout from '@/v3/widgets/ui/panelLayout';
-import ActiveTabs from '@/v3/features/search/chromeTab/activeTabs';
-import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
-
-import DnD from '@/v3/shared/ui/dnd';
 
 import { Accordion } from '@/v3/shared/ui/accordion';
 
+import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
+import { CurrentChromeTab } from '@/v3/features/search/chromeTab';
+import SplitPane from '@/v3/shared/ui/splitPane';
+import Divider from '@/v3/shared/ui/layout/divider';
+import DnD from '@/v3/shared/ui/dnd';
 import { EditBookmark } from '@/v3/features/edit';
 
 interface ILayoutProps {
@@ -113,16 +113,20 @@ function App() {
             </Tabs.TabList>
             <Tabs.TabPanels>
               <Tabs.TabPanel>
-                <PanelLayout
-                  topArticle={<FindBookmark />}
-                  bottomArticle={
+                <SplitPane
+                  width={'100%'}
+                  height={'calc(100vh - 124px)'}
+                  split={'vertical'}
+                  pane1={<FindBookmark />}
+                  pane2={
                     <DnD.Provider>
                       <DnD.Boundary width={'100%'} height={'100%'}>
                         <DnD.PointerContent />
-                        <ActiveTabs />
+                        <CurrentChromeTab />
                       </DnD.Boundary>
                     </DnD.Provider>
                   }
+                  resizer={<Divider css={{ cursor: 'ns-resize' }} />}
                 />
               </Tabs.TabPanel>
               <Tabs.TabPanel>
@@ -130,9 +134,13 @@ function App() {
                   <DnD.Provider>
                     <DnD.Boundary width={'100%'} height={'100%'}>
                       <DnD.PointerContent />
-                      <PanelLayout
-                        topArticle={<EditBookmark />}
-                        bottomArticle={<ActiveTabs />}
+                      <SplitPane
+                        width={'100%'}
+                        height={'calc(100vh - 124px)'}
+                        split={'vertical'}
+                        pane1={<EditBookmark />}
+                        pane2={<CurrentChromeTab />}
+                        resizer={<Divider css={{ cursor: 'ns-resize' }} />}
                       />
                     </DnD.Boundary>
                   </DnD.Provider>

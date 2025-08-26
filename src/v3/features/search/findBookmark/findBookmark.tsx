@@ -4,6 +4,7 @@ import Spacer from '@/v3/shared/ui/layout/spacer';
 
 import BookmarkSearchField from '@/v3/features/search/findBookmark/ui/bookmarkSearchField';
 import SearchResult from '@/v3/features/search/findBookmark/ui/searchResult';
+import { css } from '@emotion/react';
 
 function FindBookmark() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -15,8 +16,22 @@ function FindBookmark() {
   };
 
   return (
-    <div>
-      <BookmarkSearchField inputRef={inputRef} onChange={handleChange} />
+    <div
+      css={css({
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+      })}
+    >
+      <div
+        css={css({
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+        })}
+      >
+        <BookmarkSearchField inputRef={inputRef} onChange={handleChange} />
+      </div>
       <Spacer direction="vertical" space={12} />
       <SearchResult searchText={searchText} />
     </div>

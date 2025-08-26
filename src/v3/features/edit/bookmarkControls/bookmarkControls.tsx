@@ -13,9 +13,10 @@ function BookmarkControls() {
         height: '50px',
         borderRadius: '12px',
         backgroundColor: color.slate['50'],
-        justifyContent: 'space-between',
-        alignItems: 'center',
       }}
+      justify="space-between"
+      align="center"
+      gap="8px"
     >
       <SelectAllBookmarks />
       <DeselectAllBookmarks />

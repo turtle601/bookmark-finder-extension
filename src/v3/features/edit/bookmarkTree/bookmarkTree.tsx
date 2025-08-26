@@ -18,7 +18,7 @@ function BookmarkTree() {
     <div
       css={css({
         width: '100%',
-        height: '240px',
+        height: '100%',
         overflowY: 'auto',
       })}
     >

@@ -1,8 +1,11 @@
 import { css } from '@emotion/react';
 
 import { color } from '@/v3/shared/styles';
+import { ComponentPropsWithoutRef } from 'react';
 
-function Divider() {
+interface IDividerProps extends ComponentPropsWithoutRef<'div'> {}
+
+function Divider({ ...props }: IDividerProps) {
   return (
     <div
       css={css({
@@ -10,6 +13,7 @@ function Divider() {
         height: '2px',
         backgroundColor: color.slate['200'],
       })}
+      {...props}
     ></div>
   );
 }

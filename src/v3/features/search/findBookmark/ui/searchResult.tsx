@@ -20,8 +20,8 @@ function SearchResult({ searchText }: IBookmarkResultProps) {
       <Center
         etcStyles={{
           width: '100%',
-          height: '280px',
           overflowY: 'auto',
+          height: 'calc(100% - 44px)',
         }}
       >
         <span>검색 결과가 없습니다.</span>
@@ -32,7 +32,7 @@ function SearchResult({ searchText }: IBookmarkResultProps) {
     <div
       css={css({
         width: '100%',
-        height: '280px',
+        height: 'calc(100% - 44px)',
         overflowY: 'auto',
       })}
     >

@@ -1,7 +1,8 @@
+import Flex from '@/v3/shared/ui/layout/flex';
 import { css } from '@emotion/react';
 
 interface IBookmarkSearchFieldProps {
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -10,9 +11,12 @@ function BookmarkSearchField({
   onChange,
 }: IBookmarkSearchFieldProps) {
   return (
-    <div
+    <Flex
+      align="center"
       css={css({
         position: 'relative',
+        width: '100%',
+        height: '50px',
       })}
     >
       <input
@@ -20,7 +24,8 @@ function BookmarkSearchField({
         onChange={onChange}
         css={css({
           width: '100%',
-          padding: '12px 16px 12px 40px',
+          height: '32px',
+          padding: '8px 12px 8px 32px',
           border: '2px solid #e2e8f0',
           borderRadius: '10px',
           fontSize: '14px',
@@ -53,7 +58,7 @@ function BookmarkSearchField({
       >
         🔍
       </span>
-    </div>
+    </Flex>
   );
 }
 

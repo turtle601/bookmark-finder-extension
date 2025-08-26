@@ -8,10 +8,24 @@ function EditBookmark() {
   const { bookmarkTreeRef } = useBookmarkTreeListener();
 
   return (
-    <div ref={bookmarkTreeRef}>
+    <div
+      ref={bookmarkTreeRef}
+      css={{
+        position: 'relative',
+      }}
+    >
+      <div
+        css={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1,
+        }}
+      >
+        <BookmarkControls />
+      </div>
+      <Spacer direction="vertical" space="4px" />
       <BookmarkTree />
-      <Spacer direction="vertical" space="12px" />
-      <BookmarkControls />
+      <Spacer direction="vertical" space="4px" />
     </div>
   );
 }
