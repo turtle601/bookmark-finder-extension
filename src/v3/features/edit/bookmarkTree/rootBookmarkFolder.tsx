@@ -7,6 +7,7 @@ import { color } from '@/v3/shared/styles';
 
 import {
   useAddBookmarkMutation,
+  useCreateBookmarkFolderMutation,
   useMoveBookmarkMutation,
   useToggleSelectedBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
@@ -24,6 +25,32 @@ import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolder';
 import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
+
+import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
+
+function RootBookmarkEditButton({
+  bookmark,
+}: {
+  bookmark: IBookmarkTreeStorage;
+}) {
+  const { mutate: createBookmarkFolder } = useCreateBookmarkFolderMutation();
+
+  const createSubFolder = () => {
+    createBookmarkFolder({
+      parentId: bookmark.id,
+    });
+  };
+  return (
+    <BookmarkEditButton
+      options={[
+        {
+          label: '하위 폴더 생성',
+          action: createSubFolder,
+        },
+      ]}
+    />
+  );
+}
 
 function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
@@ -121,6 +148,11 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                     ? `2px dashed ${color.slate['500']}`
                     : `2px dashed ${color.slate['200']}`,
                   backgroundColor: color.slate['200'],
+                  '&:hover': {
+                    '& [data-bookmark-edit-button]': {
+                      opacity: 1,
+                    },
+                  },
                 })}
               >
                 <Accordion.Button
@@ -132,24 +164,20 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                     color: color.slate['900'],
                     fontSize: '12px',
                     lineHeight: '16px',
+                    gap: '4px',
                   }}
                 >
                   <Accordion.Icon id={folder.id} size={8} strokeWidth="8" />
-                  <div
+                  <p
                     css={css({
-                      marginLeft: '4px',
+                      fontSize: '12px',
+                      lineHeight: '16px',
                     })}
                   >
-                    <p
-                      css={css({
-                        fontSize: '12px',
-                        lineHeight: '16px',
-                      })}
-                    >
-                      {folder.title}
-                    </p>
-                  </div>
+                    {folder.title}
+                  </p>
                 </Accordion.Button>
+                <RootBookmarkEditButton bookmark={folder} />
               </div>
             );
           }}
