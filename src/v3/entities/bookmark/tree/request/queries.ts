@@ -221,14 +221,14 @@ export const useUpdateBookmarkTitleMutation = () => {
 export const useCreateBookmarkFolderMutation = () => {
   const queryClient = useQueryClient();
 
-  const { setBookmark } = useEditBookmarkStore();
+  const { setEditBookmark } = useEditBookmarkStore();
   const { openAccordion } = useAccordionActionContext();
 
   return useMutation({
     mutationKey: ['createBookmarkFolder'],
     mutationFn: createBookmarkFolder,
     onSuccess: (data) => {
-      setBookmark(data.bookmark);
+      setEditBookmark(data.bookmark);
 
       if (data.bookmark.parentId) {
         openAccordion(Number(data.bookmark.parentId));

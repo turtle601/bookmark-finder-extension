@@ -1,15 +1,17 @@
-import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import { create, StoreApi, UseBoundStore } from 'zustand';
 
-export const useEditBookmarkStore: UseBoundStore<
-  StoreApi<{
-    bookmark: IBookmarkTreeStorage | null;
-    setBookmark: (bookmark: IBookmarkTreeStorage | null) => void;
-  }>
-> = create<{
-  bookmark: IBookmarkTreeStorage | null;
-  setBookmark: (bookmark: IBookmarkTreeStorage | null) => void;
-}>((set) => ({
-  bookmark: null,
-  setBookmark: (bookmark) => set({ bookmark }),
-}));
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+
+interface IEditBookmarkStore {
+  editBookmark: IBookmarkTreeStorage | null;
+  setEditBookmark: (bookmark: IBookmarkTreeStorage | null) => void;
+}
+
+export const useEditBookmarkStore: UseBoundStore<StoreApi<IEditBookmarkStore>> =
+  create<{
+    editBookmark: IBookmarkTreeStorage | null;
+    setEditBookmark: (bookmark: IBookmarkTreeStorage | null) => void;
+  }>((set) => ({
+    editBookmark: null,
+    setEditBookmark: (bookmark) => set({ editBookmark: bookmark }),
+  }));

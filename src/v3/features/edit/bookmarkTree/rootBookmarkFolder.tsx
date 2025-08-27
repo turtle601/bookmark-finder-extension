@@ -13,8 +13,6 @@ import {
 
 import DnD from '@/v3/shared/ui/dnd';
 
-import BookmarkLink from './bookmarkLink';
-
 import {
   useAccordionActionContext,
   useAccordionContext,
@@ -22,8 +20,10 @@ import {
 import { Accordion } from '@/v3/shared/ui/accordion';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
-import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder';
-import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkTreeDropArea';
+
+import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
+import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolder';
+import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
 
 function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);

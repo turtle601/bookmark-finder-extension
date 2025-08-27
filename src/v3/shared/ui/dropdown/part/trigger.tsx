@@ -5,7 +5,7 @@ import { useDropDownContext } from '@/v3/shared/ui/dropdown/model';
 
 interface IDropDownTriggerProps extends ComponentPropsWithoutRef<'button'> {
   children: React.ReactNode;
-  onClick?: VoidFunction;
+  onClick?: React.MouseEventHandler;
   etcStyles?: React.CSSProperties;
 }
 
@@ -19,11 +19,13 @@ function Trigger({
 
   const { toggle, close } = useDropDownContext();
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
     toggle();
 
     if (onClick) {
-      onClick();
+      onClick(e);
     }
   };
 

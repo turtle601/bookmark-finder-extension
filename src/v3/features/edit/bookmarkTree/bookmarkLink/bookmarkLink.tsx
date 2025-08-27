@@ -14,6 +14,7 @@ import {
 import Image from '@/v3/shared/ui/image';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import BookmarkLinkEditButton from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLinkEditButton';
 
 function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
   const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(
@@ -65,6 +66,7 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
               css={css({
                 width: '100%',
                 display: 'flex',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: '10px',
                 padding: '8px 12px',
@@ -80,6 +82,9 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
                   '&:hover': {
                     background: color.slate['50'],
                     color: color.slate['600'],
+                    '& [data-bookmark-edit-button]': {
+                      opacity: 1,
+                    },
                   },
                 }),
               })}
@@ -124,6 +129,7 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
               >
                 {link.title}
               </p>
+              <BookmarkLinkEditButton bookmark={link} />
             </div>
           );
         }}

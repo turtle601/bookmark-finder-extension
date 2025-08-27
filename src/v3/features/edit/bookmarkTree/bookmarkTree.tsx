@@ -5,10 +5,10 @@ import {
   useResetBookmarkTreeMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
 
-import BookmarkLink from './bookmarkLink';
 import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 
 function BookmarkTree() {
   const { data: bookmarks } = useGetBookmarkTreeQuery();
