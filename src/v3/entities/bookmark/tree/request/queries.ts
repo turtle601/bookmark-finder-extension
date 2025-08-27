@@ -19,7 +19,7 @@ import {
   getSelectedBookmarkLinks,
   getSelectedBookmarks,
 } from '@/v3/entities/bookmark/tree/request/select';
-import { useEditBookmarkStore } from '@/v3/features/edit/bookmarkTree/store/useEditBookmarkStore';
+import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
 import { useAccordionActionContext } from '@/v3/shared/ui/accordion/model';
 
 import {

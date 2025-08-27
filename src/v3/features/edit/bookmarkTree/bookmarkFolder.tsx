@@ -31,7 +31,7 @@ import BookmarkTreeDropArea from './bookmarkTreeDropArea';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import Flex from '@/v3/shared/ui/layout/flex';
-import { useEditBookmarkStore } from '@/v3/features/edit/bookmarkTree/store/useEditBookmarkStore';
+import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
 
 interface IBookmarkFolderFieldProps {
   folder: IBookmarkTreeStorage;
@@ -227,6 +227,10 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
       e.stopPropagation();
 
       toggleBookmarks({ nodeId: folder.id });
+
+      if (!selectedIdSet.has(Number(folder.id))) {
+        openAccordion(Number(folder.id));
+      }
     }
   };
 
@@ -257,7 +261,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             borderRadius: '4px',
             border: `1px solid ${
-              folder.isSelected ? color.primary : 'transparent'
+              folder.isSelected ? color.primary : color.slate['100']
             }`,
             backgroundColor: color.slate['100'],
           })}
