@@ -7,11 +7,10 @@ import {
 } from '@/v3/entities/chromeTab/request';
 
 interface IChromeTabDropAreaProps {
-  tabIdx?: number;
   startIdx: number;
 }
 
-function ChromeTabDropArea({ tabIdx, startIdx }: IChromeTabDropAreaProps) {
+function ChromeTabDropArea({ startIdx }: IChromeTabDropAreaProps) {
   const { mutate: moveTab } = useMoveTabMutation();
 
   const { addChromeTabs } = useAddChromeTabMutation();
@@ -19,15 +18,18 @@ function ChromeTabDropArea({ tabIdx, startIdx }: IChromeTabDropAreaProps) {
   const dropDraggedTab = (e: React.DragEvent<Element>) => {
     const draggedTab = JSON.parse(e.dataTransfer.getData('tab'));
 
-    if (draggedTab && draggedTab.id) {
-      if (draggedTab.index + 1 === tabIdx || draggedTab.index === tabIdx) {
-        return;
-      }
-
-      moveTab({ tabId: draggedTab.id, index: startIdx });
+    if (!draggedTab?.id) {
+      return;
     }
 
-    return;
+    const isSamePosition =
+      draggedTab.index + 1 === startIdx || draggedTab.index === startIdx;
+
+    if (isSamePosition) {
+      return;
+    }
+
+    moveTab({ tabId: draggedTab.id, index: startIdx });
   };
 
   return (

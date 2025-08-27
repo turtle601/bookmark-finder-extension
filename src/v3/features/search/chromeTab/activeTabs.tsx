@@ -85,7 +85,7 @@ function ActiveTabs() {
         <Flex direction="column">
           {data?.tabs.map((tab, index) => (
             <React.Fragment key={tab.id}>
-              <ChromeTabDropArea tabIdx={tab.id} startIdx={index} />
+              <ChromeTabDropArea startIdx={index} />
               <ActiveTab
                 tab={tab}
                 tabRef={(el) => {
