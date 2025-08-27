@@ -163,7 +163,7 @@ class BookmarkListener {
       if (message.action === 'deleteBookmark') {
         const { id } = message.payload;
 
-        chrome.bookmarks.remove(id, () => {
+        chrome.bookmarks.removeTree(id, () => {
           if (chrome.runtime.lastError) {
             sendResponse({
               isSuccess: false,

@@ -8,6 +8,7 @@ import { color } from '@/v3/shared/styles';
 import {
   useAddBookmarkMutation,
   useCreateBookmarkFolderMutation,
+  useDeleteBookmarkMutation,
   useDeselectAllBookmarksMutation,
   useMoveBookmarkMutation,
   useSelectBookmarkMutation,
@@ -138,6 +139,22 @@ interface IBookmarkFolderEditButtonProps {
 }
 
 function BookmarkFolderEditButton({ options }: IBookmarkFolderEditButtonProps) {
+  const [optionsPosition, setOptionsPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  const triggerRef = useCallback((el: HTMLDivElement) => {
+    if (el) {
+      setTimeout(() => {
+        setOptionsPosition({
+          x: el.getBoundingClientRect().left,
+          y: el.getBoundingClientRect().bottom,
+        });
+      }, 0);
+    }
+  }, []);
+
   return (
     <DropDown.Provider>
       <div
@@ -146,33 +163,34 @@ function BookmarkFolderEditButton({ options }: IBookmarkFolderEditButtonProps) {
         })}
       >
         <DropDown.Trigger aria-label="폴더 수정 버튼">
-          <Center
-            as="button"
-            data-folder-edit-button
-            etcStyles={{
-              width: '12px',
-              height: '100%',
-              opacity: 0,
-              borderRadius: '2px',
-              transition: 'opacity 0.2s ease',
-              background: 'transparent',
-              '&:hover': {
-                background: color.slate['50'],
-                opacity: 1,
-              },
-            }}
-          >
-            ⋮
-          </Center>
+          <div ref={triggerRef}>
+            <Center
+              as="button"
+              data-folder-edit-button
+              etcStyles={{
+                width: '12px',
+                height: '100%',
+                opacity: 0,
+                borderRadius: '2px',
+                transition: 'opacity 0.2s ease',
+                background: 'transparent',
+                '&:hover': {
+                  background: color.slate['50'],
+                  opacity: 1,
+                },
+              }}
+            >
+              ⋮
+            </Center>
+          </div>
         </DropDown.Trigger>
-
         <DropDown.Options
           etcStyles={{
-            position: 'absolute',
-            top: '20px',
-            right: 0,
+            position: 'fixed',
+            top: `${optionsPosition.y}px`,
+            left: `${optionsPosition.x - 148}px`,
             width: '160px',
-            zIndex: 999999,
+            zIndex: 99999999,
             background: color.white,
             borderRadius: '4px',
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
@@ -218,6 +236,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const { mutate: selectBookmarks } = useSelectBookmarkMutation(folder.id);
   const { mutate: deselectAllBookmarks } = useDeselectAllBookmarksMutation();
   const { mutate: addBookmark } = useAddBookmarkMutation();
+  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -392,6 +411,12 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                                 createBookmarkFolder({
                                   parentId: folder.id,
                                 });
+                              },
+                            },
+                            {
+                              label: '삭제',
+                              action: () => {
+                                deleteBookmark({ id: folder.id });
                               },
                             },
                           ]}

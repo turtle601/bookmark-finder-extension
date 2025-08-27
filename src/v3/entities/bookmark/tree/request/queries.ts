@@ -148,21 +148,24 @@ export const useSelectAllBookmarksMutation = () => {
 export const useDeleteBookmarkMutation = () => {
   const queryClient = useQueryClient();
 
-  const { data: selectedBookmarks } = useSelectedBookmarkQuery();
-
-  const isDisabled = selectedBookmarks?.length === 0;
-
-  const { mutate } = useMutation({
-    mutationKey: ['deleteBookmark'],
+  return useMutation({
     mutationFn: deleteBookmark,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
+};
+
+export const useDeleteBookmarksMutation = () => {
+  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
+
+  const { data: selectedBookmarks } = useSelectedBookmarkQuery();
+
+  const isDisabled = selectedBookmarks?.length === 0;
 
   const fn = async () => {
     selectedBookmarks?.forEach((bookmark) => {
-      mutate({ id: bookmark.id });
+      deleteBookmark({ id: bookmark.id });
     });
   };
 
@@ -225,13 +228,13 @@ export const useCreateBookmarkFolderMutation = () => {
     mutationKey: ['createBookmarkFolder'],
     mutationFn: createBookmarkFolder,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-
       setBookmark(data.bookmark);
 
       if (data.bookmark.parentId) {
         openAccordion(Number(data.bookmark.parentId));
       }
+
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
 };
