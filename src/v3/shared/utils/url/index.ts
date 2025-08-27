@@ -10,3 +10,8 @@ export const getSafeHostname = (url: string): string | null => {
   const match = url.match(/^(?:https?:\/\/)?([^\/\?:]+)/);
   return match ? match[1].split(':')[0] : null;
 };
+
+export const getFaviconUrl = (url: string): string => {
+  const hostname = getSafeHostname(url);
+  return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
+};

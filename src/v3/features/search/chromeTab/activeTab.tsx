@@ -13,7 +13,7 @@ import Flex from '@/v3/shared/ui/layout/flex';
 
 import { css } from '@emotion/react';
 import Image from '@/v3/shared/ui/image';
-import { getSafeHostname } from '@/v3/shared/utils/url';
+import { getFaviconUrl, getSafeHostname } from '@/v3/shared/utils/url';
 
 interface ITabItemProps {
   tab: chrome.tabs.Tab;
@@ -83,7 +83,7 @@ function ActiveTab({ tab, tabRef }: ITabItemProps) {
                 }}
               >
                 <Image
-                  src={`https://www.google.com/s2/favicons?domain=${getSafeHostname(tab.url!)}`}
+                  src={getFaviconUrl(tab.url!)}
                   alt={`${tab.title} 아이콘`}
                   fallbackComponent={
                     <span aria-label={`${tab.title} 아이콘`} role="img">
