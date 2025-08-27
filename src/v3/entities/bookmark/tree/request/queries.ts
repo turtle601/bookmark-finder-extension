@@ -235,13 +235,3 @@ export const useCreateBookmarkFolderMutation = () => {
     },
   });
 };
-
-// 1. 폴더 영역에 drop 시 이동 및 생성 오류 발생
-
-// 2. selected 상태 관리 변경
-
-// 3. dropdown 삭제 기능 추가
-
-// 4. 링크 dropdown 기능 추가
-
-// 5. 삭제 시 알람 기능 추가

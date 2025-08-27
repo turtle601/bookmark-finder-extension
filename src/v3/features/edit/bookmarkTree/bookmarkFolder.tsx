@@ -6,6 +6,7 @@ import { Fragment } from 'react';
 import { color } from '@/v3/shared/styles';
 
 import {
+  useAddBookmarkMutation,
   useCreateBookmarkFolderMutation,
   useDeselectAllBookmarksMutation,
   useMoveBookmarkMutation,
@@ -216,6 +217,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   );
   const { mutate: selectBookmarks } = useSelectBookmarkMutation(folder.id);
   const { mutate: deselectAllBookmarks } = useDeselectAllBookmarksMutation();
+  const { mutate: addBookmark } = useAddBookmarkMutation();
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -262,11 +264,30 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
           onClick={handleSelectClick}
         >
           <DnD.Droppable
-            dropAction={async () => {
-              moveBookmark({
-                parentId: folder.id,
-                startIdx: 0,
-              });
+            dropAction={async (e) => {
+              const draggedType = e.dataTransfer.getData('dragType');
+
+              switch (draggedType) {
+                case 'tab':
+                  const draggedTab = JSON.parse(e.dataTransfer.getData('tab'));
+
+                  addBookmark({
+                    title: draggedTab.title,
+                    url: draggedTab.url,
+                    parentId: folder.id,
+                    index: 0,
+                  });
+
+                  break;
+                case 'bookmark':
+                  moveBookmark({
+                    parentId: folder.id,
+                    startIdx: 0,
+                  });
+                  break;
+                default:
+                  break;
+              }
             }}
             etcStyles={{
               width: '100%',

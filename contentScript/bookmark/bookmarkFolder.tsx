@@ -308,6 +308,8 @@ export function EditBookmarkFolder({
           onDrop={async (e) => {
             const selectedTopLevelNodes = await getTopLevelSelectedNodes();
 
+            console.log(selectedTopLevelNodes, 'selectedNodes');
+
             selectedTopLevelNodes?.data?.forEach((id, indexing) => {
               moveBookmark({
                 id,
