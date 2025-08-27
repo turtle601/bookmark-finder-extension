@@ -10,7 +10,7 @@ import {
   useAccordionContext,
 } from '@/v3/shared/ui/accordion/model';
 
-import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/\bstyles';
+import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
 
 function SelectAllBookmarks() {
   const { mutate: selectAllBookmarks } = useSelectAllBookmarksMutation();

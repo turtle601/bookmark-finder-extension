@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/\bstyles';
+import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
 import { useDeleteBookmarksMutation } from '@/v3/entities/bookmark/tree/request/queries';
 
 function DeleteSelectedBookmarks() {

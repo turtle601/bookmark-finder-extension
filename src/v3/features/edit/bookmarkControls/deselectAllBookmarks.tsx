@@ -4,7 +4,7 @@ import {
   useDeselectAllBookmarksMutation,
   useSelectedBookmarkQuery,
 } from '@/v3/entities/bookmark/tree/request/queries';
-import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/\bstyles';
+import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
 
 function DeselectAllBookmarks() {
   const { data: selectedBookmarks } = useSelectedBookmarkQuery();
