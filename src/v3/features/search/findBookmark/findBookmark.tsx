@@ -1,10 +1,10 @@
+import { css } from '@emotion/react';
 import { useRef, useState } from 'react';
 
 import Spacer from '@/v3/shared/ui/layout/spacer';
 
 import BookmarkSearchField from '@/v3/features/search/findBookmark/ui/bookmarkSearchField';
-import SearchResult from '@/v3/features/search/findBookmark/ui/searchResult';
-import { css } from '@emotion/react';
+import BookmarkSearchResult from '@/v3/features/search/findBookmark/ui/bookmarkSearchResult';
 
 function FindBookmark() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,7 @@ function FindBookmark() {
         <BookmarkSearchField inputRef={inputRef} onChange={handleChange} />
       </div>
       <Spacer direction="vertical" space={12} />
-      <SearchResult searchText={searchText} />
+      <BookmarkSearchResult searchText={searchText} />
     </div>
   );
 }

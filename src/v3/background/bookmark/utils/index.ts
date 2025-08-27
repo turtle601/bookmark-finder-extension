@@ -1,6 +1,11 @@
 import { getFaviconUrl } from '@/v3/shared/utils/url';
 
-import type { ISearchBookmarkLink } from '@/v3/background/bookmark/search/type';
+export interface ISearchBookmarkLink {
+  id: string;
+  title: string;
+  url: string;
+  faviconUrl: string;
+}
 
 export const extractSearchBookmarkLinks = (
   nodes: chrome.bookmarks.BookmarkTreeNode[],

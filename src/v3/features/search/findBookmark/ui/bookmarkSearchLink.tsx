@@ -1,13 +1,14 @@
 import { css } from '@emotion/react';
 
-import { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
 import Image from '@/v3/shared/ui/image';
+
+import type { ISearchBookmarkLink } from '@/v3/background/bookmark/utils';
 
 interface ISearchBookmarkLinkProps {
   bookmark: ISearchBookmarkLink;
 }
 
-function BookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
+function SearchBookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
   const openChromeLink = () => {
     chrome.tabs.create({ url: bookmark.url });
   };
@@ -95,4 +96,4 @@ function BookmarkLink({ bookmark }: ISearchBookmarkLinkProps) {
   );
 }
 
-export default BookmarkLink;
+export default SearchBookmarkLink;

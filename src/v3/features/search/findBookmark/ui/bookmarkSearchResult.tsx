@@ -9,7 +9,7 @@ interface IBookmarkResultProps {
   searchText: string;
 }
 
-function SearchResult({ searchText }: IBookmarkResultProps) {
+function BookmarkSearchResult({ searchText }: IBookmarkResultProps) {
   const { data: bookmarks = [] } = useSearchBookmarksQuery({
     text: searchText,
     isEnabled: searchText !== '',
@@ -41,4 +41,4 @@ function SearchResult({ searchText }: IBookmarkResultProps) {
   );
 }
 
-export default SearchResult;
+export default BookmarkSearchResult;

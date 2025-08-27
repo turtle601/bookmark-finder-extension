@@ -1,6 +1,6 @@
-import { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
-
 import { searchQuery } from '@/v3/entities/bookmark/search/request/api';
+
+import type { ISearchBookmarkLink } from '@/v3/background/bookmark/utils';
 
 import {
   queryOptions as tsqQueryOptions,

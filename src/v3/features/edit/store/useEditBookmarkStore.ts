@@ -1,6 +1,6 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 interface IEditBookmarkStore {
   editBookmark: IBookmarkTreeStorage | null;

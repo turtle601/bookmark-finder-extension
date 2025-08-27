@@ -42,6 +42,7 @@ function ChromeTabDropArea({ startIdx }: IChromeTabDropAreaProps) {
             dropDraggedTab(e);
             return;
           case 'bookmark':
+            console.log('bookmark');
             addChromeTabs(startIdx);
             return;
           default:

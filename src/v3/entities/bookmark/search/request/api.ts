@@ -1,7 +1,6 @@
 import { createChromeRequest } from '@/v3/shared/utils/request';
 
-import { ISearchBookmarkLink } from '@/v3/background/bookmark/search';
-
+import type { ISearchBookmarkLink } from '@/v3/background/bookmark/utils';
 import type { IGenericResponse } from '@/v3/shared/utils/request/type';
 
 interface IBookmarkSearchResponse extends IGenericResponse {

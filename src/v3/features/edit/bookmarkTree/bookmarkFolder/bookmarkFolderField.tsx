@@ -8,7 +8,7 @@ import { useUpdateBookmarkTitleMutation } from '@/v3/entities/bookmark/tree/requ
 
 import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 const getFieldWrapperStyle = (): CSSObject => {
   return {

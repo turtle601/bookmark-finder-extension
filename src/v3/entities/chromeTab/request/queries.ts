@@ -91,6 +91,8 @@ export const useAddChromeTabMutation = () => {
 
   const { data: selectedBookmarks } = useSelectedBookmarkLinkQuery();
 
+  console.log('변경', selectedBookmarks);
+
   const { mutate } = useMutation({
     mutationKey: ['addChromeTab'],
     mutationFn: ({ url, index }: { url: string; index: number }) =>

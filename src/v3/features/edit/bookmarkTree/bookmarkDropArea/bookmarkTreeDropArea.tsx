@@ -6,7 +6,7 @@ import {
   useMoveBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 interface IBookmarkTreeDropAreaProps {
   folder: IBookmarkTreeStorage;

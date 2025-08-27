@@ -13,8 +13,9 @@ import {
 
 import Image from '@/v3/shared/ui/image';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import BookmarkLinkEditButton from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLinkEditButton';
+
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
   const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(

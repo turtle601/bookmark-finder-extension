@@ -28,7 +28,7 @@ import BookmarkFolderField from '@/v3/features/edit/bookmarkTree/bookmarkFolder/
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
   const { editBookmark } = useEditBookmarkStore();
@@ -134,7 +134,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                     setTimeout(() => {
                       e.dataTransfer.clearData();
                       deselectAllBookmarks();
-                    }, 500);
+                    }, 100);
                   }}
                   etcStyles={{
                     width: '100%',

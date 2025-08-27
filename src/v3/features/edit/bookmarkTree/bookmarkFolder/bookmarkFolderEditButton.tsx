@@ -2,7 +2,7 @@ import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkSt
 
 import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 import {
   useCreateBookmarkFolderMutation,
   useDeleteBookmarkMutation,

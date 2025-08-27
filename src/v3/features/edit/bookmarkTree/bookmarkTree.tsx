@@ -7,8 +7,9 @@ import {
 
 import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
+
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 function BookmarkTree() {
   const { data: bookmarks } = useGetBookmarkTreeQuery();

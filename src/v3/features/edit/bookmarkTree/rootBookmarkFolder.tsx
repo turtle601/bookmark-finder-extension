@@ -20,7 +20,7 @@ import {
 } from '@/v3/shared/ui/accordion/model';
 import { Accordion } from '@/v3/shared/ui/accordion';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolder';

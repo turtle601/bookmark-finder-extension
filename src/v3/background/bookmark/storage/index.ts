@@ -1,4 +1,4 @@
-import { getFaviconUrl, getSafeHostname } from '@/v3/shared/utils/url';
+import { getFaviconUrl } from '@/v3/shared/utils/url';
 
 export interface IBookmarkTreeStorage
   extends chrome.bookmarks.BookmarkTreeNode {

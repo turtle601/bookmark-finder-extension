@@ -1,4 +1,4 @@
-import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
+import { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 
 import {
   addBookmark,

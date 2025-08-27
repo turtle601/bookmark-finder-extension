@@ -1,5 +1,4 @@
-import { ChromeTabListener } from '@/v3/background/chromeTab';
-import { BookmarkListener } from '@/v3/background/bookmark';
+import { backgroundMessageEvent } from '@/v3/background/bookmark/event';
 
 chrome.action.onClicked.addListener(async (tab) => {
   if (tab.id) {
@@ -7,5 +6,4 @@ chrome.action.onClicked.addListener(async (tab) => {
   }
 });
 
-ChromeTabListener.init();
-BookmarkListener.init();
+backgroundMessageEvent.init();
