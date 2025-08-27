@@ -2,6 +2,7 @@ import { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 
 import {
   addBookmark,
+  createBookmarkFolder,
   deleteBookmark,
   deselectAllBookmarks,
   getBookmarkTree,
@@ -18,6 +19,8 @@ import {
   getSelectedBookmarkLinks,
   getSelectedBookmarks,
 } from '@/v3/entities/bookmark/tree/request/select';
+import { useEditBookmarkStore } from '@/v3/features/edit/bookmarkTree/store/useEditBookmarkStore';
+import { useAccordionActionContext } from '@/v3/shared/ui/accordion/model';
 
 import {
   queryOptions as tsqQueryOptions,
@@ -211,3 +214,34 @@ export const useUpdateBookmarkTitleMutation = () => {
     },
   });
 };
+
+export const useCreateBookmarkFolderMutation = () => {
+  const queryClient = useQueryClient();
+
+  const { setBookmark } = useEditBookmarkStore();
+  const { openAccordion } = useAccordionActionContext();
+
+  return useMutation({
+    mutationKey: ['createBookmarkFolder'],
+    mutationFn: createBookmarkFolder,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+
+      setBookmark(data.bookmark);
+
+      if (data.bookmark.parentId) {
+        openAccordion(Number(data.bookmark.parentId));
+      }
+    },
+  });
+};
+
+// 1. 폴더 영역에 drop 시 이동 및 생성 오류 발생
+
+// 2. selected 상태 관리 변경
+
+// 3. dropdown 삭제 기능 추가
+
+// 4. 링크 dropdown 기능 추가
+
+// 5. 삭제 시 알람 기능 추가

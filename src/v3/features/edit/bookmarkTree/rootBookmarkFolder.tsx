@@ -70,6 +70,7 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
           border: `2px solid ${
             folder.isSelected ? color.primary : 'transparent'
           }`,
+          backgroundColor: color.slate['100'],
         })}
         onClick={handleSelectClick}
       >
@@ -97,7 +98,7 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                   border: isFolderDragEnter
                     ? `2px dashed ${color.slate['500']}`
                     : `2px dashed ${color.slate['200']}`,
-                  background: color.slate['200'],
+                  backgroundColor: color.slate['200'],
                 })}
               >
                 <Accordion.Button

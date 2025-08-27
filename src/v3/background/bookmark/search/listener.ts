@@ -214,6 +214,27 @@ class BookmarkListener {
         );
       }
     });
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.action === 'createBookmarkFolder') {
+        chrome.bookmarks.create(
+          {
+            parentId: message.payload.parentId,
+            title: 'New Folder',
+          },
+          (newBookmark) => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                isSuccess: false,
+                error: chrome.runtime.lastError.message,
+              });
+            } else {
+              sendResponse({ isSuccess: true, bookmark: newBookmark });
+            }
+          },
+        );
+      }
+    });
   }
 }
 

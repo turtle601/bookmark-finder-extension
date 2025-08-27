@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 
 import { Fragment } from 'react';
@@ -6,6 +6,7 @@ import { Fragment } from 'react';
 import { color } from '@/v3/shared/styles';
 
 import {
+  useCreateBookmarkFolderMutation,
   useDeselectAllBookmarksMutation,
   useMoveBookmarkMutation,
   useSelectBookmarkMutation,
@@ -29,6 +30,7 @@ import BookmarkTreeDropArea from './bookmarkTreeDropArea';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/@storage';
 import Flex from '@/v3/shared/ui/layout/flex';
+import { useEditBookmarkStore } from '@/v3/features/edit/bookmarkTree/store/useEditBookmarkStore';
 
 interface IBookmarkFolderFieldProps {
   folder: IBookmarkTreeStorage;
@@ -55,7 +57,6 @@ function BookmarkFolderField({ folder, closeEdit }: IBookmarkFolderFieldProps) {
   }, []);
 
   const finishEdit = () => {
-    // 편집 완료, edit모드 종료
     closeEdit();
 
     updateBookmarkTitle({
@@ -201,11 +202,13 @@ function BookmarkFolderEditButton({ options }: IBookmarkFolderEditButtonProps) {
 }
 
 function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
-  const [isEdit, setIsEdit] = useState(false);
+  const { bookmark, setBookmark } = useEditBookmarkStore();
   const [isFolderDragEnter, setIsFolderDragEnter] = useState(false);
 
   const { selectedIdSet } = useAccordionContext();
   const { openAccordion } = useAccordionActionContext();
+
+  const { mutate: createBookmarkFolder } = useCreateBookmarkFolderMutation();
 
   const { moveBookmark } = useMoveBookmarkMutation(folder.id);
   const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(
@@ -233,7 +236,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
 
   return (
     <>
-      {isEdit ? (
+      {bookmark?.id === folder.id ? (
         <div
           css={css({
             border: `1px solid transparent`,
@@ -241,7 +244,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
         >
           <BookmarkFolderField
             folder={folder}
-            closeEdit={() => setIsEdit(false)}
+            closeEdit={() => setBookmark(null)}
           />
         </div>
       ) : (
@@ -254,6 +257,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
             border: `1px solid ${
               folder.isSelected ? color.primary : 'transparent'
             }`,
+            backgroundColor: color.slate['100'],
           })}
           onClick={handleSelectClick}
         >
@@ -304,7 +308,9 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                             : isFolderDragEnter
                               ? `2px dashed ${color.slate['500']}`
                               : `2px dashed ${color.slate['200']}`,
-                          background: isDrag ? '#3b82f6' : color.slate['200'],
+                          backgroundColor: isDrag
+                            ? '#3b82f6'
+                            : color.slate['200'],
                           transition: 'all 0.2s ease',
                           ...(!isDrag && {
                             '&:hover': {
@@ -352,10 +358,17 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                             {
                               label: '이름 바꾸기',
                               action: () => {
-                                setIsEdit(true);
+                                setBookmark(folder);
                               },
                             },
-                            { label: '하위 폴더 생성', action: () => {} },
+                            {
+                              label: '하위 폴더 생성',
+                              action: () => {
+                                createBookmarkFolder({
+                                  parentId: folder.id,
+                                });
+                              },
+                            },
                           ]}
                         />
                       </div>

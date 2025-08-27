@@ -96,3 +96,13 @@ export const updateBookmarkTitle = async (payload: {
     payload: { ...payload },
   });
 };
+
+export const createBookmarkFolder = async (payload: { parentId: string }) => {
+  return await createChromeRequest<{
+    isSuccess: boolean;
+    bookmark: chrome.bookmarks.BookmarkTreeNode;
+  }>({
+    action: 'createBookmarkFolder',
+    payload: { ...payload },
+  });
+};
