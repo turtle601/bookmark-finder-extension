@@ -1,7 +1,7 @@
 {
-  "name": "Bookmark AI Finder Extension",
-  "version": "3.0.0",
-  "description": "Bookmark AI Finder Chrome Extension",
+  "name": "Bookmark Finder Extension",
+  "version": "3.0.1",
+  "description": "Bookmark Finder Chrome Extension",
   "manifest_version": 3,
   "permissions": [
     "activeTab",
@@ -11,6 +11,9 @@
     "bookmarks",
     "sidePanel"
   ],
+  "icons": {
+    "128": "icons/icon128.png"
+  },
   "background": {
     "service_worker": "background.js"
   },

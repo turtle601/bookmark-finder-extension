@@ -1,7 +1,7 @@
 {
   "name": "bookmark-board",
-  "version": "0.0.1",
-  "description": "chrome extension for bookmark helper like MacOS finder",
+  "version": "3.0.1",
+  "description": "Bookmark Finder Chrome Extension",
   "author": "Hwnag Jun Seung, turtle601",
   "keywords": [
     "bookmark",
