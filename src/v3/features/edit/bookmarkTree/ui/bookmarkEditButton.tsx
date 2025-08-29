@@ -53,6 +53,7 @@ function BookmarkEditButtonTrigger({ options }: IBookmarkEditButtonProps) {
               borderRadius: '2px',
               transition: 'opacity 0.2s ease',
               background: 'transparent',
+              cursor: 'pointer',
               '&:hover': {
                 background: color.slate['100'],
                 opacity: 1,
