@@ -1,8 +1,6 @@
 import React from 'react';
 import { css, CSSObject } from '@emotion/react';
 
-import Flex from '@/shared/ui/flex';
-
 import {
   Children,
   cloneElement,
@@ -16,6 +14,7 @@ import {
   useContext,
   useState,
 } from 'react';
+import Flex from '@/v3/shared/ui/layout/flex';
 
 interface ITabsContextProps {
   selectedId: string;

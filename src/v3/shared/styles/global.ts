@@ -1,6 +1,5 @@
+import { color } from '@/v3/shared/styles/color';
 import { SerializedStyles, css } from '@emotion/react';
-
-import { color } from '@/shared/config/styles/color';
 
 export const globalStyle: SerializedStyles = css({
   '*': {
@@ -17,7 +16,7 @@ export const globalStyle: SerializedStyles = css({
     width: '100%',
     height: '100%',
     fontFamily: `'Inter', sans-serif`,
-    color: color.gray,
+    color: color.slate[900],
   },
 
   a: {

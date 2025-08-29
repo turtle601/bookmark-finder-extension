@@ -167,7 +167,7 @@ function RootBookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                     gap: '4px',
                   }}
                 >
-                  <Accordion.Icon id={folder.id} size={8} strokeWidth="8" />
+                  <Accordion.Icon id={folder.id} size={12} />
                   <p
                     css={css({
                       fontSize: '12px',

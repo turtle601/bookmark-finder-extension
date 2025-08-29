@@ -180,11 +180,7 @@ function BookmarkFolder({ folder }: { folder: IBookmarkTreeStorage }) {
                             lineHeight: '16px',
                           }}
                         >
-                          <Accordion.Icon
-                            id={folder.id}
-                            size={8}
-                            strokeWidth="8"
-                          />
+                          <Accordion.Icon id={folder.id} size={12} />
                           <div
                             css={css({
                               marginLeft: '4px',
