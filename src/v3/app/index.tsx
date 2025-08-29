@@ -97,7 +97,7 @@ function App() {
                   };
                 }}
               >
-                검색모드
+                Edit Mode
               </Tabs.Tab>
               <Tabs.Tab
                 etcStyles={(isActive) => {
@@ -108,27 +108,10 @@ function App() {
                   };
                 }}
               >
-                편집모드
+                Search Mode
               </Tabs.Tab>
             </Tabs.TabList>
             <Tabs.TabPanels>
-              <Tabs.TabPanel>
-                <SplitPane
-                  width={'100%'}
-                  height={'calc(100vh - 124px)'}
-                  split={'vertical'}
-                  pane1={<FindBookmark />}
-                  pane2={
-                    <DnD.Provider>
-                      <DnD.Boundary width={'100%'} height={'100%'}>
-                        <DnD.PointerContent />
-                        <CurrentChromeTab />
-                      </DnD.Boundary>
-                    </DnD.Provider>
-                  }
-                  resizer={<Divider css={{ cursor: 'ns-resize' }} />}
-                />
-              </Tabs.TabPanel>
               <Tabs.TabPanel>
                 <Accordion.Provider>
                   <DnD.Provider>
@@ -145,6 +128,23 @@ function App() {
                     </DnD.Boundary>
                   </DnD.Provider>
                 </Accordion.Provider>
+              </Tabs.TabPanel>
+              <Tabs.TabPanel>
+                <SplitPane
+                  width={'100%'}
+                  height={'calc(100vh - 124px)'}
+                  split={'vertical'}
+                  pane1={<FindBookmark />}
+                  pane2={
+                    <DnD.Provider>
+                      <DnD.Boundary width={'100%'} height={'100%'}>
+                        <DnD.PointerContent />
+                        <CurrentChromeTab />
+                      </DnD.Boundary>
+                    </DnD.Provider>
+                  }
+                  resizer={<Divider css={{ cursor: 'ns-resize' }} />}
+                />
               </Tabs.TabPanel>
             </Tabs.TabPanels>
           </Tabs.Provider>

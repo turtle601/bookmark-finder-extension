@@ -21,7 +21,7 @@ function BookmarkLinkEditButton({ bookmark }: IBookmarkLinkEditButtonProps) {
     <BookmarkEditButton
       options={[
         {
-          label: '삭제',
+          label: 'Delete',
           action: deleteTargetBookmark,
         },
       ]}

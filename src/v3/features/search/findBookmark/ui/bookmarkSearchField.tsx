@@ -44,7 +44,7 @@ function BookmarkSearchField({
           },
         })}
         type="text"
-        placeholder="북마크를 검색하세요..."
+        placeholder="Search for bookmarks..."
       />
       <span
         css={css({

@@ -23,7 +23,7 @@ function BookmarkSearchResult({ searchText }: IBookmarkResultProps) {
           height: '100%',
         }}
       >
-        <span>검색 결과가 없습니다.</span>
+        <span>No results found.</span>
       </Center>
     );
 

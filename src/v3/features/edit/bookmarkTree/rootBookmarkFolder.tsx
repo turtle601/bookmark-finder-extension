@@ -44,7 +44,7 @@ function RootBookmarkEditButton({
     <BookmarkEditButton
       options={[
         {
-          label: '하위 폴더 생성',
+          label: 'Create Sub Folder',
           action: createSubFolder,
         },
       ]}

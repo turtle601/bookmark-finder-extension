@@ -38,15 +38,15 @@ function BookmarkFolderEditButton({
     <BookmarkEditButton
       options={[
         {
-          label: '이름 바꾸기',
+          label: 'Rename',
           action: changeBookmarkTitle,
         },
         {
-          label: '하위 폴더 생성',
+          label: 'Create Sub Folder',
           action: createSubFolder,
         },
         {
-          label: '삭제',
+          label: 'Delete',
           action: deleteTargetBookmark,
         },
       ]}
