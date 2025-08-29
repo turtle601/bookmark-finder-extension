@@ -33,6 +33,7 @@ const getFieldStyle = (): CSSObject => {
     border: `2px solid ${color.slate['200']}`,
     '&::placeholder': {
       color: color.slate['500'],
+      fontSize: '12px',
     },
     '&:focus': {
       border: `2px solid ${color.primary}`,
@@ -119,7 +120,7 @@ function BookmarkFolderField({ folder }: IBookmarkFolderFieldProps) {
         css={css({
           ...getFieldStyle(),
         })}
-        placeholder="새 폴더"
+        placeholder="New Folder"
       />
     </Flex>
   );

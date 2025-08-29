@@ -10,7 +10,7 @@ export const getActionButtonStyle = (): CSSObject => {
     borderRadius: '6px',
     background: 'white',
     color: '#3c4043',
-    fontSize: '13px',
+    fontSize: '10px',
     fontWeight: '500',
     cursor: 'pointer',
     transition: 'all 0.2s ease',

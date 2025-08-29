@@ -28,7 +28,7 @@ function BookmarkSearchField({
           padding: '8px 12px 8px 32px',
           border: '2px solid #e2e8f0',
           borderRadius: '10px',
-          fontSize: '14px',
+          fontSize: '10px',
           outline: 'none',
           transition: 'all 0.3s ease',
           background: '#ffffff',
@@ -41,6 +41,7 @@ function BookmarkSearchField({
           },
           '&::placeholder': {
             color: '#64748b',
+            fontSize: '10px',
           },
         })}
         type="text"
