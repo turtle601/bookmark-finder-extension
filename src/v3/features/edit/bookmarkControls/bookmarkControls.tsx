@@ -11,7 +11,6 @@ function BookmarkControls() {
       etcStyles={{
         width: '100%',
         height: '50px',
-        borderRadius: '12px',
         backgroundColor: color.slate['50'],
       }}
       justify="space-between"
