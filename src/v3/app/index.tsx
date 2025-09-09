@@ -15,7 +15,8 @@ import { Accordion } from '@/v3/shared/ui/accordion';
 import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
 import { CurrentChromeTab } from '@/v3/features/search/chromeTab';
 import SplitPane from '@/v3/shared/ui/splitPane';
-import Divider from '@/v3/shared/ui/layout/divider';
+import Resizer from '@/v3/shared/ui/splitPane/ui/resizer';
+
 import DnD from '@/v3/shared/ui/dnd';
 import { EditBookmark } from '@/v3/features/edit';
 
@@ -123,19 +124,7 @@ function App() {
                         split={'vertical'}
                         pane1={<EditBookmark />}
                         pane2={<CurrentChromeTab />}
-                        resizer={
-                          <div
-                            css={css({
-                              width: '100%',
-                              height: '14px',
-                              backgroundColor: color.slate['200'],
-                              backgroundPositionY: 'bottom',
-                              background: `url(https://school.programmers.co.kr/assets/img-grippie-horizon-2029be95ca34dfe8c756d091c6f53a6a007e3a66c7c68863ce6f54fe23d4f371.png) no-repeat 50%`,
-                              backgroundSize: '2.25rem 0.875rem',
-                              cursor: 'ns-resize',
-                            })}
-                          />
-                        }
+                        resizer={<Resizer />}
                       />
                     </DnD.Boundary>
                   </DnD.Provider>
@@ -155,7 +144,7 @@ function App() {
                       </DnD.Boundary>
                     </DnD.Provider>
                   }
-                  resizer={<Divider css={{ cursor: 'ns-resize' }} />}
+                  resizer={<Resizer />}
                 />
               </Tabs.TabPanel>
             </Tabs.TabPanels>
