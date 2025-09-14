@@ -44,6 +44,7 @@ export type DroppableFC = React.MemoExoticComponent<
   >
 >;
 
-const Droppable: DroppableFC = memo(forwardRef(DroppableComponent));
+// eslint-disable-next-line @rushstack/typedef-var
+const Droppable = memo(forwardRef(DroppableComponent));
 
 export default Droppable;

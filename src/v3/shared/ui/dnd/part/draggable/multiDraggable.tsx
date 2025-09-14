@@ -44,14 +44,7 @@ const MultiDraggableComponent = (
   );
 };
 
-export type MultiDraggableFC = React.MemoExoticComponent<
-  React.ForwardRefExoticComponent<
-    IMultiDraggableProps & React.RefAttributes<HTMLDivElement>
-  >
->;
-
-const MultiDraggable: MultiDraggableFC = memo(
-  forwardRef(MultiDraggableComponent),
-);
+// eslint-disable-next-line @rushstack/typedef-var
+const MultiDraggable = memo(forwardRef(MultiDraggableComponent));
 
 export default MultiDraggable;

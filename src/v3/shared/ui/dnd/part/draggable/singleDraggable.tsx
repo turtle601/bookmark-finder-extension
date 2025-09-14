@@ -75,8 +75,7 @@ export type SingleDraggableFC = React.MemoExoticComponent<
   >
 >;
 
-const SingleDraggable: SingleDraggableFC = memo(
-  forwardRef(SingleDraggableComponent),
-);
+// eslint-disable-next-line @rushstack/typedef-var
+const SingleDraggable = memo(forwardRef(SingleDraggableComponent));
 
 export default SingleDraggable;

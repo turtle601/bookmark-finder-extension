@@ -8,7 +8,7 @@
       "@contentScript/*": ["contentScript/*"],
       "@popup/*": ["popup/*"]
     },
-    "target": "ES6",
+    "target": "ES2022",
     "module": "ESNext",
     "lib": [
       "dom",
@@ -19,12 +19,16 @@
     "checkJs": true,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "strictNullChecks": false
   },
   "include": [
     "__stories__/**/*",
