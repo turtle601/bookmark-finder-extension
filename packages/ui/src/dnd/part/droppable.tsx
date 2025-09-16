@@ -4,7 +4,7 @@ import { useDroppable } from '@/dnd/hooks';
 
 import type { CSSObject } from '@emotion/react';
 
-interface IDropableProps {
+export interface IDropableProps {
   children: (props: { isDragEnter: boolean }) => ReactNode;
   dropAction: React.DragEventHandler;
   etcStyles?: CSSObject;
