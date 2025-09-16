@@ -1,3 +1,5 @@
+export * from './model';
+
 import { Provider, Panel, Icon, Button } from './part';
 
 export const Accordion = {

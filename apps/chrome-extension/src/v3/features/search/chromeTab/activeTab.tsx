@@ -1,4 +1,6 @@
 import React from 'react';
+import { css } from '@emotion/react';
+
 import { color } from '@/v3/shared/styles';
 
 import {
@@ -6,14 +8,9 @@ import {
   useOpenTabMutation,
 } from '@/v3/entities/chromeTab/request';
 
-import DnD from '@/v3/shared/ui/dnd';
-import Center from '@/v3/shared/ui/layout/center';
+import { Center, Flex, DnD, Image } from 'bookmark-finder-extension/ui';
 
-import Flex from '@/v3/shared/ui/layout/flex';
-
-import { css } from '@emotion/react';
-import Image from '@/v3/shared/ui/image';
-import { getFaviconUrl, getSafeHostname } from '@/v3/shared/utils/url';
+import { getFaviconUrl } from '@/v3/shared/utils/url';
 
 interface ITabItemProps {
   tab: chrome.tabs.Tab;

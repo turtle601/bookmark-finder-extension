@@ -1,24 +1,41 @@
 import React from 'react';
-
 import { css, CSSObject, Global } from '@emotion/react';
 
 import { color, globalStyle, slate } from '@/v3/shared/styles';
 
-import QueryProvider from './provider/queryProvider';
-import { Tabs } from '@/v3/shared/ui/tabs';
+import {
+  DnD,
+  SplitPane,
+  Spacer,
+  Tabs,
+  Accordion,
+} from 'bookmark-finder-extension/ui';
 
-import Spacer from '@/v3/shared/ui/layout/spacer';
-import Header from '@/v3/widgets/ui/header';
-
-import { Accordion } from '@/v3/shared/ui/accordion';
-
-import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
-import { CurrentChromeTab } from '@/v3/features/search/chromeTab';
-import SplitPane from '@/v3/shared/ui/splitPane';
-import Resizer from '@/v3/shared/ui/splitPane/ui/resizer';
-
-import DnD from '@/v3/shared/ui/dnd';
 import { EditBookmark } from '@/v3/features/edit';
+import { CurrentChromeTab } from '@/v3/features/search/chromeTab';
+import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
+
+import Header from '@/v3/widgets/ui/header';
+import QueryProvider from './provider/queryProvider';
+
+const RESIZER_URL =
+  'https://school.programmers.co.kr/assets/img-grippie-horizon-2029be95ca34dfe8c756d091c6f53a6a007e3a66c7c68863ce6f54fe23d4f371.png' as const;
+
+function Resizer() {
+  return (
+    <div
+      css={css({
+        width: '100%',
+        height: '14px',
+        backgroundColor: color.slate['200'],
+        backgroundPositionY: 'bottom',
+        background: `url(${RESIZER_URL}) no-repeat 50%`,
+        backgroundSize: '2.25rem 0.875rem',
+        cursor: 'ns-resize',
+      })}
+    />
+  );
+}
 
 interface ILayoutProps {
   children: React.ReactNode;

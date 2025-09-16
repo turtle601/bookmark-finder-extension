@@ -1,4 +1,5 @@
-import DnD from '@/v3/shared/ui/dnd';
+import { DnD } from 'bookmark-finder-extension/ui';
+
 import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/ui/bookmarkDropArea';
 
 import {

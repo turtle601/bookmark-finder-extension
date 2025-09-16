@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import BookmarkLink from '@/v3/features/search/findBookmark/ui/bookmarkSearchLink';
-import Center from '@/v3/shared/ui/layout/center';
+import { Center } from 'bookmark-finder-extension/ui';
 
+import BookmarkLink from '@/v3/features/search/findBookmark/ui/bookmarkSearchLink';
 import { useSearchBookmarksQuery } from '@/v3/entities/bookmark/search/request';
 
 interface IBookmarkResultProps {

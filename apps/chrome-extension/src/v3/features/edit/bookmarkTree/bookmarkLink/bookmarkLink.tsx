@@ -2,7 +2,7 @@ import React from 'react';
 
 import { css } from '@emotion/react';
 
-import DnD from '@/v3/shared/ui/dnd';
+import { DnD, Image } from 'bookmark-finder-extension/ui';
 import { color } from '@/v3/shared/styles';
 
 import {
@@ -10,8 +10,6 @@ import {
   useSelectBookmarkMutation,
   useToggleSelectedBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
-
-import Image from '@/v3/shared/ui/image';
 
 import BookmarkLinkEditButton from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLinkEditButton';
 

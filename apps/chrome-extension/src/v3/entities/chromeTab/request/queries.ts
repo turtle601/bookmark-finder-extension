@@ -1,4 +1,3 @@
-import { useSelectedBookmarkLinkQuery } from '@/v3/entities/bookmark/tree/request/queries';
 import {
   requestAddChromeTab,
   requestCloseTab,
@@ -6,6 +5,8 @@ import {
   requestOpenTab,
   requestTabs,
 } from '@/v3/entities/chromeTab/request/api';
+
+import { useSelectedBookmarkLinkQuery } from '@/v3/entities/bookmark/tree/request/queries';
 
 import type { ITabsResponse } from '@/v3/entities/chromeTab/request/api';
 

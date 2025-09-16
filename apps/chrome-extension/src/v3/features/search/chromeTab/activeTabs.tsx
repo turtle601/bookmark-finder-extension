@@ -1,11 +1,9 @@
-import React from 'react';
-
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { css } from '@emotion/react';
 
 import { color } from '@/v3/shared/styles';
 
-import Flex from '@/v3/shared/ui/layout/flex';
+import { Flex } from 'bookmark-finder-extension/ui';
 
 import { useTabsQuery } from '@/v3/entities/chromeTab/request';
 import { useActiveTabListener } from '@/v3/entities/chromeTab/listener';

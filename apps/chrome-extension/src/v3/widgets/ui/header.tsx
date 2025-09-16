@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 
-import Center from '@/v3/shared/ui/layout/center';
-import Flex from '@/v3/shared/ui/layout/flex';
-
 import { color } from '@/v3/shared/styles';
+
+import { Center, Flex } from 'bookmark-finder-extension/ui';
 
 function Header() {
   return (

@@ -7,7 +7,7 @@ import {
   PointerContent,
 } from './part';
 
-const DnD = {
+export const DnD = {
   Provider,
   Boundary,
   SingleDraggable,
@@ -15,5 +15,3 @@ const DnD = {
   Droppable,
   PointerContent,
 } as const;
-
-export default DnD;

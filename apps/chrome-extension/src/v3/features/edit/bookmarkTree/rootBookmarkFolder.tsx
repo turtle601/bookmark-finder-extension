@@ -12,13 +12,12 @@ import {
   useToggleSelectedBookmarkMutation,
 } from '@/v3/entities/bookmark/tree/request/queries';
 
-import DnD from '@/v3/shared/ui/dnd';
-
 import {
   useAccordionActionContext,
   useAccordionContext,
-} from '@/v3/shared/ui/accordion/model';
-import { Accordion } from '@/v3/shared/ui/accordion';
+  Accordion,
+  DnD,
+} from 'bookmark-finder-extension/ui';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 

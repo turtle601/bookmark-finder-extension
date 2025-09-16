@@ -1,7 +1,7 @@
 export * from './accordion';
 export * from './dnd';
 export * from './dropdown';
-export * from './image';
+export { default as Image } from './image';
 export * from './layout';
-export * from './splitPane';
+export { default as SplitPane } from './splitPane';
 export * from './tabs';

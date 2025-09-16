@@ -1,3 +1,5 @@
+export * from './model';
+
 import { Options, Provider, Trigger, Option } from './part';
 
 export const DropDown = {

@@ -1,6 +1,6 @@
 import { color } from '@/v3/shared/styles';
 
-import Flex from '@/v3/shared/ui/layout/flex';
+import { Flex } from 'bookmark-finder-extension/ui';
 import SelectAllBookmarks from '@/v3/features/edit/bookmarkControls/selectAllBookmarks';
 import DeselectAllBookmarks from '@/v3/features/edit/bookmarkControls/deselectAllBookmarks';
 import DeleteSelectedBookmarks from '@/v3/features/edit/bookmarkControls/deleteSelectedBookmarks';

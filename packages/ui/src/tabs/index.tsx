@@ -25,7 +25,7 @@ interface ITabsContextProps {
 const TabsContext: Context<ITabsContextProps | null> =
   createContext<ITabsContextProps | null>(null);
 
-export const useTabsContext = () => {
+const useTabsContext = () => {
   const state = useContext(TabsContext);
   if (state === null) throw new Error('Cannot find TabsContext');
   return state;
@@ -44,7 +44,7 @@ const useTabs = () => {
   };
 };
 
-export interface ITabsProviderProps {
+interface ITabsProviderProps {
   children: React.ReactNode;
 }
 
@@ -58,7 +58,7 @@ const TabsProvider: FC<ITabsProviderProps> = ({ children }) => {
   );
 };
 
-export interface ITabProps extends ComponentPropsWithoutRef<'li'> {
+interface ITabProps extends ComponentPropsWithoutRef<'li'> {
   etcStyles?: (isSelected: boolean) => CSSObject;
   children: ReactNode;
 }
@@ -96,7 +96,7 @@ const allocateTabIdxForChildren = (children: ReactElement<typeof Tab>[]) => {
   });
 };
 
-export interface ITabListProps extends ComponentPropsWithoutRef<'ul'> {
+interface ITabListProps extends ComponentPropsWithoutRef<'ul'> {
   etcStyles?: CSSObject;
   children: ReactElement<typeof Tab>[];
 }
@@ -114,7 +114,7 @@ const TabList: FC<ITabListProps> = ({ etcStyles = {}, children }) => {
   );
 };
 
-export interface ITabPanelProps extends ComponentPropsWithoutRef<'div'> {
+interface ITabPanelProps extends ComponentPropsWithoutRef<'div'> {
   etcStyles?: CSSObject;
   children: React.ReactNode;
 }
@@ -152,7 +152,7 @@ const allocateTabPanelIdxForChildren = (
   });
 };
 
-export interface ITabPanelsProps extends ComponentPropsWithoutRef<'div'> {
+interface ITabPanelsProps extends ComponentPropsWithoutRef<'div'> {
   etcStyles?: CSSObject;
   children: ReactElement<typeof TabPanel>[];
 }

@@ -2,7 +2,7 @@ import { css, type CSSObject } from '@emotion/react';
 import { useCallback, useState } from 'react';
 
 import { color } from '@/v3/shared/styles';
-import Flex from '@/v3/shared/ui/layout/flex';
+import { Flex } from 'bookmark-finder-extension/ui';
 
 import { useUpdateBookmarkTitleMutation } from '@/v3/entities/bookmark/tree/request/queries';
 

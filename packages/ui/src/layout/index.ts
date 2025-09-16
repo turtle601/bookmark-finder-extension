@@ -1,3 +1,3 @@
-export * from './center';
-export * from './flex';
-export * from './spacer';
+export { default as Center } from './center';
+export { default as Flex } from './flex';
+export { default as Spacer } from './spacer';

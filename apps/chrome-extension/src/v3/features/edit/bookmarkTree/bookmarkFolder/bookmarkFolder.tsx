@@ -14,13 +14,11 @@ import {
 } from '@/v3/entities/bookmark/tree/request/queries';
 
 import {
+  Accordion,
   useAccordionActionContext,
   useAccordionContext,
-} from '@/v3/shared/ui/accordion/model';
-
-import DnD from '@/v3/shared/ui/dnd';
-
-import { Accordion } from '@/v3/shared/ui/accordion';
+  DnD,
+} from 'bookmark-finder-extension/ui';
 
 import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
 import BookmarkFolderEditButton from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolderEditButton';

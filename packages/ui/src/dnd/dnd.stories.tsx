@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DnD from './';
+import { DnD } from './';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 

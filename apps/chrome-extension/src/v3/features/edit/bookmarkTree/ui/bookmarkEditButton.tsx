@@ -2,9 +2,11 @@ import { useCallback, useState } from 'react';
 import { css } from '@emotion/react';
 import { color } from '@/v3/shared/styles';
 
-import { DropDown } from '@/v3/shared/ui/dropdown';
-import Center from '@/v3/shared/ui/layout/center';
-import { useDropDownContext } from '../../../../shared/ui/dropdown/model/context';
+import {
+  Center,
+  DropDown,
+  useDropDownContext,
+} from 'bookmark-finder-extension/ui';
 
 interface IBookmarkEditButtonProps {
   options: {
