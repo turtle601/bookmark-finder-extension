@@ -1,0 +1,237 @@
+# SplitPane 컴포넌트
+
+SplitPane 컴포넌트는 화면을 두 개의 패널로 나누고, 사용자가 드래그하여 크기를 조절할 수 있는 레이아웃 컴포넌트입니다.
+
+## 기본 사용법
+
+```tsx
+import SplitPane from '@/layout/splitPane';
+
+<SplitPane
+  width="100%"
+  height="400px"
+  split="horizontal"
+  initialResizerPosition="50%"
+  resizer={<div>...</div>}
+  pane1={<div>Left Pane</div>}
+  pane2={<div>Right Pane</div>}
+/>;
+```
+
+## Props
+
+### ISplitPaneProps
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>width</code>
+      </td>
+      <td>
+        <code>CSSObject['width']</code>
+      </td>
+      <td>-</td>
+      <td>SplitPane 컨테이너의 너비</td>
+    </tr>
+    <tr>
+      <td>
+        <code>height</code>
+      </td>
+      <td>
+        <code>CSSObject['height']</code>
+      </td>
+      <td>-</td>
+      <td>SplitPane 컨테이너의 높이</td>
+    </tr>
+    <tr>
+      <td>
+        <code>split</code>
+      </td>
+      <td>
+        <code>'horizontal' | 'vertical'</code>
+      </td>
+      <td>-</td>
+      <td>분할 방향 (가로 또는 세로)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>initialResizerPosition</code>
+      </td>
+      <td>
+        <code>`${number}%`</code>
+      </td>
+      <td>
+        <code>'50%'</code>
+      </td>
+      <td>초기 리사이저 위치 (0% ~ 100%)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>resizer</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>-</td>
+      <td>리사이저 컴포넌트</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pane1</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>-</td>
+      <td>첫 번째 패널의 내용</td>
+    </tr>
+    <tr>
+      <td>
+        <code>pane2</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>-</td>
+      <td>두 번째 패널의 내용</td>
+    </tr>
+  </tbody>
+</table>
+
+## 사용 예시
+
+### 1. 기본 가로 분할
+
+```tsx
+<SplitPane
+  width="100%"
+  height="400px"
+  split="horizontal"
+  initialResizerPosition="50%"
+  resizer={
+    <div
+      style={{
+        width: '14px',
+        height: '100%',
+        backgroundColor: '#6c757d',
+        cursor: 'ew-resize',
+      }}
+    />
+  }
+  pane1={
+    <div
+      style={{
+        padding: '20px',
+        background: '#f8f9fa',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid #dee2e6',
+      }}
+    >
+      <h3 style={{ margin: 0, color: '#495057' }}>Left Pane</h3>
+    </div>
+  }
+  pane2={
+    <div
+      style={{
+        padding: '20px',
+        background: '#e9ecef',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid #dee2e6',
+      }}
+    >
+      <h3 style={{ margin: 0, color: '#495057' }}>Right Pane</h3>
+    </div>
+  }
+/>
+```
+
+### 2. 세로 분할
+
+```tsx
+<SplitPane
+  width="100%"
+  height="400px"
+  split="vertical"
+  initialResizerPosition="60%"
+  resizer={
+    <div
+      style={{
+        width: '100%',
+        height: '14px',
+        backgroundColor: '#6c757d',
+        cursor: 'ns-resize',
+      }}
+    />
+  }
+  pane1={
+    <div
+      style={{
+        padding: '20px',
+        background: '#d1ecf1',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid #bee5eb',
+      }}
+    >
+      <h3 style={{ margin: 0, color: '#0c5460' }}>Top Pane</h3>
+    </div>
+  }
+  pane2={
+    <div
+      style={{
+        padding: '20px',
+        background: '#f8d7da',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid #f5c6cb',
+      }}
+    >
+      <h3 style={{ margin: 0, color: '#721c24' }}>Bottom Pane</h3>
+    </div>
+  }
+/>
+```
+
+## split 옵션
+
+<table>
+  <thead>
+    <tr>
+      <th>값</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>'horizontal'</code>
+      </td>
+      <td>가로 분할 (좌우로 나누기)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>'vertical'</code>
+      </td>
+      <td>세로 분할 (상하로 나누기)</td>
+    </tr>
+  </tbody>
+</table>

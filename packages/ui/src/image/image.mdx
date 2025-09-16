@@ -1,0 +1,149 @@
+# Image 컴포넌트
+
+Image 컴포넌트는 이미지를 표시하는 컴포넌트로, 에러 처리와 폴백 기능을 제공합니다.
+이미지 로딩 실패 시 대체 이미지나 커스텀 컴포넌트를 표시할 수 있습니다.
+
+## 기본 사용법
+
+```tsx
+import Image from '@/components/image';
+
+<Image
+  src="https://example.com/image.jpg"
+  alt="Description of the image"
+  width="400px"
+  height="300px"
+/>;
+```
+
+## Props
+
+### IImageProps
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>src</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>이미지 소스 URL</td>
+    </tr>
+    <tr>
+      <td>
+        <code>alt</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>접근성을 위한 대체 텍스트</td>
+    </tr>
+    <tr>
+      <td>
+        <code>fallbackSrc</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>이미지 로딩 실패 시 사용할 대체 이미지 URL</td>
+    </tr>
+    <tr>
+      <td>
+        <code>fallbackComponent</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>이미지 로딩 실패 시 표시할 커스텀 컴포넌트</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onError</code>
+      </td>
+      <td>
+        <code>(event: SyntheticEvent) => void</code>
+      </td>
+      <td>이미지 로딩 에러 시 호출되는 콜백 함수</td>
+    </tr>
+    <tr>
+      <td>
+        <code>...props</code>
+      </td>
+      <td>
+        <code>React.ImgHTMLAttributes</code>
+      </td>
+      <td>기본 img 요소의 모든 속성</td>
+    </tr>
+  </tbody>
+</table>
+
+## 사용 예시
+
+### 1. 기본 이미지
+
+```tsx
+<Image
+  src="https://picsum.photos/400/300?random=1"
+  alt="Random image from Picsum"
+  width="400px"
+  height="300px"
+/>
+```
+
+## 에러 처리
+
+### 1. 기본 에러 처리
+
+이미지 로딩 실패 시 기본적으로 회색 배경에 ��️ 이모지가 표시됩니다.
+
+### 2. 폴백 URL 사용
+
+```tsx
+<Image
+  src="https://invalid-url.com/image.jpg"
+  fallbackSrc="https://backup-image.com/fallback.jpg"
+  alt="Image with fallback"
+/>
+```
+
+### 3. 커스텀 에러 컴포넌트
+
+```tsx
+<Image
+  src="https://invalid-url.com/image.jpg"
+  alt="Error image"
+  fallbackComponent={
+    <div
+      style={{
+        width: '400px',
+        height: '300px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fef2f2',
+        border: '2px solid #fecaca',
+        borderRadius: '8px',
+        color: '#dc2626',
+      }}
+    >
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+      <div style={{ fontSize: '16px', fontWeight: '500' }}>
+        Failed to load image
+      </div>
+      <div style={{ fontSize: '14px', marginTop: '4px' }}>
+        Please try again later
+      </div>
+    </div>
+  }
+/>
+```

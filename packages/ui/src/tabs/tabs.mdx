@@ -1,0 +1,262 @@
+# Tabs 컴포넌트
+
+Tabs 컴포넌트는 콘텐츠를 탭으로 구분하여 표시하는 UI 컴포넌트입니다.
+사용자가 탭을 클릭하여 다른 콘텐츠를 볼 수 있으며, Context API를 사용하여 상태를 관리합니다.
+
+## 기본 사용법
+
+```tsx
+import { Tabs } from '@/components/tabs';
+
+<Tabs.Provider>
+  <Tabs.TabList>
+    <Tabs.Tab>Tab 1</Tabs.Tab>
+    <Tabs.Tab>Tab 2</Tabs.Tab>
+    <Tabs.Tab>Tab 3</Tabs.Tab>
+  </Tabs.TabList>
+
+  <Tabs.TabPanels>
+    <Tabs.TabPanel>Content 1</Tabs.TabPanel>
+    <Tabs.TabPanel>Content 2</Tabs.TabPanel>
+    <Tabs.TabPanel>Content 3</Tabs.TabPanel>
+  </Tabs.TabPanels>
+</Tabs.Provider>;
+```
+
+## 컴포넌트 구조
+
+Tabs는 여러 하위 컴포넌트로 구성된 복합 컴포넌트입니다:
+
+- **Tabs.Provider**: 탭 상태를 관리하는 Context Provider
+- **Tabs.TabList**: 탭 버튼들을 담는 컨테이너
+- **Tabs.Tab**: 개별 탭 버튼
+- **Tabs.TabPanels**: 탭 패널들을 담는 컨테이너
+- **Tabs.TabPanel**: 개별 탭 패널 (콘텐츠)
+
+## Props
+
+### Tabs.Provider
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>탭 컴포넌트들</td>
+    </tr>
+  </tbody>
+</table>
+
+### Tabs.TabList
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>ReactElement&lt;typeof Tab&gt;[]</code>
+      </td>
+      <td>Tab 컴포넌트들</td>
+    </tr>
+  </tbody>
+</table>
+
+### Tabs.Tab
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>(isSelected: boolean) => CSSObject</code>
+      </td>
+      <td>선택 상태에 따른 CSS 스타일 함수</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>ReactNode</code>
+      </td>
+      <td>탭 내용</td>
+    </tr>
+  </tbody>
+</table>
+
+### Tabs.TabPanels
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>ReactElement&lt;typeof TabPanel&gt;[]</code>
+      </td>
+      <td>TabPanel 컴포넌트들</td>
+    </tr>
+  </tbody>
+</table>
+
+### Tabs.TabPanel
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>패널 내용</td>
+    </tr>
+  </tbody>
+</table>
+
+## 사용 예시
+
+### 1. 기본 탭
+
+```tsx
+<Tabs.Provider>
+  <Tabs.TabList
+    etcStyles={{
+      listStyle: 'none',
+      padding: 0,
+      margin: 0,
+      borderBottom: '1px solid #dee2e6',
+    }}
+  >
+    <Tabs.Tab
+      etcStyles={(isSelected) => ({
+        padding: '12px 24px',
+        cursor: 'pointer',
+        borderBottom: isSelected
+          ? '2px solid #007bff'
+          : '2px solid transparent',
+        color: isSelected ? '#007bff' : '#6c757d',
+        fontWeight: isSelected ? '600' : '400',
+        transition: 'all 0.2s ease',
+      })}
+    >
+      Home
+    </Tabs.Tab>
+    <Tabs.Tab
+      etcStyles={(isSelected) => ({
+        padding: '12px 24px',
+        cursor: 'pointer',
+        borderBottom: isSelected
+          ? '2px solid #007bff'
+          : '2px solid transparent',
+        color: isSelected ? '#007bff' : '#6c757d',
+        fontWeight: isSelected ? '600' : '400',
+        transition: 'all 0.2s ease',
+      })}
+    >
+      About
+    </Tabs.Tab>
+  </Tabs.TabList>
+
+  <Tabs.TabPanels
+    etcStyles={{
+      padding: '20px',
+      minHeight: '200px',
+    }}
+  >
+    <Tabs.TabPanel
+      etcStyles={{
+        background: '#f8f9fa',
+        padding: '20px',
+        borderRadius: '8px',
+      }}
+    >
+      <h3>Home Content</h3>
+      <p>Welcome to the home page!</p>
+    </Tabs.TabPanel>
+
+    <Tabs.TabPanel
+      etcStyles={{
+        background: '#e3f2fd',
+        padding: '20px',
+        borderRadius: '8px',
+      }}
+    >
+      <h3>About Content</h3>
+      <p>Learn more about us.</p>
+    </Tabs.TabPanel>
+  </Tabs.TabPanels>
+</Tabs.Provider>
+```

@@ -1,0 +1,252 @@
+# Accordion 컴포넌트
+
+Accordion 컴포넌트는 콘텐츠를 접을 수 있는 섹션으로 구성하는 UI 컴포넌트입니다.
+사용자가 헤더를 클릭하여 해당 섹션의 콘텐츠를 펼치거나 접을 수 있으며,
+여러 섹션을 동시에 열어둘 수 있습니다.
+
+## 기본 사용법
+
+```tsx
+import { Accordion } from '@/components/accordion';
+
+<Accordion.Provider>
+  <Accordion.Button id="1">
+    <span>Section Title</span>
+    <Accordion.Icon id="1" size={16} />
+  </Accordion.Button>
+
+  <Accordion.Panel id="1">
+    <div>Section content goes here</div>
+  </Accordion.Panel>
+</Accordion.Provider>;
+```
+
+## 컴포넌트 구조
+
+Accordion은 여러 하위 컴포넌트로 구성된 복합 컴포넌트입니다:
+
+- **Accordion.Provider**: 아코디언 상태를 관리하는 Context Provider
+- **Accordion.Button**: 아코디언을 열고 닫는 버튼
+- **Accordion.Panel**: 아코디언 콘텐츠를 담는 패널
+- **Accordion.Icon**: 열림/닫힘 상태를 나타내는 아이콘
+
+## Props
+
+### Accordion.Provider
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>아코디언 컴포넌트들</td>
+    </tr>
+  </tbody>
+</table>
+
+### Accordion.Button
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>id</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>버튼의 고유 식별자</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>버튼 내용</td>
+    </tr>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>...props</code>
+      </td>
+      <td>
+        <code>ComponentPropsWithoutRef&lt;'button'&gt;</code>
+      </td>
+      <td>기본 button 요소의 모든 속성</td>
+    </tr>
+  </tbody>
+</table>
+
+### Accordion.Panel
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>id</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>패널의 고유 식별자 (Button의 id와 일치해야 함)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>패널 내용</td>
+    </tr>
+  </tbody>
+</table>
+
+### Accordion.Icon
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>id</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>-</td>
+      <td>아이콘의 고유 식별자 (Button의 id와 일치해야 함)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>size</code>
+      </td>
+      <td>
+        <code>number</code>
+      </td>
+      <td>-</td>
+      <td>아이콘 크기 (픽셀)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>color</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>'#424242'</code>
+      </td>
+      <td>아이콘 색상</td>
+    </tr>
+    <tr>
+      <td>
+        <code>strokeWidth</code>
+      </td>
+      <td>
+        <code>string</code>
+      </td>
+      <td>
+        <code>'2'</code>
+      </td>
+      <td>아이콘 선 두께</td>
+    </tr>
+  </tbody>
+</table>
+
+## 사용 예시
+
+### 1. 기본 아코디언
+
+```tsx
+<Accordion.Provider>
+  <div style={{ maxWidth: '600px' }}>
+    <div
+      style={{
+        border: '1px solid #dee2e6',
+        borderRadius: '8px',
+        overflow: 'hidden',
+      }}
+    >
+      <Accordion.Button
+        id="1"
+        etcStyles={{
+          width: '100%',
+          padding: '16px 20px',
+          backgroundColor: '#f8f9fa',
+          border: 'none',
+          borderBottom: '1px solid #dee2e6',
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '16px',
+          fontWeight: '600',
+          color: '#495057',
+          '&:hover': {
+            backgroundColor: '#e9ecef',
+          },
+        }}
+      >
+        <span>What is React?</span>
+        <Accordion.Icon id="1" size={16} color="#6c757d" />
+      </Accordion.Button>
+
+      <Accordion.Panel id="1">
+        <div
+          style={{
+            padding: '20px',
+            backgroundColor: 'white',
+          }}
+        >
+          <p style={{ margin: 0, lineHeight: '1.6', color: '#495057' }}>
+            React is a JavaScript library for building user interfaces.
+          </p>
+        </div>
+      </Accordion.Panel>
+    </div>
+  </div>
+</Accordion.Provider>
+```

@@ -1,0 +1,185 @@
+# Center 컴포넌트
+
+Center 컴포넌트는 자식 요소들을 수직 및 수평으로 중앙 정렬하는 레이아웃 컴포넌트입니다.
+
+flex-box를 기반으로 구현되어 있으며, 다양한 HTML 요소로 렌더링할 수 있습니다.
+
+## 기본 사용법
+
+```tsx
+import Center from '@/layout/center';
+
+// 기본 사용법 - div로 렌더링
+<Center>
+  <p>중앙 정렬된 텍스트</p>
+</Center>;
+```
+
+## Props
+
+### ICenterProps
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>direction</code>
+      </td>
+      <td>
+        <code>CSSObject['flexDirection']</code>
+      </td>
+      <td>
+        <code>'row'</code>
+      </td>
+      <td>flex-box 방향 설정</td>
+    </tr>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>
+        <code>{}</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>as</code>
+      </td>
+      <td>
+        <code>React.ElementType</code>
+      </td>
+      <td>
+        <code>'div'</code>
+      </td>
+      <td>렌더링할 HTML 요소</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>-</td>
+      <td>중앙 정렬할 자식 요소들</td>
+    </tr>
+  </tbody>
+</table>
+
+### Polymorphic Props
+
+Center 컴포넌트는 Polymorphic 컴포넌트로, `as` prop을 통해 다양한 HTML 요소로 렌더링할 수 있습니다.
+
+```tsx
+// section 요소로 렌더링
+<Center as="section">
+  <h1>제목</h1>
+  <p>내용</p>
+</Center>
+
+// main 요소로 렌더링
+<Center as="main">
+  <div>메인 콘텐츠</div>
+</Center>
+```
+
+## 사용 예시
+
+### 1. 기본 중앙 정렬
+
+```tsx
+<Center>
+  <div>중앙 정렬된 콘텐츠</div>
+</Center>
+```
+
+### 2. 세로 방향 중앙 정렬
+
+```tsx
+<Center direction="column">
+  <h1>제목</h1>
+  <p>설명</p>
+  <button>버튼</button>
+</Center>
+```
+
+### 3. 커스텀 스타일 적용
+
+```tsx
+<Center
+  etcStyles={{
+    minHeight: '100vh',
+    background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
+    borderRadius: '8px',
+    padding: '20px',
+  }}
+>
+  <div style={{ color: 'white', fontSize: '24px' }}>
+    스타일이 적용된 중앙 정렬
+  </div>
+</Center>
+```
+
+### 4. 다양한 HTML 요소로 렌더링
+
+```tsx
+// section으로 렌더링
+<Center as="section" direction="column">
+  <h2>섹션 제목</h2>
+  <p>섹션 내용</p>
+</Center>
+
+// article로 렌더링
+<Center as="article">
+  <div>아티클 콘텐츠</div>
+</Center>
+```
+
+## direction 옵션
+
+<table>
+  <thead>
+    <tr>
+      <th>값</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>'row'</code>
+      </td>
+      <td>가로 방향 (기본값)</td>
+    </tr>
+    <tr>
+      <td>
+        <code>'column'</code>
+      </td>
+      <td>세로 방향</td>
+    </tr>
+    <tr>
+      <td>
+        <code>'row-reverse'</code>
+      </td>
+      <td>가로 역방향</td>
+    </tr>
+    <tr>
+      <td>
+        <code>'column-reverse'</code>
+      </td>
+      <td>세로 역방향</td>
+    </tr>
+  </tbody>
+</table>

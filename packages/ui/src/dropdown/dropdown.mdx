@@ -1,0 +1,268 @@
+# Dropdown 컴포넌트
+
+Dropdown 컴포넌트는 클릭 시 옵션 목록을 표시하는 UI 컴포넌트입니다.
+Context API를 사용하여 상태를 관리하며, 완전히 커스터마이징 가능한 스타일을 제공합니다.
+
+## 기본 사용법
+
+```tsx
+import { DropDown } from '@/components/dropdown';
+
+<DropDown.Provider>
+  <DropDown.Trigger>Options ▼</DropDown.Trigger>
+  <DropDown.Options>
+    <DropDown.Option>Option 1</DropDown.Option>
+    <DropDown.Option>Option 2</DropDown.Option>
+    <DropDown.Option>Option 3</DropDown.Option>
+  </DropDown.Options>
+</DropDown.Provider>;
+```
+
+## 컴포넌트 구조
+
+Dropdown은 여러 하위 컴포넌트로 구성된 복합 컴포넌트입니다:
+
+- **DropDown.Provider**: 드롭다운 상태를 관리하는 Context Provider
+- **DropDown.Trigger**: 드롭다운을 열고 닫는 트리거 버튼
+- **DropDown.Options**: 옵션 목록을 담는 컨테이너
+- **DropDown.Option**: 개별 옵션 항목
+
+## Props
+
+### DropDown.Provider
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>드롭다운 컴포넌트들</td>
+    </tr>
+  </tbody>
+</table>
+
+### DropDown.Trigger
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>트리거 버튼 내용</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onClick</code>
+      </td>
+      <td>
+        <code>React.MouseEventHandler</code>
+      </td>
+      <td>클릭 이벤트 핸들러</td>
+    </tr>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>React.CSSProperties</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>...props</code>
+      </td>
+      <td>
+        <code>ComponentPropsWithoutRef&lt;'button'&gt;</code>
+      </td>
+      <td>기본 button 요소의 모든 속성</td>
+    </tr>
+  </tbody>
+</table>
+
+### DropDown.Options
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>옵션 컴포넌트들</td>
+    </tr>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>...props</code>
+      </td>
+      <td>
+        <code>ComponentPropsWithoutRef&lt;'ul'&gt;</code>
+      </td>
+      <td>기본 ul 요소의 모든 속성</td>
+    </tr>
+  </tbody>
+</table>
+
+### DropDown.Option
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>옵션 내용</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onClick</code>
+      </td>
+      <td>
+        <code>React.MouseEventHandler</code>
+      </td>
+      <td>클릭 이벤트 핸들러</td>
+    </tr>
+    <tr>
+      <td>
+        <code>etcStyles</code>
+      </td>
+      <td>
+        <code>CSSObject</code>
+      </td>
+      <td>추가 CSS 스타일</td>
+    </tr>
+    <tr>
+      <td>
+        <code>...props</code>
+      </td>
+      <td>
+        <code>ComponentPropsWithoutRef&lt;'li'&gt;</code>
+      </td>
+      <td>기본 li 요소의 모든 속성</td>
+    </tr>
+  </tbody>
+</table>
+
+## 사용 예시
+
+### 1. 기본 드롭다운
+
+```tsx
+<DropDown.Provider>
+  <div style={{ position: 'relative', display: 'inline-block' }}>
+    <DropDown.Trigger
+      etcStyles={{
+        padding: '8px 16px',
+        backgroundColor: '#007bff',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+        fontWeight: '500',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+      }}
+    >
+      Options
+      <span>▼</span>
+    </DropDown.Trigger>
+
+    <DropDown.Options
+      etcStyles={{
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        right: 0,
+        backgroundColor: 'white',
+        border: '1px solid #dee2e6',
+        borderRadius: '4px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        zIndex: 1000,
+        listStyle: 'none',
+        padding: '4px 0',
+        margin: 0,
+        minWidth: '150px',
+      }}
+    >
+      <DropDown.Option
+        etcStyles={{
+          padding: '8px 16px',
+          fontSize: '14px',
+          color: '#495057',
+          '&:hover': {
+            backgroundColor: '#f8f9fa',
+          },
+        }}
+        onClick={() => console.log('Option 1 clicked')}
+      >
+        Option 1
+      </DropDown.Option>
+      <DropDown.Option
+        etcStyles={{
+          padding: '8px 16px',
+          fontSize: '14px',
+          color: '#495057',
+          '&:hover': {
+            backgroundColor: '#f8f9fa',
+          },
+        }}
+        onClick={() => console.log('Option 2 clicked')}
+      >
+        Option 2
+      </DropDown.Option>
+    </DropDown.Options>
+  </div>
+</DropDown.Provider>
+```

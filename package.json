@@ -3,7 +3,9 @@
   "private": true,
   "description": "Bookmark Finder Extension Monorepo",
   "scripts": {
-    "extension:build": "pnpm --filter bookmark-finder-extension build"
+    "extension:build": "pnpm --filter bookmark-finder-extension build",
+    "ui:build": "pnpm --filter bookmark-finder-extension-ui build",
+    "ui:storybook": "pnpm --filter bookmark-finder-extension-ui storybook"
   },
   "engines": {
     "node": ">=18.0.0",
