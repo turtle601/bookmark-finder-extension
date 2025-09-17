@@ -16,13 +16,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-react": "^7.26.3",
-    "@babel/preset-typescript": "^7.26.0",
     "@chromatic-com/storybook": "^3",
-    "@emotion/babel-preset-css-prop": "^11.12.0",
-    "@emotion/react": "^11.14.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
@@ -30,15 +24,10 @@
     "@storybook/react-vite": "^9.1.6",
     "@svgr/rollup": "^8.1.0",
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^20.19.14",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
-    "node": "^24.8.0",
     "rollup": "^4.36.0",
     "rollup-plugin-dts": "^6.1.1",
     "storybook": "^9.1.6",
-    "tslib": "^2.8.1",
-    "typescript": "^5.8.2"
+    "tslib": "^2.8.1"
   },
   "peerDependencies": {
     "react": "^18.0.0",
