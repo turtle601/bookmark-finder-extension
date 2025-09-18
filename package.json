@@ -17,12 +17,21 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
-    "typescript": "5.3.3",
+    "@emotion/babel-preset-css-prop": "^11.12.0",
+    "@emotion/react": "^11.14.0",
     "@types/node": "^20.19.14",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
-    "@emotion/babel-preset-css-prop": "^11.12.0",
-    "@emotion/react": "^11.14.0",
-    "node": "^24.8.0"
+    "node": "^24.8.0",
+    "typescript": "5.3.3"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "semantic-release": "^24.2.8"
   }
 }
