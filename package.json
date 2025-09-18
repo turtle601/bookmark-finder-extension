@@ -22,9 +22,7 @@
     "@types/node": "^20.19.14",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
-    "node": "^24.8.0",
-    "typescript": "5.3.3",
-    "dateformat": "5.0.3"
+    "node": "^24.8.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
@@ -34,7 +32,9 @@
     "@semantic-release/release-notes-generator": "14.0.1",
     "semantic-release-config-gitmoji": "1.5.3",
     "semantic-release-gitmoji": "1.6.8",
-    "semantic-release": "^24.2.8"
+    "semantic-release": "^24.2.8",
+    "typescript": "5.3.3",
+    "dateformat": "5.0.3"
   },
   "publishConfig": {
     "access": "public"
