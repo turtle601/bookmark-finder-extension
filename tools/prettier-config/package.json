@@ -1,5 +1,5 @@
 {
-  "name": "root-prettier-config",
+  "name": "bookmark-finder-extension/prettier-config",
   "main": "index.js",
   "exports": {
     ".": "./index.js"

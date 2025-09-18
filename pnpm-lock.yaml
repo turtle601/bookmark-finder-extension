@@ -90,6 +90,12 @@ importers:
       babel-loader:
         specifier: ^9.1.3
         version: 9.2.1(@babel/core@7.28.4)(webpack@5.101.3)
+      bookmark-finder-extension/eslint-config:
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      bookmark-finder-extension/prettier-config:
+        specifier: workspace:*
+        version: link:../../tools/prettier-config
       chromatic:
         specifier: ^11.7.1
         version: 11.29.0
@@ -114,12 +120,6 @@ importers:
       rimraf:
         specifier: ^5.0.7
         version: 5.0.10
-      root-eslint-config:
-        specifier: workspace:*
-        version: link:../../tools/eslint-config
-      root-prettier-config:
-        specifier: workspace:*
-        version: link:../../tools/prettier-config
       ts-loader:
         specifier: ^9.5.1
         version: 9.5.4(typescript@5.3.3)(webpack@5.101.3)
@@ -166,18 +166,18 @@ importers:
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.3.3)
+      bookmark-finder-extension/eslint-config:
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      bookmark-finder-extension/prettier-config:
+        specifier: workspace:*
+        version: link:../../tools/prettier-config
       rollup:
         specifier: ^4.36.0
         version: 4.50.2
       rollup-plugin-dts:
         specifier: ^6.1.1
         version: 6.2.3(rollup@4.50.2)(typescript@5.3.3)
-      root-eslint-config:
-        specifier: workspace:*
-        version: link:../../tools/eslint-config
-      root-prettier-config:
-        specifier: workspace:*
-        version: link:../../tools/prettier-config
       storybook:
         specifier: ^9.1.6
         version: 9.1.6(@testing-library/dom@10.4.1)(vite@7.1.6)

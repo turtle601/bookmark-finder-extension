@@ -1,9 +1,9 @@
 module.exports = {
   env: { browser: true, es2020: true },
   extends: [
-    require.resolve('root-eslint-config/patch'),
-    require.resolve('root-eslint-config'),
-    require.resolve('root-eslint-config/mixins/react'),
+    require.resolve('bookmark-finder-extension/eslint-config/patch'),
+    require.resolve('bookmark-finder-extension/eslint-config'),
+    require.resolve('bookmark-finder-extension/eslint-config/mixins/react'),
     'plugin:storybook/recommended',
     'plugin:storybook/recommended',
   ],
