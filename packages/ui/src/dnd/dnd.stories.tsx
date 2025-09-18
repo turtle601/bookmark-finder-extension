@@ -275,7 +275,7 @@ export const KanbanBoard: Story = {
                               </div>
                             )}
                           </DnD.SingleDraggable>
-                        )
+                        ),
                       )}
                       {isDragEnter && draggedTask && (
                         <div
@@ -290,7 +290,7 @@ export const KanbanBoard: Story = {
                             animation: 'pulse 1s infinite',
                           }}
                         >
-                          Drop "{draggedTask.task}" here
+                          Drop {draggedTask.task} here
                         </div>
                       )}
                       {tasks[column.title as keyof typeof tasks].length ===

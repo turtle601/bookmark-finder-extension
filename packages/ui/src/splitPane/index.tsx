@@ -27,7 +27,7 @@ function SplitPane({
 
   const { containerRef, position, onMouseDown } = useSplitPaneDrag(
     getPercentNumber(initialResizerPosition),
-    isVertical
+    isVertical,
   );
 
   return (

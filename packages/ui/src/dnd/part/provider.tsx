@@ -28,7 +28,7 @@ const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
       dragStartContent,
       dragStartContentSize,
     }),
-    [mousePosition, dragStartContent, boundaryRef, dragStartContentSize]
+    [mousePosition, dragStartContent, boundaryRef, dragStartContentSize],
   );
 
   const action = useMemo(
@@ -37,7 +37,7 @@ const Provider: DnDProviderFC = ({ children }: IDnDProviderProps) => {
       setDragStartContent,
       setDragStartContentSize,
     }),
-    [setMousePosition, setDragStartContent, setDragStartContentSize]
+    [setMousePosition, setDragStartContent, setDragStartContentSize],
   );
 
   return (

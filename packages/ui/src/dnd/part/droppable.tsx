@@ -12,7 +12,7 @@ export interface IDropableProps {
 
 const DroppableComponent = (
   { dropAction, children, etcStyles = {}, ...attribute }: IDropableProps,
-  ref: Ref<HTMLDivElement>
+  ref: Ref<HTMLDivElement>,
 ) => {
   const { isDragEnter, handleDragEnter, handleDragLeave, handleDrop } =
     useDroppable({ action: dropAction });

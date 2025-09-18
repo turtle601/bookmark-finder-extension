@@ -21,7 +21,7 @@ const Center = forwardRef(function CenterComponent<
     children,
     ...attribute
   }: PolymorpicProps<T, ICenterProps>,
-  ref: React.Ref<React.ComponentPropsWithRef<T>['ref']>
+  ref: React.Ref<React.ComponentPropsWithRef<T>['ref']>,
 ) {
   const Element = as || 'div';
 

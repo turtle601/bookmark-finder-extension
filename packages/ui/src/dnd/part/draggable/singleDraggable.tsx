@@ -22,7 +22,7 @@ const SingleDraggableComponent = (
     dragEndAction = () => {},
     etcStyles = {},
   }: IDraggableProps,
-  ref: Ref<HTMLDivElement>
+  ref: Ref<HTMLDivElement>,
 ) => {
   const {
     isDrag,

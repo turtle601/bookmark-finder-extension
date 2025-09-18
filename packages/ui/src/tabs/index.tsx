@@ -138,7 +138,7 @@ const TabPanel: FC<ITabPanelProps> = ({ id, etcStyles = {}, children }) => {
 };
 
 const allocateTabPanelIdxForChildren = (
-  children: ReactElement<typeof TabPanel>[]
+  children: ReactElement<typeof TabPanel>[],
 ) => {
   return Children.map(children, (child, idx) => {
     if (child.type !== TabPanel) {

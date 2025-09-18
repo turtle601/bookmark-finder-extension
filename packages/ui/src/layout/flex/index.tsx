@@ -26,7 +26,7 @@ const Flex = forwardRef(function FlexComponent<T extends ElementType = 'div'>(
     children,
     ...attribute
   }: PolymorpicProps<T, IFlexProps>,
-  ref: React.Ref<React.ComponentPropsWithRef<T>['ref']>
+  ref: React.Ref<React.ComponentPropsWithRef<T>['ref']>,
 ) {
   const Element = as || 'div';
 

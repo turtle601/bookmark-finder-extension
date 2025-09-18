@@ -17,7 +17,7 @@ function Image({
   const [currentSrc, setCurrentSrc] = useState(src);
 
   const handleError = (
-    event: React.SyntheticEvent<HTMLImageElement, Event>
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
   ) => {
     setHasError(true);
 

@@ -23,7 +23,7 @@ const MultiDraggableComponent = (
     dragEndAction = () => {},
     etcStyles = {},
   }: IMultiDraggableProps,
-  ref: Ref<HTMLDivElement>
+  ref: Ref<HTMLDivElement>,
 ) => {
   const { mousePosition } = useDnDContext();
 

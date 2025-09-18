@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 
 export const useSplitPaneDrag = (
   initialPercentage: number,
-  isVertical = true
+  isVertical = true,
 ) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,7 +23,7 @@ export const useSplitPaneDrag = (
       const percentageY = (offsetY / rect.height) * 100;
 
       setPosition(
-        inSplitPaneRange(isVertical ? percentageY : percentageX, 15, 85)
+        inSplitPaneRange(isVertical ? percentageY : percentageX, 15, 85),
       );
     };
 
