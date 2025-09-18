@@ -4,47 +4,13 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventionalcommits",
-        "releaseRules": [
-          { "scope": "breaking", "release": "major" },
-          { "scope": "no-release", "release": false },
-          { "type": "📦 chore", "release": false },
-          { "type": "🔧 ci", "release": false },
-          { "type": "📝 docs", "release": "patch" },
-          { "type": "✨ feat", "release": "minor" },
-          { "type": "🐛 fix", "release": "patch" },
-          { "type": "♻️ refactor", "release": "patch" }
-        ],
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-        }
+        "preset": "conventional-changelog-gitmoji-config"
       }
     ],
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "conventionalcommits",
-        "presetConfig": {
-          "types": [
-            {
-              "type": "build",
-              "section": "SYSTEM BUILD & EXTERNAL PACKAGES",
-              "hidden": true
-            },
-            { "type": "📦 chore", "section": "CHORES", "hidden": true },
-            { "type": "🔧 ci", "section": "CI/CD", "hidden": false },
-            { "type": "📝 docs", "section": "DOCS", "hidden": false },
-            { "type": "✨ feat", "section": "FEATURES", "hidden": false },
-            { "type": "🐛 fix", "section": "BUG FIXES", "hidden": false },
-            { "type": "♻️ refactor", "section": "REFACTOR", "hidden": false }
-          ]
-        },
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-        },
-        "writerOpts": {
-          "commitsSort": ["subject", "scope"]
-        }
+        "preset": "conventional-changelog-gitmoji-config"
       }
     ],
     [
