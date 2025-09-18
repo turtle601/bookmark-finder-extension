@@ -6,12 +6,12 @@
       {
         "preset": "conventionalcommits",
         "releaseRules": [
-          { "type": "*feat*", "release": "minor" },
-          { "type": "*fix*", "release": "patch" },
-          { "type": "*refactor*", "release": "patch" },
-          { "type": "*docs*", "release": "patch" },
-          { "type": "*chore*", "release": false },
-          { "type": "*remove*", "release": "patch" }
+          { "type": "✨ feat", "release": "minor" },
+          { "type": "🐛 fix", "release": "patch" },
+          { "type": "♻️ refactor", "release": "patch" },
+          { "type": "📝 docs", "release": "patch" },
+          { "type": "📦 chore", "release": false },
+          { "type": "🔥 remove", "release": "patch" }
         ]
       }
     ],
