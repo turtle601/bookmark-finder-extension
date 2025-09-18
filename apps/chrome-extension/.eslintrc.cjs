@@ -1,8 +1,12 @@
-require('@turtle601/eslint-config/patch');
-
 module.exports = {
   env: { browser: true, es2020: true },
-  extends: ['@turtle601/eslint-config', '@turtle601/eslint-config/mixins/react', 'plugin:storybook/recommended', 'plugin:storybook/recommended'],
+  extends: [
+    require.resolve('root-eslint-config/patch'),
+    require.resolve('root-eslint-config'),
+    require.resolve('root-eslint-config/mixins/react'),
+    'plugin:storybook/recommended',
+    'plugin:storybook/recommended',
+  ],
   settings: {
     react: {
       version: '18.3.1',

@@ -34,8 +34,8 @@
     "@chromatic-com/storybook": "^1.6.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/eslint-plugin-query": "^5.51.1",
-    "@turtle601/eslint-config": "^1.0.0",
-    "@turtle601/prettier-config": "^1.0.0",
+    "root-eslint-config": "workspace:*",
+    "root-prettier-config": "workspace:*",
     "@types/chrome": "^0.0.268",
     "babel-loader": "^9.1.3",
     "chromatic": "^11.7.1",
@@ -51,5 +51,5 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
   },
-  "prettier": "@turtle601/prettier-config"
+  "prettier": "root-prettier-config"
 }

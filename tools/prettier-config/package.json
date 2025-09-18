@@ -1,0 +1,11 @@
+{
+  "name": "root-prettier-config",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "version": "1.0.0",
+  "peerDependencies": {
+    "prettier": ">= 3"
+  }
+}
