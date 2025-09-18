@@ -1,19 +1,32 @@
 {
   "branches": ["main", "next"],
   "plugins": [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          { "type": "*feat*", "release": "minor" },
+          { "type": "*fix*", "release": "patch" },
+          { "type": "*refactor*", "release": "patch" },
+          { "type": "*docs*", "release": "patch" },
+          { "type": "*chore*", "release": false },
+          { "type": "*remove*", "release": "patch" }
+        ]
+      }
+    ],
     [
       "@semantic-release/release-notes-generator",
       {
         "preset": "conventionalcommits",
         "presetConfig": {
           "types": [
-            { "type": "*feat*", "section": "✨ feat", "hidden": false },
-            { "type": "*fix*", "section": "🐛 fix", "hidden": false },
-            { "type": "*refactor*", "section": "♻️ refactor", "hidden": false },
-            { "type": "*docs*", "section": "📝 docs", "hidden": false },
-            { "type": "*chore*", "section": "📦 chore", "hidden": true },
-            { "type": "*remove*", "section": "🔥 remove", "hidden": true }
+            { "type": "feat", "section": "✨ feat", "hidden": false },
+            { "type": "fix", "section": "🐛 fix", "hidden": false },
+            { "type": "refactor", "section": "♻️ refactor", "hidden": false },
+            { "type": "docs", "section": "📝 docs", "hidden": false },
+            { "type": "chore", "section": "📦 chore", "hidden": true },
+            { "type": "remove", "section": "🔥 remove", "hidden": true }
           ]
         }
       }
