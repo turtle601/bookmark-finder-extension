@@ -36,10 +36,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build extension and UI
+      - name: Build UI package
+        run: pnpm ui:build
+
+      - name: Build extension
         run: |
           pnpm extension:build
-          pnpm ui:build
 
       - name: Run semantic-release
         run: pnpm dlx semantic-release
