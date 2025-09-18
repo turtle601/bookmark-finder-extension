@@ -4,13 +4,13 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventional-changelog-gitmoji-config"
+        "preset": "gitmoji-config"
       }
     ],
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "conventional-changelog-gitmoji-config"
+        "preset": "gitmoji-config"
       }
     ],
     [
