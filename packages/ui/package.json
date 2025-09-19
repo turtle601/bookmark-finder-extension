@@ -7,6 +7,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turtle601/bookmark-finder-extension.git",
+    "directory": "packages/ui"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

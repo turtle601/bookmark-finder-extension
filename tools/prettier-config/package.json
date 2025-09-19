@@ -5,6 +5,14 @@
     ".": "./index.js"
   },
   "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turtle601/bookmark-finder-extension.git",
+    "directory": "tools/prettier-config"
+  },
   "peerDependencies": {
     "prettier": ">= 3"
   }

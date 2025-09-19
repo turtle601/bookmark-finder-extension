@@ -18,6 +18,11 @@
     "patch.js",
     "mixins/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turtle601/bookmark-finder-extension.git",
+    "directory": "tools/eslint-config"
+  },
   "author": "Hwang Jun seung, turtle601",
   "license": "ISC",
   "dependencies": {
