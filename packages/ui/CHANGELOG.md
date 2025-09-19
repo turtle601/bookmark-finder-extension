@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.17
+
+### Patch Changes
+
+- 🐛 **wet-plums-attend**: sadfdasf
+
 ## 1.0.16
 
 ### Patch Changes
