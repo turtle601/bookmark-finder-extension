@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Image } from 'bookmark-finder-extension/ui';
+import { Image } from 'bookmark-finder-extension-ui';
 
 import type { ISearchBookmarkLink } from '@/v3/background/bookmark/utils';
 

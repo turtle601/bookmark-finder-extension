@@ -1,4 +1,4 @@
-import { Spacer } from 'bookmark-finder-extension/ui';
+import { Spacer } from 'bookmark-finder-extension-ui';
 
 import { BookmarkControls } from '@/v3/features/edit/bookmarkControls';
 import { BookmarkTree } from '@/v3/features/edit/bookmarkTree';

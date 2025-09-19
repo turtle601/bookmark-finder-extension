@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { color } from '@/v3/shared/styles';
 
-import { Center, Flex } from 'bookmark-finder-extension/ui';
+import { Center, Flex } from 'bookmark-finder-extension-ui';
 
 function Header() {
   return (

@@ -18,7 +18,7 @@ import {
   useAccordionActionContext,
   useAccordionContext,
   DnD,
-} from 'bookmark-finder-extension/ui';
+} from 'bookmark-finder-extension-ui';
 
 import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
 import BookmarkFolderEditButton from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolderEditButton';

@@ -17,7 +17,7 @@ import {
   useAccordionContext,
   Accordion,
   DnD,
-} from 'bookmark-finder-extension/ui';
+} from 'bookmark-finder-extension-ui';
 
 import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
 

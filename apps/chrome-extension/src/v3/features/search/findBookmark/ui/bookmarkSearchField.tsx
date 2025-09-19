@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { Flex } from 'bookmark-finder-extension/ui';
+import { Flex } from 'bookmark-finder-extension-ui';
 interface IBookmarkSearchFieldProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

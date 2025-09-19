@@ -1,4 +1,4 @@
-import { useAccordionActionContext } from 'bookmark-finder-extension/ui';
+import { useAccordionActionContext } from 'bookmark-finder-extension-ui';
 
 import {
   addBookmark,

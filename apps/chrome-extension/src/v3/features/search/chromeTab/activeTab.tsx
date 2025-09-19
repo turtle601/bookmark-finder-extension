@@ -8,7 +8,7 @@ import {
   useOpenTabMutation,
 } from '@/v3/entities/chromeTab/request';
 
-import { Center, Flex, DnD, Image } from 'bookmark-finder-extension/ui';
+import { Center, Flex, DnD, Image } from 'bookmark-finder-extension-ui';
 
 import { getFaviconUrl } from '@/v3/shared/utils/url';
 

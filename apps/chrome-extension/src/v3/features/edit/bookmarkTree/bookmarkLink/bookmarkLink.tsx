@@ -2,7 +2,7 @@ import React from 'react';
 
 import { css } from '@emotion/react';
 
-import { DnD, Image } from 'bookmark-finder-extension/ui';
+import { DnD, Image } from 'bookmark-finder-extension-ui';
 import { color } from '@/v3/shared/styles';
 
 import {

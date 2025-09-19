@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { Center } from 'bookmark-finder-extension/ui';
+import { Center } from 'bookmark-finder-extension-ui';
 
 import BookmarkLink from '@/v3/features/search/findBookmark/ui/bookmarkSearchLink';
 import { useSearchBookmarksQuery } from '@/v3/entities/bookmark/search/request';

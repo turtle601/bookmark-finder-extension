@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { useRef, useState } from 'react';
 
-import { Spacer } from 'bookmark-finder-extension/ui';
+import { Spacer } from 'bookmark-finder-extension-ui';
 
 import BookmarkSearchField from '@/v3/features/search/findBookmark/ui/bookmarkSearchField';
 import BookmarkSearchResult from '@/v3/features/search/findBookmark/ui/bookmarkSearchResult';

@@ -9,7 +9,7 @@ import {
   Spacer,
   Tabs,
   Accordion,
-} from 'bookmark-finder-extension/ui';
+} from 'bookmark-finder-extension-ui';
 
 import { EditBookmark } from '@/v3/features/edit';
 import { CurrentChromeTab } from '@/v3/features/search/chromeTab';

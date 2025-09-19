@@ -6,7 +6,7 @@ import {
   Center,
   DropDown,
   useDropDownContext,
-} from 'bookmark-finder-extension/ui';
+} from 'bookmark-finder-extension-ui';
 
 interface IBookmarkEditButtonProps {
   options: {

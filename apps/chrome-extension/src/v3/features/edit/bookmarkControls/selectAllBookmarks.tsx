@@ -8,7 +8,7 @@ import {
 import {
   useAccordionActionContext,
   useAccordionContext,
-} from 'bookmark-finder-extension/ui';
+} from 'bookmark-finder-extension-ui';
 
 import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
 

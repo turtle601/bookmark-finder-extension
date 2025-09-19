@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 
 import { color } from '@/v3/shared/styles';
 
-import { Flex } from 'bookmark-finder-extension/ui';
+import { Flex } from 'bookmark-finder-extension-ui';
 
 import { useTabsQuery } from '@/v3/entities/chromeTab/request';
 import { useActiveTabListener } from '@/v3/entities/chromeTab/listener';

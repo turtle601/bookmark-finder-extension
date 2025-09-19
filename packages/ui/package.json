@@ -1,7 +1,6 @@
 {
-  "name": "bookmark-finder-extension/ui",
+  "name": "bookmark-finder-extension-ui",
   "version": "1.0.0",
-  "private": true,
   "description": "Bookmark Finder UI Components",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,8 +15,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bookmark-finder-extension/eslint-config": "workspace:*",
-    "bookmark-finder-extension/prettier-config": "workspace:*",
+    "bookmark-finder-extension-eslint-config": "workspace:*",
+    "bookmark-finder-extension-prettier-config": "workspace:*",
     "@chromatic-com/storybook": "^3",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.1",
@@ -46,5 +45,5 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "prettier": "bookmark-finder-extension/prettier-config"
+  "prettier": "bookmark-finder-extension-prettier-config"
 }
