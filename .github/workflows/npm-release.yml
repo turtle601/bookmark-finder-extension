@@ -62,63 +62,59 @@ jobs:
             echo "❌ No changes to commit"
           fi
 
-      - name: Check for UI package changes
-        id: version-check
-        run: |
-          if git diff HEAD~1 HEAD --name-only | grep -q "packages/ui/package.json"; then
-            echo "ui_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "ui_changed=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build UI package
         run: pnpm ui:build
 
       - name: Create .npmrc file
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Release UI package
-        if: steps.version-check.outputs.ui_changed == 'true'
+      - name: Publish to npm
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "🚀 Releasing UI package..."
-          echo "=== Publishing ==="
-          pnpm --filter bookmark-finder-extension-ui publish --access public
-          echo "✅ UI package released"
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx changeset publish
 
-      - name: Check for eslint-config package changes
-        id: version-check-eslint-config
-        run: |
-          if git diff HEAD~1 HEAD --name-only | grep -q "tools/eslint-config/package.json"; then
-            echo "eslint-config_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "eslint-config_changed=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: Release UI package
+      #   if: steps.version-check.outputs.ui_changed == 'true'
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: |
+      #     echo "🚀 Releasing UI package..."
+      #     echo "=== Publishing ==="
+      #     pnpm --filter bookmark-finder-extension-ui publish --access public
+      #     echo "✅ UI package released"
 
-      - name: Release Eslint-config package
-        if: steps.version-check-eslint-config.outputs.eslint-config_changed == 'true'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "🚀 Releasing Eslint-config package..." 
-          pnpm --filter bookmark-finder-extension-eslint-config publish --verbose
-          echo "✅ Eslint-config package released"
+      # - name: Check for eslint-config package changes
+      #   id: version-check-eslint-config
+      #   run: |
+      #     if git diff HEAD~1 HEAD --name-only | grep -q "tools/eslint-config/package.json"; then
+      #       echo "eslint-config_changed=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "eslint-config_changed=false" >> $GITHUB_OUTPUT
+      #     fi
 
-      - name: Check for prettier-config package changes
-        id: version-check-prettier-config
-        run: |
-          if git diff HEAD~1 HEAD --name-only | grep -q "tools/prettier-config/package.json"; then
-            echo "prettier-config_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "prettier-config_changed=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: Release Eslint-config package
+      #   if: steps.version-check-eslint-config.outputs.eslint-config_changed == 'true'
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: |
+      #     echo "🚀 Releasing Eslint-config package..."
+      #     pnpm --filter bookmark-finder-extension-eslint-config publish --verbose
+      #     echo "✅ Eslint-config package released"
 
-      - name: Release Prettier-config package
-        if: steps.version-check-prettier-config.outputs.prettier-config_changed == 'true'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "🚀 Releasing Prettier-config package..."
-          pnpm --filter bookmark-finder-extension-prettier-config publish --verbose
-          echo "✅ Prettier-config package released"
+      # - name: Check for prettier-config package changes
+      #   id: version-check-prettier-config
+      #   run: |
+      #     if git diff HEAD~1 HEAD --name-only | grep -q "tools/prettier-config/package.json"; then
+      #       echo "prettier-config_changed=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "prettier-config_changed=false" >> $GITHUB_OUTPUT
+      #     fi
+
+      # - name: Release Prettier-config package
+      #   if: steps.version-check-prettier-config.outputs.prettier-config_changed == 'true'
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: |
+      #     echo "🚀 Releasing Prettier-config package..."
+      #     pnpm --filter bookmark-finder-extension-prettier-config publish --verbose
+      #     echo "✅ Prettier-config package released"
