@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.7
+
+### Patch Changes
+
+- 🐛 **dark-clocks-bet**: ci테스팅
+
 ## 1.0.6
 
 ### Patch Changes
