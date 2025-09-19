@@ -193,7 +193,7 @@ const config = {
       '@semantic-release/exec',
       {
         prepareCmd:
-          'echo "Updating versions in multiple files to ${nextRelease.version}..." && if [ -f "apps/extension/package.json" ]; then echo "Updating apps/extension/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/extension/package.json; fi && if [ -f "packages/ui/package.json" ]; then echo "Updating packages/ui/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' packages/ui/package.json; fi && if [ -f "apps/extension/manifest.json" ]; then echo "Updating apps/extension/manifest.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/extension/manifest.json; fi && echo "Version update complete!"',
+          'echo "Updating versions in multiple files to ${nextRelease.version}..." && if [ -f "apps/chrome-extension/package.json" ]; then echo "Updating apps/chrome-extension/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/chrome-extension/package.json; fi && if [ -f "packages/ui/package.json" ]; then echo "Updating packages/ui/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' packages/ui/package.json; fi && if [ -f "apps/chrome-extension/public/manifest.json" ]; then echo "Updating apps/chrome-extension/public/manifest.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/chrome-extension/public/manifest.json; fi && echo "Version update complete!"',
       },
     ],
   ],
