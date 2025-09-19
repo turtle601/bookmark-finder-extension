@@ -15,6 +15,7 @@ jobs:
       contents: write # Git 푸시 권한
       pull-requests: write # PR 관련 권한
       id-token: write # npm 배포 권한
+      packages: write # npm 패키지 배포 권한
 
     name: release
 
@@ -29,6 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          registry-url: https://registry.npmjs.org
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -89,7 +91,7 @@ jobs:
           fi
 
       - name: Release Eslint-config package
-        if: steps.version-check-eslint-config.outputs.ui_changed == 'true'
+        if: steps.version-check-eslint-config.outputs.eslint-config_changed == 'true'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
