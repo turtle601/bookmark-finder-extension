@@ -47,3 +47,14 @@ jobs:
         run: pnpm dlx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update versions before release
+        run: |
+          # Get the next version from semantic-release (dry run)
+          NEXT_VERSION=$(pnpm dlx semantic-release --dry-run | grep "The next release version is" | cut -d' ' -f7)
+          if [ ! -z "$NEXT_VERSION" ]; then
+            echo "Updating versions to $NEXT_VERSION"
+            node scripts/update-versions.js "$NEXT_VERSION"
+            git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
+            git commit -m "chore: update versions to $NEXT_VERSION" || echo "No changes to commit"
+          fi

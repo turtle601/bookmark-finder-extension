@@ -194,14 +194,6 @@ const config = {
         ],
       },
     ],
-    [
-      // 다른 파일들의 버전 업데이트를 위한 exec 플러그인
-      '@semantic-release/exec',
-      {
-        prepareCmd:
-          'echo "Updating versions in multiple files to ${nextRelease.version}..." && node scripts/update-versions.js "${nextRelease.version}" && git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json && echo "Files staged for commit"',
-      },
-    ],
   ],
   extends: ['semantic-release-config-gitmoji'],
 };
