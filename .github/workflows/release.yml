@@ -62,5 +62,6 @@ jobs:
           echo "Updating versions to $VERSION"
           node scripts/update-versions.js "$VERSION"
           git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
-          git commit -m "🚀 release: extension file versions to $VERSION" || echo "No changes to commit"
+          git commit -m "🚀 release: extension file versions to $VERSION" || echo "📦 chore:No changes to commit"
+
           git push origin main
