@@ -1,5 +1,11 @@
 # Changelog
 
+# [v3.0.3](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.2...v3.0.3) (2025-09-19)
+
+## 🔧 Changing configuration files
+- [`06fe201`](https://github.com/turtle601/bookmark-finder-extension/commit/06fe201)
+ ci: 불필요한 로그 제거
+
 # [v3.0.2](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.1...v3.0.2) (2025-09-19)
 
 ## 🐛 Fixing a bug
