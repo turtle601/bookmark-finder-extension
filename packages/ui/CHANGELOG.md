@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.15
+
+### Patch Changes
+
+- 🐛 **yellow-toys-sneeze**: d
+
 ## 1.0.14
 
 ### Patch Changes
