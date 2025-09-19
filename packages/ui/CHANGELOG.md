@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.14
+
+### Patch Changes
+
+- 🐛 **giant-dancers-prove**: df
+
 ## 1.0.13
 
 ### Patch Changes
