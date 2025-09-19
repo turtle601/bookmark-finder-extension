@@ -77,7 +77,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing UI package..."
-          pnpm --filter bookmark-finder-extension-ui publish --verbose
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          pnpm --filter bookmark-finder-extension-ui publish --access public
           echo "✅ UI package released"
 
       - name: Check for eslint-config package changes
