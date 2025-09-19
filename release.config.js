@@ -193,7 +193,7 @@ const config = {
       '@semantic-release/exec',
       {
         prepareCmd:
-          'echo "Updating versions in multiple files to ${nextRelease.version}..." && if [ -f "apps/chrome-extension/package.json" ]; then echo "Updating apps/chrome-extension/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/chrome-extension/package.json; fi && if [ -f "packages/ui/package.json" ]; then echo "Updating packages/ui/package.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' packages/ui/package.json; fi && if [ -f "apps/chrome-extension/public/manifest.json" ]; then echo "Updating apps/chrome-extension/public/manifest.json" && sed -i \'s/"version": "[^"]*"/"version": "${nextRelease.version}"/g\' apps/chrome-extension/public/manifest.json; fi && echo "Version update complete!"',
+          'echo "Updating versions in multiple files to ${nextRelease.version}..." && node -e "const fs = require(\'fs\'); const version = \'${nextRelease.version}\'; const files = [\'apps/chrome-extension/package.json\', \'packages/ui/package.json\', \'apps/chrome-extension/public/manifest.json\']; files.forEach(file => { if (fs.existsSync(file)) { const content = fs.readFileSync(file, \'utf8\'); const updated = content.replace(/\\"version\\":\\s*\\"[^\\"]*\\"/g, `\\"version\\": \\"${version}\\"`); fs.writeFileSync(file, updated); console.log(`Updated ${file}`); } });" && git add apps/chrome-extension/package.json packages/ui/package.json apps/chrome-extension/public/manifest.json && echo "Files staged for commit"',
       },
     ],
   ],
