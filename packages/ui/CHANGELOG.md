@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.12
+
+### Patch Changes
+
+- 🐛 **clear-carrots-take**: ㅇㄴㅁㄹ
+
 ## 1.0.11
 
 ### Patch Changes
