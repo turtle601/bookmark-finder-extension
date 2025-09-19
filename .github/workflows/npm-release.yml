@@ -1,4 +1,4 @@
-name: NPM Changeset Release
+name: NPM Changeset Publish
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - '.changeset/**'
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for OIDC
@@ -16,7 +16,7 @@ jobs:
       pull-requests: write # PR 관련 권한
       packages: write # npm 패키지 배포 권한
 
-    name: release
+    name: publish
 
     steps:
       - name: Checkout
@@ -35,6 +35,9 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -73,13 +76,11 @@ jobs:
 
       - name: Release UI package
         if: steps.version-check.outputs.ui_changed == 'true'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing UI package..."
 
           echo "=== Publishing ==="
-          pnpm changeset publish --filter bookmark-finder-extension-ui
+          pnpm --filter bookmark-finder-extension-ui exec npm publish --access public
           echo "✅ UI package released"
 
       - name: Check for eslint-config package changes
