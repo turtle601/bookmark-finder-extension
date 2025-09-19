@@ -169,7 +169,13 @@ const config = {
       '@semantic-release/git',
       {
         // NOTE: add files and directories you want to release into the assets array.
-        assets: ['package.json', 'pnpm-lock.yaml', 'CHANGELOG.md'],
+        assets: [
+          'package.json',
+          'pnpm-lock.yaml',
+          'CHANGELOG.md',
+          'apps/chrome-extension/package.json',
+          'apps/chrome-extension/public/manifest.json',
+        ],
         message: `${choreMessage}\n\n\${nextRelease.notes}`,
         // message: choreMessage,
       },
