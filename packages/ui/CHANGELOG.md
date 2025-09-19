@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.3
+
+### Patch Changes
+
+- 🐛 **bitter-gifts-end**: ci 테스팅
+
 ## 1.0.2
 
 ### Patch Changes
