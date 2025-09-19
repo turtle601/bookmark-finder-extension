@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.9
+
+### Patch Changes
+
+- 🐛 **plain-ends-brake**: ci 테스팅
+
 ## 1.0.8
 
 ### Patch Changes
