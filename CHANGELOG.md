@@ -1,5 +1,15 @@
 # Changelog
 
+# [v3.0.3](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.2...v3.0.3) (2025-09-19)
+
+## 🐛 Fixing a bug
+- [`bd05f8f`](https://github.com/turtle601/bookmark-finder-extension/commit/bd05f8f)
+ fix: SplitPane 스크롤 UX 개선
+
+## 🚀 Deploying stuff
+- [`6aeb26c`](https://github.com/turtle601/bookmark-finder-extension/commit/6aeb26c)
+ release: extension file versions to 3.0.2
+
 # [v3.0.2](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.1...v3.0.2) (2025-09-19)
 
 ## 🐛 Fixing a bug
