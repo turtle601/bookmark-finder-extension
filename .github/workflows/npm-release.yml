@@ -11,9 +11,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write # Required for OIDC
       contents: write # Git 푸시 권한
       pull-requests: write # PR 관련 권한
-      id-token: write # npm 배포 권한
       packages: write # npm 패키지 배포 권한
 
     name: release
@@ -77,11 +77,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing UI package..."
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
-          echo "=== Authentication Debug ==="
-          pnpm whoami
-          pnpm owner ls bookmark-finder-extension-ui
 
           echo "=== Publishing ==="
           pnpm --filter bookmark-finder-extension-ui publish --access public
