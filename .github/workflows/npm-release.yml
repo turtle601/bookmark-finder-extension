@@ -74,15 +74,17 @@ jobs:
       - name: Build UI package
         run: pnpm ui:build
 
+      - name: Create .npmrc file
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Release UI package
         if: steps.version-check.outputs.ui_changed == 'true'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing UI package..."
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           echo "=== Publishing ==="
-          pnpm release
+          pnpm --filter bookmark-finder-extension-ui publish --access public
           echo "✅ UI package released"
 
       - name: Check for eslint-config package changes
