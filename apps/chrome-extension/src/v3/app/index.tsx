@@ -137,7 +137,7 @@ function App() {
                       <DnD.PointerContent />
                       <SplitPane
                         width={'100%'}
-                        height={'calc(100vh - 124px)'}
+                        height={'calc(100vh - 174px)'}
                         split={'vertical'}
                         pane1={<EditBookmark />}
                         pane2={<CurrentChromeTab />}
