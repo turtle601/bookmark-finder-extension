@@ -19,6 +19,9 @@
     }
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "bookmark-finder-extension-eslint-config": "workspace:*",
     "bookmark-finder-extension-prettier-config": "workspace:*",

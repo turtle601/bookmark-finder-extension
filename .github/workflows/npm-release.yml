@@ -29,7 +29,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://registry.npmjs.org' # 이 줄 추가
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
