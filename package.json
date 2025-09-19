@@ -22,16 +22,28 @@
     "@types/node": "^20.19.14",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
-    "node": "^24.8.0",
-    "typescript": "5.3.3"
+    "node": "^24.8.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.6",
-    "@semantic-release/npm": "^12.0.2",
-    "@semantic-release/release-notes-generator": "^14.1.0",
-    "semantic-release": "^24.2.8"
-  }
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "10.1.1",
+    "@semantic-release/npm": "12.0.1",
+    "@semantic-release/release-notes-generator": "14.0.1",
+    "@types/dateformat": "5.0.2",
+    "commitlint-config-gitmoji": "2.3.1",
+    "conventional-changelog-gitmoji-config": "1.5.2",
+    "cz-gitmoji-adapter": "2.0.0",
+    "dateformat": "5.0.3",
+    "gitmoji-parser-opts": "1.0.0",
+    "semantic-release": "^24.2.8",
+    "semantic-release-config-gitmoji": "1.5.3",
+    "semantic-release-gitmoji": "1.6.8",
+    "typescript": "5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "3.0.12"
 }
