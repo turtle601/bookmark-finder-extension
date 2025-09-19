@@ -1,6 +1,6 @@
 {
   "name": "Bookmark Finder Extension",
-  "version": "3.0.13",
+  "version": "3.0.2",
   "description": "Bookmark Finder Chrome Extension",
   "manifest_version": 3,
   "permissions": [
