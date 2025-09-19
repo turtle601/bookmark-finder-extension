@@ -1,5 +1,11 @@
 # Changelog
 
+# [v3.0.10](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.9...v3.0.10) (2025-09-19)
+
+## 🔧 Changing configuration files
+- [`264aff3`](https://github.com/turtle601/bookmark-finder-extension/commit/264aff3)
+ ci: 익스텐션 관련 버저닝 자동화 로직 추가
+
 # [v3.0.9](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.8...v3.0.9) (2025-09-19)
 
 ## 🔧 Changing configuration files
