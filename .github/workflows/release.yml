@@ -51,13 +51,6 @@ jobs:
           echo "=== 🏷️ TAG INFORMATION ==="
           echo "📍 Current branch: $(git branch --show-current)"
           echo "📍 Current commit: $(git rev-parse HEAD)"
-          echo ""
-          echo "🏷️ All local tags (after fetch):"
-          git tag -l --sort=-version:refname | head -10
-          echo ""
-          echo "🌐 All remote tags:"
-          git ls-remote --tags origin | grep -o 'refs/tags/.*' | sed 's/refs\/tags\///' | sort -V -r | head -10
-          echo ""
           echo "🎯 Latest tag:"
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "No tags found")
           echo "   $LATEST_TAG"
