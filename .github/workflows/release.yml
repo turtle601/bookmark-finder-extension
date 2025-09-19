@@ -48,15 +48,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update versions before release
+      - name: Update file versions
         run: |
-          # Get the next version from semantic-release (dry run)
-          NEXT_VERSION=$(pnpm dlx semantic-release --dry-run | grep "The next release version is" | cut -d' ' -f7)
-          if [ ! -z "$NEXT_VERSION" ]; then
-            echo "Updating versions to $NEXT_VERSION"
-            node scripts/update-versions.js "$NEXT_VERSION"
-            git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
-            git commit -m "chore: update versions to $NEXT_VERSION" || echo "No changes to commit"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Get the latest tag (which semantic-release just created)
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          VERSION=${LATEST_TAG#v}  # Remove 'v' prefix
+          echo "Updating versions to $VERSION"
+          node scripts/update-versions.js "$VERSION"
+          git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
+          git commit -m "chore: update file versions to $VERSION" || echo "No changes to commit"
+          git push origin main
