@@ -58,3 +58,5 @@ jobs:
             git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
             git commit -m "chore: update versions to $NEXT_VERSION" || echo "No changes to commit"
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
