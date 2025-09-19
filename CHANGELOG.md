@@ -2,6 +2,18 @@
 
 # [v3.0.7](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.6...v3.0.7) (2025-09-19)
 
+## 👷 Adding CI build system
+- [`6c8dd4e`](https://github.com/turtle601/bookmark-finder-extension/commit/6c8dd4e)
+ chore(release): 3.0.7
+
+## 🔧 Changing configuration files
+- [`5eb825f`](https://github.com/turtle601/bookmark-finder-extension/commit/5eb825f)
+ ci: 익스텐션 관련 버저닝 자동화 로직 추가
+- [`94db600`](https://github.com/turtle601/bookmark-finder-extension/commit/94db600)
+ ci: 익스텐션 관련 버저닝 자동화 로직 추가
+
+# [v3.0.7](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.6...v3.0.7) (2025-09-19)
+
 ## 🔧 Changing configuration files
 - [`5eb825f`](https://github.com/turtle601/bookmark-finder-extension/commit/5eb825f)
  ci: 익스텐션 관련 버저닝 자동화 로직 추가
