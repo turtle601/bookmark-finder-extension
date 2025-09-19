@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.11
+
+### Patch Changes
+
+- 🐛 **wild-emus-train**: a
+
 ## 1.0.10
 
 ### Patch Changes
