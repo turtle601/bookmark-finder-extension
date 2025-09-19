@@ -78,6 +78,12 @@ jobs:
         run: |
           echo "🚀 Releasing UI package..."
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+          echo "=== Authentication Debug ==="
+          pnpm whoami
+          pnpm owner ls bookmark-finder-extension-ui
+
+          echo "=== Publishing ==="
           pnpm --filter bookmark-finder-extension-ui publish --access public
           echo "✅ UI package released"
 
