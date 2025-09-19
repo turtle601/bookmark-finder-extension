@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.18
+
+### Patch Changes
+
+- 🐛 **proud-buttons-cry**: adfasdfasdfsadf
+
 ## 1.0.17
 
 ### Patch Changes
