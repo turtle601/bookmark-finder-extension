@@ -1,5 +1,15 @@
 # Changelog
 
+# [v3.0.5](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.4...v3.0.5) (2025-09-19)
+
+## 🐛 Fixing a bug
+- [`e5d5d98`](https://github.com/turtle601/bookmark-finder-extension/commit/e5d5d98)
+ fix: npm-release 모듈 경로 오류 해결
+
+## 🚀 Deploying stuff
+- [`f58e216`](https://github.com/turtle601/bookmark-finder-extension/commit/f58e216)
+ release: extension file versions to 3.0.4
+
 # [v3.0.4](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.3...v3.0.4) (2025-09-19)
 
 ## 🚀 Deploying stuff
