@@ -77,7 +77,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing UI package..."
-          pnpm --filter bookmark-finder-extension-ui publish
+          pnpm --filter bookmark-finder-extension-ui publish --verbose
           echo "✅ UI package released"
 
       - name: Check for eslint-config package changes
@@ -95,7 +95,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing Eslint-config package..." 
-          pnpm --filter bookmark-finder-extension-eslint-config publish
+          pnpm --filter bookmark-finder-extension-eslint-config publish --verbose
           echo "✅ Eslint-config package released"
 
       - name: Check for prettier-config package changes
@@ -113,5 +113,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Releasing Prettier-config package..."
-          pnpm --filter bookmark-finder-extension-prettier-config publish
+          pnpm --filter bookmark-finder-extension-prettier-config publish --verbose
           echo "✅ Prettier-config package released"
