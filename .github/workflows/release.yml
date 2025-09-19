@@ -43,37 +43,6 @@ jobs:
         run: |
           pnpm extension:build
 
-      - name: Fetch tags
-        run: git fetch --tags
-
-      - name: Debug - Check current tags
-        run: |
-          echo "=== 🏷️ TAG INFORMATION ==="
-          echo "📍 Current branch: $(git branch --show-current)"
-          echo "📍 Current commit: $(git rev-parse HEAD)"
-          echo ""
-          echo "🏷️ All local tags (after fetch):"
-          git tag -l --sort=-version:refname | head -10
-          echo ""
-          echo "🌐 All remote tags:"
-          git ls-remote --tags origin | grep -o 'refs/tags/.*' | sed 's/refs\/tags\///' | sort -V -r | head -10
-          echo ""
-          echo "🎯 Latest tag:"
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "No tags found")
-          echo "   $LATEST_TAG"
-          echo ""
-          echo "📊 Commits since latest tag:"
-          if [ "$LATEST_TAG" != "No tags found" ]; then
-            COMMIT_COUNT=$(git rev-list --count $LATEST_TAG..HEAD)
-            echo "   $COMMIT_COUNT commits since $LATEST_TAG"
-            echo ""
-            echo "📝 Recent commits since $LATEST_TAG:"
-            git log --oneline $LATEST_TAG..HEAD | head -5
-          else
-            echo "   No previous tags to compare"
-          fi
-          echo "=========================="
-
       - name: Run semantic-release
         run: pnpm dlx semantic-release
         env:
