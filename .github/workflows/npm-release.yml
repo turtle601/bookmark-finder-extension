@@ -82,7 +82,7 @@ jobs:
           echo "🚀 Releasing UI package..."
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           echo "=== Publishing ==="
-          pnpm -r changeset publish --filter bookmark-finder-extension-ui 
+          pnpm release
           echo "✅ UI package released"
 
       - name: Check for eslint-config package changes
