@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.13
+
+### Patch Changes
+
+- 🐛 **fifty-areas-prove**: asdf
+
 ## 1.0.12
 
 ### Patch Changes
