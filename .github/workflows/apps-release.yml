@@ -3,6 +3,8 @@ name: Extension Semantic Release
 on:
   push:
     branches: ['main', 'next']
+    paths:
+      - 'apps/**'
 
 permissions:
   contents: read # for checkout
