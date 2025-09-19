@@ -43,6 +43,9 @@ jobs:
         run: |
           pnpm extension:build
 
+      - name: Fetch tags
+        run: git fetch --tags
+
       - name: Run semantic-release
         run: pnpm dlx semantic-release
         env:
