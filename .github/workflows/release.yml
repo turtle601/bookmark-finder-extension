@@ -50,6 +50,10 @@ jobs:
 
       - name: Update file versions
         run: |
+          # Configure git
+          git config --global user.name turtle601
+          git config --global user.email turtle601@naver.com
+
           # Get the latest tag (which semantic-release just created)
           LATEST_TAG=$(git describe --tags --abbrev=0)
           VERSION=${LATEST_TAG#v}  # Remove 'v' prefix
@@ -58,3 +62,5 @@ jobs:
           git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json
           git commit -m "chore: update file versions to $VERSION" || echo "No changes to commit"
           git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
