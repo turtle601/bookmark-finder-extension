@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.10
+
+### Patch Changes
+
+- 🐛 **breezy-birds-begin**: asdf
+
 ## 1.0.9
 
 ### Patch Changes
