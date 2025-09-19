@@ -1,6 +1,6 @@
 {
   "name": "bookmark-finder-extension-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bookmark Finder UI Components",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
