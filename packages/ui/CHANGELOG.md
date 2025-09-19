@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.8
+
+### Patch Changes
+
+- 🐛 **afraid-planets-judge**: ci 테스팅
+
 ## 1.0.7
 
 ### Patch Changes
