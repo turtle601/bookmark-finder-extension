@@ -1,5 +1,15 @@
 # Changelog
 
+# [v3.0.3](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.2...v3.0.3) (2025-09-19)
+
+## 🚀 Deploying stuff
+- [`9986a1c`](https://github.com/turtle601/bookmark-finder-extension/commit/9986a1c)
+ release: extension file versions to 3.0.2
+
+## ♻️ Refactoring code
+- [`9f6a07a`](https://github.com/turtle601/bookmark-finder-extension/commit/9f6a07a)
+ refactor: 불필요한 콘솔 제거
+
 # [v3.0.2](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.1...v3.0.2) (2025-09-19)
 
 ## 🐛 Fixing a bug
