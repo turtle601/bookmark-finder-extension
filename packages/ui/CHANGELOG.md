@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.16
+
+### Patch Changes
+
+- 🐛 **purple-moments-repeat**: asdf
+
 ## 1.0.15
 
 ### Patch Changes
