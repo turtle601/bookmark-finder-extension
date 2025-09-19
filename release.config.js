@@ -193,7 +193,7 @@ const config = {
       '@semantic-release/exec',
       {
         prepareCmd:
-          'echo "Updating versions in multiple files to ${nextRelease.version}..." && node -e "const fs = require(\'fs\'); const version = \'${nextRelease.version}\'; const files = [\'apps/chrome-extension/package.json\', \'packages/ui/package.json\', \'apps/chrome-extension/public/manifest.json\']; files.forEach(file => { if (fs.existsSync(file)) { const content = fs.readFileSync(file, \'utf8\'); const updated = content.replace(/\\"version\\":\\s*\\"[^\\"]*\\"/g, `\\"version\\": \\"${version}\\"`); fs.writeFileSync(file, updated); console.log(`Updated ${file}`); } });" && git add apps/chrome-extension/package.json packages/ui/package.json apps/chrome-extension/public/manifest.json && echo "Files staged for commit"',
+          'echo "Updating versions in multiple files to ${nextRelease.version}..." && node scripts/update-versions.js "${nextRelease.version}" && git add apps/chrome-extension/package.json apps/chrome-extension/public/manifest.json && echo "Files staged for commit"',
       },
     ],
   ],
