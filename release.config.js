@@ -188,6 +188,29 @@ const config = {
         ],
       },
     ],
+    [
+      // 다른 파일들의 버전 업데이트를 위한 exec 플러그인
+      '@semantic-release/exec',
+      {
+        prepareCmd: `
+          echo "Updating versions in multiple files to \${nextRelease.version}..."
+          
+          # 예시: apps/extension/package.json 업데이트
+          if [ -f "apps/extension/package.json" ]; then
+            echo "Updating apps/extension/package.json"
+            sed -i 's/"version": "[^"]*"/"version": "\${nextRelease.version}"/g' apps/extension/package.json
+          fi
+          
+          # 예시: manifest.json 업데이트 (Chrome Extension)
+          if [ -f "apps/extension/manifest.json" ]; then
+            echo "Updating apps/extension/manifest.json"
+            sed -i 's/"version": "[^"]*"/"version": "\${nextRelease.version}"/g' apps/extension/manifest.json
+          fi
+          
+          echo "Version update complete!"
+        `,
+      },
+    ],
   ],
   extends: ['semantic-release-config-gitmoji'],
 };

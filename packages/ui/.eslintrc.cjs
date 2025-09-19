@@ -23,4 +23,12 @@ module.exports = {
     project: true,
     tsconfigRootDir: __dirname,
   },
+  overrides: [
+    {
+      files: ['*.mjs'],
+      parserOptions: {
+        sourceType: 'module',
+      },
+    },
+  ],
 };
