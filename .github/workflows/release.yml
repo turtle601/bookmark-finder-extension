@@ -1,4 +1,4 @@
-name: Semantic Release
+name: Extension Semantic Release
 
 on:
   push:
@@ -36,8 +36,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build UI package
-        run: pnpm ui:build
       - name: Build UI package
         run: pnpm ui:build
 

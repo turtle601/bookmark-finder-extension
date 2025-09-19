@@ -1,0 +1,112 @@
+name: NPM Changeset Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+      - 'tools/**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    name: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # semantic-release needs full history
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org' # 이 줄 추가
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Version packages
+        run: |
+          # Configure git
+          git config --global user.name turtle601
+          git config --global user.email turtle601@naver.com 
+
+          # Version packages
+          pnpm version-packages
+
+          git add .
+
+          # 변경사항이 있는 경우에만 커밋
+          if ! git diff --staged --quiet; then
+            git commit -m "📦 chore: npm version packages"
+            git push origin main
+            echo "✅ Changes committed and pushed"
+          else
+            echo "❌ No changes to commit"
+          fi
+
+      - name: Check for UI package changes
+        id: version-check
+        run: |
+          if git diff HEAD~1 HEAD --name-only | grep -q "packages/ui/package.json"; then
+            echo "ui_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "ui_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build UI package
+        run: pnpm ui:build
+
+      - name: Release UI package
+        if: steps.version-check.outputs.ui_changed == 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "🚀 Releasing UI package..."
+          pnpm --filter bookmark-finder-extension-ui publish
+          echo "✅ UI package released"
+
+      - name: Check for eslint-config package changes
+        id: version-check-eslint-config
+        run: |
+          if git diff HEAD~1 HEAD --name-only | grep -q "tools/eslint-config/package.json"; then
+            echo "eslint-config_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "eslint-config_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Release Eslint-config package
+        if: steps.version-check-eslint-config.outputs.ui_changed == 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "🚀 Releasing Eslint-config package..." 
+          pnpm --filter bookmark-finder-extension-eslint-config publish
+          echo "✅ Eslint-config package released"
+
+      - name: Check for prettier-config package changes
+        id: version-check-prettier-config
+        run: |
+          if git diff HEAD~1 HEAD --name-only | grep -q "tools/prettier-config/package.json"; then
+            echo "prettier-config_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "prettier-config_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Release Prettier-config package
+        if: steps.version-check-prettier-config.outputs.prettier-config_changed == 'true'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "🚀 Releasing Prettier-config package..."
+          pnpm --filter bookmark-finder-extension-prettier-config publish
+          echo "✅ Prettier-config package released"
