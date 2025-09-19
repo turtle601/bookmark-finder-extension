@@ -38,6 +38,8 @@ jobs:
 
       - name: Build UI package
         run: pnpm ui:build
+      - name: Build UI package
+        run: pnpm ui:build
 
       - name: Build extension
         run: |
