@@ -1,5 +1,27 @@
 # Changelog
 
+# [v3.0.4](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.3...v3.0.4) (2025-09-19)
+
+## 🚀 Deploying stuff
+- [`29383c7`](https://github.com/turtle601/bookmark-finder-extension/commit/29383c7)
+ release: extension file versions to 3.0.3
+
+## ♻️ Refactoring code
+- [`22d4943`](https://github.com/turtle601/bookmark-finder-extension/commit/22d4943)
+ refactor: packages/ui .gitignore 파일 수정
+
+## 🔧 Changing configuration files
+- [`ee49ee9`](https://github.com/turtle601/bookmark-finder-extension/commit/ee49ee9)
+ ci: changeset을 활용한 npm-release github action 파일 추가
+
+## 📦 Updating compiled files or packages
+- [`0748c4b`](https://github.com/turtle601/bookmark-finder-extension/commit/0748c4b)
+ chore: packages, tools 라이브러리 네이밍 변경으로 인한 코드 수정
+- [`8ce9eda`](https://github.com/turtle601/bookmark-finder-extension/commit/8ce9eda)
+ chore: pnpm changeset 설정
+- [`9ba678a`](https://github.com/turtle601/bookmark-finder-extension/commit/9ba678a)
+ chore: .changeset staging 파일 추가
+
 # [v3.0.3](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.2...v3.0.3) (2025-09-19)
 
 ## 🐛 Fixing a bug
