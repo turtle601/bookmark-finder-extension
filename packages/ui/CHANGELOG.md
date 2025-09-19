@@ -1,5 +1,11 @@
 # bookmark-finder-extension-ui
 
+## 1.0.5
+
+### Patch Changes
+
+- 🐛 **free-paths-thank**: ci 테스팅
+
 ## 1.0.4
 
 ### Patch Changes
