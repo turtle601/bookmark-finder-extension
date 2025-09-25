@@ -1,6 +1,6 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
 
-import { linearizedTreeOptimizer } from '@/v3/shared/utils/optimizer/linearizedTreeOptimizer';
+import { bookmarkTreeOptimizer } from '@/v3/entities/bookmark/model/bookmarkTreeOptimizer';
 
 interface ISelectBookmarkStore {
   selectedBookmarkIds: Set<string>;
@@ -23,7 +23,7 @@ export const useSelectBookmarkController = () => {
       const subTreeBookmarkIds = [
         ...new Set([
           bookmark.id,
-          ...linearizedTreeOptimizer
+          ...bookmarkTreeOptimizer
             .getLinearizedSubTree(bookmark.id)
             .map((child) => child.id),
         ]),
@@ -48,7 +48,7 @@ export const useSelectBookmarkController = () => {
       const deselectedBookmarkIds = [
         ...new Set([
           bookmark.id,
-          ...linearizedTreeOptimizer
+          ...bookmarkTreeOptimizer
             .getLinearizedSubTree(bookmark.id)
             .map((child) => child.id),
         ]),
@@ -64,7 +64,7 @@ export const useSelectBookmarkController = () => {
 
       const deselectedBookmarkIds = [
         bookmark.id,
-        ...linearizedTreeOptimizer.getAncestors(bookmark.id),
+        ...bookmarkTreeOptimizer.getAncestors(bookmark.id),
       ];
 
       deselectedBookmarkIds.forEach((bookmarkId) => {
@@ -78,7 +78,7 @@ export const useSelectBookmarkController = () => {
   const selectAllBookmark = () => {
     setSelectedBookmarkIds(
       new Set([
-        ...linearizedTreeOptimizer.getLinearizedTree().map((child) => child.id),
+        ...bookmarkTreeOptimizer.getLinearizedTree().map((child) => child.id),
       ]),
     );
   };

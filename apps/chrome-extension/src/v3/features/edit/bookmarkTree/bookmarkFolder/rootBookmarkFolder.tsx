@@ -7,9 +7,6 @@ import { Accordion, DnD, Flex, Spacer } from 'bookmark-finder-extension-ui';
 
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 import BookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolder';
-import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
-
-import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
 
 import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/mapping/bookmark';
 
@@ -30,6 +27,9 @@ import {
   getBookmarkFolderTextStyle,
   getBookmarkFolderWrapperStyle,
 } from '@/v3/features/edit/bookmarkTree/bookmarkFolder/folder.style';
+
+import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkDropArea';
+import BookmarkEditButtonUI from '@/v3/entities/bookmark/ui/bookmarkEditButtonUI';
 
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
@@ -89,7 +89,7 @@ function RootBookmarkFolder({ folder }: { folder: IFolder }) {
                   <Spacer direction="horizontal" space={4} />
                   <p css={css(getBookmarkFolderTextStyle())}>{folder.title}</p>
                 </Accordion.Button>
-                <BookmarkEditButton options={editButtonOptions} />
+                <BookmarkEditButtonUI options={editButtonOptions} />
               </Flex>
             );
           }}
@@ -99,7 +99,7 @@ function RootBookmarkFolder({ folder }: { folder: IFolder }) {
             {folder.children?.map((child, index) => {
               return (
                 <Fragment key={child.id}>
-                  <BookmarkTreeDropArea
+                  <BookmarkDropArea
                     folder={folder}
                     startIdx={index}
                     isFolderDragEnter={isFolderDragEnter}
@@ -111,7 +111,7 @@ function RootBookmarkFolder({ folder }: { folder: IFolder }) {
                 </Fragment>
               );
             })}
-            <BookmarkTreeDropArea
+            <BookmarkDropArea
               folder={folder}
               startIdx={folder.children?.length ?? 0}
               isFolderDragEnter={isFolderDragEnter}

@@ -15,7 +15,7 @@ import {
   updateBookmarkTitle,
 } from '@/v3/entities/bookmark/request/api';
 
-import { linearizedTreeOptimizer } from '@/v3/shared/utils/optimizer/linearizedTreeOptimizer';
+import { bookmarkTreeOptimizer } from '@/v3/entities/bookmark/model/bookmarkTreeOptimizer';
 import {
   isRootBookmark,
   IRootBookmark,
@@ -44,7 +44,7 @@ export const useGetBookmarkTreeQuery = () => {
     // 크롬 루트 북마크는 항상 존재하고 폴더 타입이다
     if (data?.[0] && isRootBookmark(data[0])) {
       setRootBookmark(data[0]);
-      linearizedTreeOptimizer.reset(data[0]);
+      bookmarkTreeOptimizer.reset(data[0]);
     }
   }, [data]);
 

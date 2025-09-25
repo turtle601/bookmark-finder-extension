@@ -5,17 +5,16 @@ import { Accordion, DnD, Flex, Spacer } from 'bookmark-finder-extension-ui';
 
 import BookmarkFolderField from '@/v3/features/edit/bookmarkTree/bookmarkFolder/bookmarkFolderField';
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
-import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
+import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkDropArea';
 
 import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/mapping/bookmark';
 
-import { useEditFolderTitleStore } from '@/v3/entities/bookmark/edit/hooks/useEditFolderTitleStore';
 import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
 import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 import { useFolderDragEnter } from '@/v3/entities/bookmark/dragEnter/useFolderDragEnter';
 import { useSelectFolder } from '@/v3/entities/bookmark/select/hooks/useSelectFolder';
+import { useMakeFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditFolder';
 
-import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 import {
   getBookmarkFolderAccordionButtonStyle,
   getBookmarkFolderDepthStyle,
@@ -23,17 +22,19 @@ import {
   getBookmarkFolderTextStyle,
   getBookmarkFolderWrapperStyle,
 } from '@/v3/features/edit/bookmarkTree/bookmarkFolder/folder.style';
-import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
-import { useMakeFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditFolder';
+import BookmarkEditButtonUI from '@/v3/entities/bookmark/ui/bookmarkEditButtonUI';
+
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 function BookmarkFolder({ folder }: { folder: IFolder }) {
-  const { editFolder } = useEditFolderTitleStore();
-
   const { dropTab } = useDropTab(folder);
   const { dropBookmark } = useDropBookmark(folder);
   const { isSelected, select, deselect, toggle } = useSelectFolder(folder);
   const { isFolderDragEnter, dragEnterFolder } = useFolderDragEnter(folder);
-  const { editButtonOptions } = useMakeFolderEditButtonOptions(folder);
+  const { editButtonOptions, editFolder } =
+    useMakeFolderEditButtonOptions(folder);
+
+  const isEditFolder = editFolder?.id === folder.id;
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -74,7 +75,7 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
     select();
   };
 
-  if (editFolder?.id === folder.id) {
+  if (isEditFolder) {
     return <BookmarkFolderField folder={folder} />;
   }
 
@@ -120,7 +121,7 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
                         {folder.title}
                       </p>
                     </Accordion.Button>
-                    <BookmarkEditButton options={editButtonOptions} />
+                    <BookmarkEditButtonUI options={editButtonOptions} />
                   </Flex>
                 );
               }}
@@ -133,7 +134,7 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
           {folder.children?.map((child, index) => {
             return (
               <React.Fragment key={child.id}>
-                <BookmarkTreeDropArea
+                <BookmarkDropArea
                   folder={folder}
                   startIdx={index}
                   isFolderDragEnter={isFolderDragEnter}
@@ -145,7 +146,7 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
               </React.Fragment>
             );
           })}
-          <BookmarkTreeDropArea
+          <BookmarkDropArea
             folder={folder}
             startIdx={folder.children?.length ?? 0}
             isFolderDragEnter={isFolderDragEnter}

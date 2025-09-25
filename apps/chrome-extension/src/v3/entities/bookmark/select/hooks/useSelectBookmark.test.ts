@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react'; // React v18 이후
 
-import { linearizedTreeOptimizer } from '@/v3/shared/utils/optimizer/linearizedTreeOptimizer';
+import { bookmarkTreeOptimizer } from '@/v3/entities/bookmark/model/bookmarkTreeOptimizer';
 
 import {
   useSelectBookmarkController,
@@ -103,7 +103,7 @@ const createRealisticBookmarkTree = (): chrome.bookmarks.BookmarkTreeNode => {
 describe('useBookmarkSelector hook 동작 검증', () => {
   beforeEach(() => {
     useSelectBookmarkStore.setState({ selectedBookmarkIds: new Set() });
-    linearizedTreeOptimizer.reset(createRealisticBookmarkTree());
+    bookmarkTreeOptimizer.reset(createRealisticBookmarkTree());
   });
 
   it('단일 선택: 개발 폴더(id: 6) 선택 시 하위 북마크(id: 7, 8, 9)들도 선택된다.', () => {

@@ -5,7 +5,7 @@ interface IBookmarkDropAreaProps {
   isDragEnter: boolean;
 }
 
-function BookmarkDropArea({ isDragEnter }: IBookmarkDropAreaProps) {
+function BookmarkDropAreaUI({ isDragEnter }: IBookmarkDropAreaProps) {
   if (isDragEnter) {
     return (
       <div
@@ -32,4 +32,4 @@ function BookmarkDropArea({ isDragEnter }: IBookmarkDropAreaProps) {
   );
 }
 
-export default BookmarkDropArea;
+export default BookmarkDropAreaUI;

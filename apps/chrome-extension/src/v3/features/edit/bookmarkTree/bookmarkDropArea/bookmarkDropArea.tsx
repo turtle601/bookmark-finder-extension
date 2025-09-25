@@ -1,23 +1,23 @@
 import { DnD } from 'bookmark-finder-extension-ui';
 
-import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/ui/bookmarkDropArea';
-
 import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
 import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 
+import BookmarkDropAreaUI from '@/v3/entities/bookmark/ui/bookmarkDropAreaUI';
+
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
-interface IBookmarkTreeDropAreaProps {
+interface IBookmarkDropAreaProps {
   folder: IFolder;
   startIdx: number;
   isFolderDragEnter: boolean;
 }
 
-function BookmarkTreeDropArea({
+function BookmarkDropArea({
   folder,
   startIdx,
   isFolderDragEnter,
-}: IBookmarkTreeDropAreaProps) {
+}: IBookmarkDropAreaProps) {
   const { dropTab } = useDropTab(folder);
   const { dropBookmark } = useDropBookmark(folder);
 
@@ -43,7 +43,7 @@ function BookmarkTreeDropArea({
     >
       {({ isDragEnter }) => {
         return (
-          <BookmarkDropArea
+          <BookmarkDropAreaUI
             isDragEnter={isDragEnter || (isFolderDragEnter && startIdx === 0)}
           />
         );
@@ -52,4 +52,4 @@ function BookmarkTreeDropArea({
   );
 }
 
-export default BookmarkTreeDropArea;
+export default BookmarkDropArea;

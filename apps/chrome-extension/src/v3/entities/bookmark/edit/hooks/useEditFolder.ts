@@ -41,6 +41,7 @@ export const useMakeRootFolderEditButtonOptions = (folder: IFolder) => {
 };
 
 export const useMakeFolderEditButtonOptions = (folder: IFolder) => {
+  const { editFolder, setEditFolderTitle } = useEditFolderTitleStore();
   const { create } = useCreateSubFolder(folder);
 
   const { mutate: updateBookmarkTitle } = useUpdateFolderTitleMutation();
@@ -59,6 +60,8 @@ export const useMakeFolderEditButtonOptions = (folder: IFolder) => {
   };
 
   return {
+    editFolder,
+    setEditFolderTitle,
     editButtonOptions: [
       {
         label: 'Rename',
