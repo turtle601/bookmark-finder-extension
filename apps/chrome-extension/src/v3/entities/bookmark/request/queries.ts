@@ -131,11 +131,11 @@ export const useQueryBookmarkMutation = ({
 }: {
   onSuccess: (
     data: chrome.bookmarks.BookmarkTreeNode[],
-    variable: { ids: string[]; startIdx: number },
+    variable: { ids: string[]; startIdx?: number },
   ) => void;
 }) => {
   return useMutation({
-    mutationFn: (payload: { ids: string[]; startIdx: number }) =>
+    mutationFn: (payload: { ids: string[]; startIdx?: number }) =>
       queryBookmark(payload),
     onSuccess,
   });

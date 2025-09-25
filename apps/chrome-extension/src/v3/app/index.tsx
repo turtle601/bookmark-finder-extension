@@ -10,7 +10,7 @@ import {
   Accordion,
 } from 'bookmark-finder-extension-ui';
 
-import { EditBookmark } from '@/v3/features/edit';
+import { EditBookmark, EditPointerContent } from '@/v3/features/edit';
 import { ActiveTabs } from '@/v3/features/activeTabs';
 import { SearchBookmark } from '@/v3/features/search/searchBookmark';
 
@@ -71,7 +71,7 @@ function App() {
                 <Accordion.Provider>
                   <DnD.Provider>
                     <DnD.Boundary width={'100%'} height={'100%'}>
-                      <DnD.PointerContent />
+                      <EditPointerContent />
                       <SplitPane
                         width={'100%'}
                         height={'calc(100vh - 174px)'}
