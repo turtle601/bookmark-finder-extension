@@ -2,15 +2,13 @@ import { DnD } from 'bookmark-finder-extension-ui';
 
 import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/ui/bookmarkDropArea';
 
-import {
-  useAddBookmarkMutation,
-  useMoveBookmarkMutation,
-} from '@/v3/entities/bookmark/tree/request/queries';
+import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
+import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
+import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
 
 interface IBookmarkTreeDropAreaProps {
-  folder: IBookmarkTreeStorage;
+  folder: IFolder;
   startIdx: number;
   isFolderDragEnter: boolean;
 }
@@ -20,8 +18,8 @@ function BookmarkTreeDropArea({
   startIdx,
   isFolderDragEnter,
 }: IBookmarkTreeDropAreaProps) {
-  const { moveBookmark } = useMoveBookmarkMutation(folder.id);
-  const { mutate: addBookmark } = useAddBookmarkMutation();
+  const { dropTab } = useDropTab(folder);
+  const { dropBookmark } = useDropBookmark(folder);
 
   return (
     <DnD.Droppable
@@ -30,21 +28,10 @@ function BookmarkTreeDropArea({
 
         switch (draggedType) {
           case 'tab':
-            const draggedTab = JSON.parse(e.dataTransfer.getData('tab'));
-
-            addBookmark({
-              title: draggedTab.title,
-              url: draggedTab.url,
-              parentId: folder.id,
-              index: startIdx,
-            });
-
+            dropTab(JSON.parse(e.dataTransfer.getData('tab')), startIdx);
             break;
           case 'bookmark':
-            moveBookmark({
-              parentId: folder.id,
-              startIdx,
-            });
+            dropBookmark(startIdx);
             break;
           default:
             break;

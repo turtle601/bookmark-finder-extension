@@ -1,29 +1,16 @@
 import { css } from '@emotion/react';
-import { useEffect } from 'react';
-import {
-  useGetBookmarkTreeQuery,
-  useResetBookmarkTreeMutation,
-} from '@/v3/entities/bookmark/tree/request/queries';
 
-import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/rootBookmarkFolder';
+import { useGetBookmarkTreeQuery } from '@/v3/entities/bookmark/tree/request/queries';
 
+import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/rootBookmarkFolder';
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
+import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/tree/mapping/bookmark';
 
 function BookmarkTree() {
-  const { data: bookmarks } = useGetBookmarkTreeQuery();
-  const { mutate: resetBookmarkTree } = useResetBookmarkTreeMutation();
+  const { rootBookmark } = useGetBookmarkTreeQuery();
 
-  useEffect(() => {
-    resetBookmarkTree();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const rootBookmarkChildren = bookmarks?.[0]
-    ?.children as IBookmarkTreeStorage[]; // 크롬 북마크 root에는 무조건 자식 폴더가 존재함
-
-  if (!rootBookmarkChildren) return null;
+  if (!rootBookmark) return null;
 
   return (
     <div
@@ -32,13 +19,12 @@ function BookmarkTree() {
         height: '100%',
       })}
     >
-      {rootBookmarkChildren.map((bookmark) => (
+      {rootBookmark.children.map((bookmark) => (
         <div key={bookmark.id}>
-          {bookmark.children ? (
-            <RootBookmarkFolder folder={bookmark} />
-          ) : (
-            <BookmarkLink link={bookmark} />
-          )}
+          {mappingComponentByBookmarkType(bookmark, {
+            folder: RootBookmarkFolder,
+            link: BookmarkLink,
+          })}
         </div>
       ))}
     </div>

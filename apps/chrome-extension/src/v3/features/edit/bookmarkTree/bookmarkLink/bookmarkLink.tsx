@@ -1,36 +1,31 @@
 import React from 'react';
 
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 
-import { DnD, Image } from 'bookmark-finder-extension-ui';
 import { color } from '@/v3/shared/styles';
 
-import {
-  useDeselectAllBookmarksMutation,
-  useSelectBookmarkMutation,
-  useToggleSelectedBookmarkMutation,
-} from '@/v3/entities/bookmark/tree/request/queries';
+import { Center, DnD, Flex, Image } from 'bookmark-finder-extension-ui';
 
-import BookmarkLinkEditButton from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLinkEditButton';
+import { ILink } from '@/v3/entities/bookmark/tree/types/bookmark';
+import { useSelectLink } from '@/v3/entities/bookmark/select/hooks/useSelectLink';
+import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
+import { useMakeLinkEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditLink';
 
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
+function BookmarkLink({ link }: { link: ILink }) {
+  const { isSelected, select, toggle, deselect } = useSelectLink(link);
 
-function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
-  const { mutate: toggleBookmarks } = useToggleSelectedBookmarkMutation(
-    link.id,
-  );
-
-  const { mutate: selectBookmarks } = useSelectBookmarkMutation(link.id);
-  const { mutate: deselectAllBookmarks } = useDeselectAllBookmarksMutation();
+  const { editButtonOptions } = useMakeLinkEditButtonOptions(link);
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
+    // shift + 좌 클릭 시 토글
     if (e.shiftKey && e.button === 0) {
       e.preventDefault();
       e.stopPropagation();
 
-      toggleBookmarks({ nodeId: link.id });
+      toggle();
+      // 좌 클릭 시 새 탭 생성
     } else {
       chrome.tabs.create({ url: link.url });
     }
@@ -44,15 +39,14 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
       onClick={handleSelectClick}
     >
       <DnD.MultiDraggable
-        isSelected={link.isSelected ?? false}
+        isSelected={isSelected}
         dragAction={(e) => {
           e.dataTransfer.setData('dragType', 'bookmark');
-
-          selectBookmarks({ id: link.id });
+          select();
         }}
         dragEndAction={() => {
           setTimeout(() => {
-            deselectAllBookmarks();
+            deselect('all');
           }, 100);
         }}
         etcStyles={{
@@ -61,75 +55,30 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
       >
         {({ isDrag }) => {
           return (
-            <div
-              css={css({
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '8px 12px',
-                background: isDrag ? '#3b82f6' : 'white',
-                border: `1px solid ${link.isSelected ? '#3b82f6' : color.slate['200']}`,
-                borderRadius: '8px',
-                cursor: 'pointer',
-                color: isDrag ? 'white' : color.slate['600'],
-                transition: 'all 0.2s ease',
-                position: 'relative',
-                boxShadow: 'none',
-                ...(!isDrag && {
-                  '&:hover': {
-                    background: color.slate['50'],
-                    color: color.slate['600'],
-                    '& [data-bookmark-edit-button]': {
-                      opacity: 1,
-                    },
-                  },
-                }),
+            <Flex
+              justify="space-between"
+              align="center"
+              gap="10px"
+              etcStyles={getBookmarkLinkWrapperStyle({
+                isDrag,
+                isSelected,
               })}
             >
-              <div
-                css={css({
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '3px',
-                  fontSize: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                })}
-              >
+              <Center etcStyles={getBookmarkLinkIconWrapperStyle()}>
                 <Image
-                  src={link.faviconUrl}
+                  css={css(getBookmarkLinkImageStyle())}
+                  src={`http://www.google.com/s2/favicons?domain=${link.url}`}
                   alt={`${link.title} 아이콘`}
                   fallbackComponent={
                     <span aria-label={`${link.title} 아이콘`} role="img">
                       🎮
                     </span>
                   }
-                  css={css({
-                    width: '16px',
-                    height: '16px',
-                    objectFit: 'contain',
-                    verticalAlign: 'middle',
-                  })}
                 />
-              </div>
-              <p
-                css={css({
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  flex: 1,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                })}
-              >
-                {link.title}
-              </p>
-              <BookmarkLinkEditButton bookmark={link} />
-            </div>
+              </Center>
+              <p css={css(getBookmarkLinkTitleStyle())}>{link.title}</p>
+              <BookmarkEditButton options={editButtonOptions} />
+            </Flex>
           );
         }}
       </DnD.MultiDraggable>
@@ -138,3 +87,63 @@ function BookmarkLink({ link }: { link: IBookmarkTreeStorage }) {
 }
 
 export default BookmarkLink;
+
+function getBookmarkLinkWrapperStyle({
+  isDrag,
+  isSelected,
+}: {
+  isDrag: boolean;
+  isSelected: boolean;
+}): CSSObject {
+  return {
+    width: '100%',
+    padding: '8px 12px',
+    background: isDrag ? '#3b82f6' : 'white',
+    border: `1px solid ${isSelected ? '#3b82f6' : color.slate['200']}`,
+    borderRadius: '8px',
+    cursor: 'pointer',
+    color: isDrag ? 'white' : color.slate['600'],
+    transition: 'all 0.2s ease',
+    position: 'relative',
+    boxShadow: 'none',
+    ...(!isDrag && {
+      '&:hover': {
+        background: color.slate['50'],
+        color: color.slate['600'],
+        '& [data-bookmark-edit-button]': {
+          opacity: 1,
+        },
+      },
+    }),
+  };
+}
+
+function getBookmarkLinkIconWrapperStyle() {
+  return {
+    width: '16px',
+    height: '16px',
+    borderRadius: '3px',
+    fontSize: '10px',
+    flexShrink: 0,
+  };
+}
+
+function getBookmarkLinkImageStyle(): CSSObject {
+  return {
+    width: '16px',
+    height: '16px',
+    objectFit: 'contain',
+    verticalAlign: 'middle',
+  };
+}
+
+function getBookmarkLinkTitleStyle(): CSSObject {
+  return {
+    fontSize: '13px',
+    fontWeight: '500',
+    flex: 1,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  };
+}

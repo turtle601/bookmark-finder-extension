@@ -1,29 +1,20 @@
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 
 import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
-import { useDeleteBookmarksMutation } from '@/v3/entities/bookmark/tree/request/queries';
+import { useDeleteSelectedBookmarks } from '@/v3/entities/bookmark/edit/hooks/useDeleteSelectedBookmarks';
 
 function DeleteSelectedBookmarks() {
-  const { deleteBookmark, isDisabled } = useDeleteBookmarksMutation();
+  const { deleteSelectedBookmarks, isDisabled } = useDeleteSelectedBookmarks();
 
   return (
     <button
       disabled={isDisabled}
       css={css({
         ...getActionButtonStyle(),
-        background: '#fce8e6',
-        borderColor: '#ea4335',
-        color: '#d33b2c',
-        '&:hover': {
-          background: '#f9d4d2',
-        },
-        '&:disabled': {
-          opacity: 0.5,
-          pointerEvents: 'none',
-        },
+        ...getDeleteButtonStyle(),
       })}
       onClick={() => {
-        deleteBookmark();
+        deleteSelectedBookmarks();
       }}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -35,3 +26,18 @@ function DeleteSelectedBookmarks() {
 }
 
 export default DeleteSelectedBookmarks;
+
+function getDeleteButtonStyle(): CSSObject {
+  return {
+    background: '#fce8e6',
+    borderColor: '#ea4335',
+    color: '#d33b2c',
+    '&:hover': {
+      background: '#f9d4d2',
+    },
+    '&:disabled': {
+      opacity: 0.5,
+      pointerEvents: 'none',
+    },
+  };
+}

@@ -1,29 +1,4 @@
-import { useAccordionActionContext } from 'bookmark-finder-extension-ui';
-
-import {
-  addBookmark,
-  createBookmarkFolder,
-  deleteBookmark,
-  deselectAllBookmarks,
-  getBookmarkTree,
-  getTopLevelSelectedNodes,
-  moveBookmark,
-  resetBookmarkTree,
-  selectAllBookmarks,
-  selectBookmark,
-  toggleSelectedBookmark,
-  updateBookmarkTitle,
-} from '@/v3/entities/bookmark/tree/request/api';
-
-import {
-  getRootBookmarks,
-  getSelectedBookmarkLinks,
-  getSelectedBookmarks,
-} from '@/v3/entities/bookmark/tree/request/select';
-
-import { useEditBookmarkStore } from '@/v3/features/edit/store/useEditBookmarkStore';
-
-import type { IBookmarkTreeStorage } from '@/v3/background/bookmark/storage';
+import { useEffect, useState } from 'react';
 
 import {
   queryOptions as tsqQueryOptions,
@@ -31,6 +6,20 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import {
+  addBookmark,
+  createBookmarkFolder,
+  deleteBookmark,
+  getBookmarkTree,
+  moveBookmark,
+  updateBookmarkTitle,
+} from '@/v3/entities/bookmark/tree/request/api';
+
+import { linearizedTreeOptimizer } from '@/v3/shared/utils/optimizer/linearizedTreeOptimizer';
+import {
+  isRootBookmark,
+  IRootBookmark,
+} from '@/v3/entities/bookmark/tree/types/bookmark';
 
 export const keys = {
   bookmarkTree: () => ['getBookmarkTree'],
@@ -40,7 +29,7 @@ export const keys = {
 export const bookmarkSearchService = {
   queryKey: () => keys.bookmarkTree(),
   queryOptions: () => {
-    return tsqQueryOptions<IBookmarkTreeStorage[]>({
+    return tsqQueryOptions<chrome.bookmarks.BookmarkTreeNode[]>({
       queryKey: bookmarkSearchService.queryKey(),
       queryFn: () => getBookmarkTree(),
     });
@@ -48,131 +37,19 @@ export const bookmarkSearchService = {
 } as const;
 
 export const useGetBookmarkTreeQuery = () => {
-  return useQuery(bookmarkSearchService.queryOptions());
-};
+  const { data } = useQuery(bookmarkSearchService.queryOptions());
+  const [rootBookmark, setRootBookmark] = useState<IRootBookmark>();
 
-export const useSelectedBookmarkQuery = () => {
-  return useQuery({
-    ...bookmarkSearchService.queryOptions(),
-    select: getSelectedBookmarks,
-  });
-};
+  useEffect(() => {
+    // 크롬 루트 북마크는 항상 존재하고 폴더 타입이다
+    if (data?.[0] && isRootBookmark(data[0])) {
+      setRootBookmark(data[0]);
+      linearizedTreeOptimizer.reset(data[0]);
+    }
+  }, [data]);
 
-export const useSelectedBookmarkLinkQuery = () => {
-  return useQuery({
-    ...bookmarkSearchService.queryOptions(),
-    select: getSelectedBookmarkLinks,
-  });
-};
-
-export const useRootBookmarksQuery = () => {
-  return useQuery({
-    ...bookmarkSearchService.queryOptions(),
-    select: getRootBookmarks,
-  });
-};
-
-export const useMoveBookmarkMutation = (id: string) => {
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationKey: ['moveBookmark', id],
-    mutationFn: moveBookmark,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-
-  const fn = async ({
-    parentId,
-    startIdx,
-  }: {
-    parentId: string;
-    startIdx: number;
-  }) => {
-    const selectedBookmarks = await getTopLevelSelectedNodes();
-
-    selectedBookmarks.data?.forEach((id, indexing) => {
-      mutate({ id, parentId, index: startIdx + indexing });
-    });
-  };
-
-  return { moveBookmark: fn };
-};
-
-export const useToggleSelectedBookmarkMutation = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ['toggleSelectedBookmark', id],
-    mutationFn: toggleSelectedBookmark,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-};
-
-export const useSelectBookmarkMutation = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ['selectBookmark', id],
-    mutationFn: selectBookmark,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-};
-
-export const useDeselectAllBookmarksMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ['deselectAllBookmarks'],
-    mutationFn: deselectAllBookmarks,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-};
-
-export const useSelectAllBookmarksMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ['selectAllBookmarks'],
-    mutationFn: () => selectAllBookmarks(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-};
-
-export const useDeleteBookmarkMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: deleteBookmark,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-    },
-  });
-};
-
-export const useDeleteBookmarksMutation = () => {
-  const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
-
-  const { data: selectedBookmarks } = useSelectedBookmarkQuery();
-
-  const isDisabled = selectedBookmarks?.length === 0;
-
-  const fn = async () => {
-    selectedBookmarks?.forEach((bookmark) => {
-      deleteBookmark({ id: bookmark.id });
-    });
-  };
-
-  return { deleteBookmark: fn, isDisabled };
+  // 크롬 북마크의 첫번째 배열의 값은 항상 존재
+  return { rootBookmark };
 };
 
 export const useAddBookmarkMutation = () => {
@@ -197,47 +74,75 @@ export const useAddBookmarkMutation = () => {
   });
 };
 
-export const useResetBookmarkTreeMutation = () => {
+export const useMoveBookmarkMutation = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['resetBookmarkTree'],
-    mutationFn: resetBookmarkTree,
+    mutationFn: moveBookmark,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
 };
 
-export const useUpdateBookmarkTitleMutation = () => {
+export const useDeleteBookmarkMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: { id: string }) => deleteBookmark(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+    },
+  });
+};
+
+export const useUpdateFolderTitleMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ['updateBookmarkTitle'],
-    mutationFn: updateBookmarkTitle,
+    mutationFn: (payload: { id: string; title: string }) =>
+      updateBookmarkTitle(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
 };
 
-export const useCreateBookmarkFolderMutation = () => {
+export const useCreateSubFolderMutation = (
+  onMutateSuccess: (bookmark: chrome.bookmarks.BookmarkTreeNode) => void,
+) => {
   const queryClient = useQueryClient();
-
-  const { setEditBookmark } = useEditBookmarkStore();
-  const { openAccordion } = useAccordionActionContext();
-
   return useMutation({
     mutationKey: ['createBookmarkFolder'],
-    mutationFn: createBookmarkFolder,
+    mutationFn: (payload: { parentId: string }) =>
+      createBookmarkFolder(payload),
     onSuccess: (data) => {
-      setEditBookmark(data.bookmark);
-
-      if (data.bookmark.parentId) {
-        openAccordion(Number(data.bookmark.parentId));
-      }
+      onMutateSuccess(data.bookmark);
 
       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
     },
   });
 };
+
+// export const useCreateBookmarkFolderMutation = () => {
+//   const queryClient = useQueryClient();
+
+//   const { setEditBookmark } = useEditBookmarkStore();
+//   const { openAccordion } = useAccordionActionContext();
+
+//   return useMutation({
+//     mutationKey: ['createBookmarkFolder'],
+//     mutationFn: (payload: { parentId: string }) =>
+//       createBookmarkFolder(payload),
+//     onSuccess: (data) => {
+//       setEditBookmark(data.bookmark);
+
+//       if (data.bookmark.parentId) {
+//         openAccordion(Number(data.bookmark.parentId));
+//       }
+
+//       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
+//     },
+//   });
+// };
