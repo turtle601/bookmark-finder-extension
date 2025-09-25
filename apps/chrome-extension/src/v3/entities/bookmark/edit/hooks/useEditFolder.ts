@@ -5,7 +5,7 @@ import {
 } from '@/v3/entities/bookmark/request/queries';
 
 import { useAccordionActionContext } from 'bookmark-finder-extension-ui';
-import { useEditFolderTitleStore } from '@/v3/entities/bookmark/edit/hooks/useEditFolderTitleStore';
+import { useEditFolderTitleStore } from '@/v3/entities/bookmark/model/store/useEditFolderTitleStore';
 
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 

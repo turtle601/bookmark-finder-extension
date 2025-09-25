@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 import { useUpdateFolderTitleMutation } from '@/v3/entities/bookmark/request/queries';
-import { useEditFolderTitleStore } from '@/v3/entities/bookmark/edit/hooks/useEditFolderTitleStore';
+import { useEditFolderTitleStore } from '@/v3/entities/bookmark/model/store/useEditFolderTitleStore';
 
 export const useEditFolderField = ({ folder }: { folder: IFolder }) => {
   const [folderName, setFolderName] = useState(folder.title);

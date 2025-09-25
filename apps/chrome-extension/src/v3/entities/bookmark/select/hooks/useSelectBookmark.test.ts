@@ -2,10 +2,8 @@ import { renderHook, act } from '@testing-library/react'; // React v18 이후
 
 import { bookmarkTreeOptimizer } from '@/v3/entities/bookmark/model/bookmarkTreeOptimizer';
 
-import {
-  useSelectBookmarkController,
-  useSelectBookmarkStore,
-} from './useSelectBookmarkController';
+import { useSelectBookmarkController } from './useSelectBookmarkController';
+import { useSelectBookmarkStore } from '@/v3/entities/bookmark/model/store/useSelectBookmarkStore';
 
 const createRealisticBookmarkTree = (): chrome.bookmarks.BookmarkTreeNode => {
   return {

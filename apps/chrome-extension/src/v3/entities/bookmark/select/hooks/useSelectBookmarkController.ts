@@ -1,18 +1,5 @@
-import { create, StoreApi, UseBoundStore } from 'zustand';
-
 import { bookmarkTreeOptimizer } from '@/v3/entities/bookmark/model/bookmarkTreeOptimizer';
-
-interface ISelectBookmarkStore {
-  selectedBookmarkIds: Set<string>;
-  setSelectedBookmarkIds: (selectedBookmarkIds: Set<string>) => void;
-}
-
-export const useSelectBookmarkStore: UseBoundStore<
-  StoreApi<ISelectBookmarkStore>
-> = create<ISelectBookmarkStore>((set) => ({
-  selectedBookmarkIds: new Set(),
-  setSelectedBookmarkIds: (selectedBookmarkIds) => set({ selectedBookmarkIds }),
-}));
+import { useSelectBookmarkStore } from '@/v3/entities/bookmark/model/store/useSelectBookmarkStore';
 
 export const useSelectBookmarkController = () => {
   const { selectedBookmarkIds, setSelectedBookmarkIds } =
