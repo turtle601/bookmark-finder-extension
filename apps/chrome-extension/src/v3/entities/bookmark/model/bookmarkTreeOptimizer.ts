@@ -1,8 +1,3 @@
-export interface ITree {
-  id: string;
-  children?: ITree[];
-}
-
 interface ILinearizedTree {
   id: string;
   start: number;
@@ -10,15 +5,15 @@ interface ILinearizedTree {
   parentIds: Set<string>;
 }
 
-class LinearizedTreeOptimizer {
+class BookmarkTreeOptimizer {
   private _linearizedTree: ILinearizedTree[] = []; // 캐시데이터
 
-  public reset(tree: ITree) {
+  public reset(tree: chrome.bookmarks.BookmarkTreeNode) {
     const result: ILinearizedTree[] = [];
     let count = 0;
 
     const traverse = (
-      node: ITree,
+      node: chrome.bookmarks.BookmarkTreeNode,
       parentIds: Set<string> = new Set(),
     ): number => {
       const start = count++;
@@ -75,5 +70,5 @@ class LinearizedTreeOptimizer {
   }
 }
 
-export const linearizedTreeOptimizer: LinearizedTreeOptimizer =
-  new LinearizedTreeOptimizer();
+export const bookmarkTreeOptimizer: BookmarkTreeOptimizer =
+  new BookmarkTreeOptimizer();
