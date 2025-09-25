@@ -1,7 +1,7 @@
 import { css, CSSObject } from '@emotion/react';
 
 import { getActionButtonStyle } from '@/v3/features/edit/bookmarkControls/styles';
-import { useDeleteSelectedBookmarks } from '@/v3/entities/bookmark/edit/hooks/useDeleteSelectedBookmarks';
+import { useDeleteSelectedBookmarks } from '@/v3/entities/bookmark/edit/useDeleteSelectedBookmarks';
 
 function DeleteSelectedBookmarks() {
   const { deleteSelectedBookmarks, isDisabled } = useDeleteSelectedBookmarks();

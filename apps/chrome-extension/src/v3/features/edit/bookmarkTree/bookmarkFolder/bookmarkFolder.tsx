@@ -13,7 +13,7 @@ import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
 import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 import { useFolderDragEnter } from '@/v3/entities/bookmark/dragEnter/useFolderDragEnter';
 import { useSelectFolder } from '@/v3/entities/bookmark/select/hooks/useSelectFolder';
-import { useMakeFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditFolder';
+import { useMakeFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/useMakeFolderEditButtonOptions';
 
 import {
   getBookmarkFolderAccordionButtonStyle,

@@ -4,7 +4,7 @@ import { css, type CSSObject } from '@emotion/react';
 import { color } from '@/v3/shared/styles';
 import { Flex } from 'bookmark-finder-extension-ui';
 
-import { useEditFolderField } from '@/v3/entities/bookmark/edit/hooks/useEditFolderField';
+import { useEditFolderField } from '@/v3/entities/bookmark/edit/useEditFolderField';
 
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 

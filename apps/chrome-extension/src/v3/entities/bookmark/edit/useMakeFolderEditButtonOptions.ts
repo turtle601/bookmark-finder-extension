@@ -1,27 +1,11 @@
-import {
-  useDeleteBookmarkMutation,
-  useCreateSubFolderMutation,
-  useUpdateFolderTitleMutation,
-} from '@/v3/entities/bookmark/request/queries';
+import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/request/queries';
 
-import { useAccordionActionContext } from 'bookmark-finder-extension-ui';
 import { useEditFolderTitleStore } from '@/v3/entities/bookmark/model/store/useEditFolderTitleStore';
 
+import { useCreateSubFolder } from '@/v3/entities/bookmark/edit/useCreateSubFolder';
+import { useUpdateFolderTitle } from '@/v3/entities/bookmark/edit/useUpdateFolderTitle';
+
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
-
-const useCreateSubFolder = (folder: IFolder) => {
-  const { setEditFolderTitle } = useEditFolderTitleStore();
-  const { openAccordion } = useAccordionActionContext();
-
-  const { mutate: createBookmarkFolder } = useCreateSubFolderMutation(
-    (bookmark) => {
-      openAccordion(Number(bookmark.parentId));
-      setEditFolderTitle(bookmark as IFolder);
-    },
-  );
-
-  return { create: createBookmarkFolder };
-};
 
 export const useMakeRootFolderEditButtonOptions = (folder: IFolder) => {
   const { create } = useCreateSubFolder(folder);
@@ -42,17 +26,13 @@ export const useMakeRootFolderEditButtonOptions = (folder: IFolder) => {
 
 export const useMakeFolderEditButtonOptions = (folder: IFolder) => {
   const { editFolder, setEditFolderTitle } = useEditFolderTitleStore();
-  const { create } = useCreateSubFolder(folder);
 
-  const { mutate: updateBookmarkTitle } = useUpdateFolderTitleMutation();
+  const { create } = useCreateSubFolder(folder);
+  const { updateTitle } = useUpdateFolderTitle(folder);
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
 
   const createSubFolder = () => {
     create({ parentId: folder.id });
-  };
-
-  const updateTitle = () => {
-    updateBookmarkTitle({ id: folder.id, title: folder.title });
   };
 
   const deleteFolder = () => {

@@ -17,7 +17,7 @@ import {
 
 import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
 import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
-import { useMakeRootFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditFolder';
+import { useMakeRootFolderEditButtonOptions } from '@/v3/entities/bookmark/edit/useMakeFolderEditButtonOptions';
 
 // styles
 import {
