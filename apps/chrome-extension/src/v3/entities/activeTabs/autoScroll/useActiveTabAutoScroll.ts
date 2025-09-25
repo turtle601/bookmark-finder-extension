@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { useActiveTabListener } from '@/v3/entities/chromeTab/listener';
-import { useTabsQuery } from '@/v3/entities/chromeTab/request';
+import { useActiveTabListener } from '@/v3/entities/activeTabs/listener';
+import { useTabsQuery } from '@/v3/entities/activeTabs/request';
 
 export const useActiveTabAutoScroll = () => {
   const { activeTabsRef } = useActiveTabListener();

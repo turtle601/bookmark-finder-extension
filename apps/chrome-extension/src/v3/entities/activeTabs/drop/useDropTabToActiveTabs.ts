@@ -1,4 +1,4 @@
-import { useMoveTabMutation } from '@/v3/entities/chromeTab/request';
+import { useMoveTabMutation } from '@/v3/entities/activeTabs/request';
 
 export const useDropTabToActiveTabs = () => {
   const { mutate: moveTab } = useMoveTabMutation();

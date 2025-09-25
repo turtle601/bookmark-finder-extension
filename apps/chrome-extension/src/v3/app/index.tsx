@@ -12,7 +12,8 @@ import {
 } from 'bookmark-finder-extension-ui';
 
 import { EditBookmark } from '@/v3/features/edit';
-import { CurrentChromeTab } from '@/v3/features/search/chromeTab';
+import { ActiveTabs } from '@/v3/features/activeTabs';
+
 import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
 
 import Header from '@/v3/widgets/ui/header';
@@ -140,7 +141,7 @@ function App() {
                         height={'calc(100vh - 174px)'}
                         split={'vertical'}
                         pane1={<EditBookmark />}
-                        pane2={<CurrentChromeTab />}
+                        pane2={<ActiveTabs />}
                         resizer={<Resizer />}
                       />
                     </DnD.Boundary>
@@ -157,7 +158,7 @@ function App() {
                     <DnD.Provider>
                       <DnD.Boundary width={'100%'} height={'100%'}>
                         <DnD.PointerContent />
-                        <CurrentChromeTab />
+                        <ActiveTabs />
                       </DnD.Boundary>
                     </DnD.Provider>
                   }

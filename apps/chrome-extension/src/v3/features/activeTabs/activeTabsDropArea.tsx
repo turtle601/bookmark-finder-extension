@@ -5,11 +5,11 @@ import { useDropBookmarkToActiveTabs } from '@/v3/entities/activeTabs/drop/useDr
 
 import BookmarkDropAreaUI from '@/v3/entities/bookmark/ui/bookmarkDropAreaUI';
 
-interface IChromeTabDropAreaProps {
+interface IActiveTabsDropAreaProps {
   startIdx: number;
 }
 
-function ChromeTabDropArea({ startIdx }: IChromeTabDropAreaProps) {
+function ActiveTabsDropArea({ startIdx }: IActiveTabsDropAreaProps) {
   const { dropTab } = useDropTabToActiveTabs();
   const { dropBookmark } = useDropBookmarkToActiveTabs();
 
@@ -37,4 +37,4 @@ function ChromeTabDropArea({ startIdx }: IChromeTabDropAreaProps) {
   );
 }
 
-export default ChromeTabDropArea;
+export default ActiveTabsDropArea;

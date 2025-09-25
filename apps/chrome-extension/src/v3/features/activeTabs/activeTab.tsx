@@ -6,7 +6,7 @@ import { color } from '@/v3/shared/styles';
 import {
   useCloseTabMutation,
   useOpenTabMutation,
-} from '@/v3/entities/chromeTab/request';
+} from '@/v3/entities/activeTabs/request';
 
 import { Center, Flex, DnD, Image } from 'bookmark-finder-extension-ui';
 

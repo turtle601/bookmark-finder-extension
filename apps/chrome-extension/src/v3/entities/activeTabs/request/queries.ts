@@ -4,9 +4,9 @@ import {
   requestMoveTab,
   requestOpenTab,
   requestTabs,
-} from '@/v3/entities/chromeTab/request/api';
+} from '@/v3/entities/activeTabs/request/api';
 
-import type { ITabsResponse } from '@/v3/entities/chromeTab/request/api';
+import type { ITabsResponse } from '@/v3/entities/activeTabs/request/api';
 
 import {
   queryOptions as tsqQueryOptions,

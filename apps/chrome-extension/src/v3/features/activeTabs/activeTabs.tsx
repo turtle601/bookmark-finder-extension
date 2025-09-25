@@ -5,9 +5,10 @@ import { color } from '@/v3/shared/styles';
 
 import { Flex } from 'bookmark-finder-extension-ui';
 
-import ActiveTab from '@/v3/features/search/chromeTab/activeTab';
-import ChromeTabDropArea from '@/v3/features/search/chromeTab/chromeTabDropArea';
 import { useActiveTabAutoScroll } from '@/v3/entities/activeTabs/autoScroll/useActiveTabAutoScroll';
+
+import ActiveTab from '@/v3/features/activeTabs/activeTab';
+import ActiveTabsDropArea from '@/v3/features/activeTabs/activeTabsDropArea';
 
 const useTabItemsRef = () => {
   const tabItemsRef = useRef<{
@@ -42,11 +43,11 @@ function ActiveTabs() {
         <Flex direction="column">
           {tabs.map((tab, index) => (
             <React.Fragment key={tab.id}>
-              <ChromeTabDropArea startIdx={index} />
+              <ActiveTabsDropArea startIdx={index} />
               <ActiveTab tab={tab} tabRef={tabItemRef(tab)} />
             </React.Fragment>
           ))}
-          <ChromeTabDropArea startIdx={tabs.length ?? 0} />
+          <ActiveTabsDropArea startIdx={tabs.length ?? 0} />
         </Flex>
       </div>
     </div>
