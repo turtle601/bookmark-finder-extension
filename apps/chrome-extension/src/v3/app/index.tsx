@@ -1,4 +1,3 @@
-import React from 'react';
 import { css, CSSObject, Global } from '@emotion/react';
 
 import { color, globalStyle, slate } from '@/v3/shared/styles';
@@ -13,79 +12,16 @@ import {
 
 import { EditBookmark } from '@/v3/features/edit';
 import { ActiveTabs } from '@/v3/features/activeTabs';
-
-import FindBookmark from '@/v3/features/search/findBookmark/findBookmark';
+import { SearchBookmark } from '@/v3/features/search/searchBookmark';
 
 import Header from '@/v3/widgets/ui/header';
 import QueryProvider from './provider/queryProvider';
-
-const RESIZER_URL =
-  'https://school.programmers.co.kr/assets/img-grippie-horizon-2029be95ca34dfe8c756d091c6f53a6a007e3a66c7c68863ce6f54fe23d4f371.png' as const;
-
-function Resizer() {
-  return (
-    <div
-      css={css({
-        width: '100%',
-        height: '14px',
-        backgroundColor: color.slate['200'],
-        backgroundPositionY: 'bottom',
-        background: `url(${RESIZER_URL}) no-repeat 50%`,
-        backgroundSize: '2.25rem 0.875rem',
-        cursor: 'ns-resize',
-      })}
-    />
-  );
-}
-
-interface ILayoutProps {
-  children: React.ReactNode;
-}
-
-function Layout({ children }: ILayoutProps) {
-  return (
-    <div
-      css={css({
-        padding: '20px',
-        backgroundColor: color.slate['50'],
-        width: '100vw',
-        height: '100vh',
-      })}
-    >
-      {children}
-    </div>
-  );
-}
-
-const getTabStyle = (isActive: boolean): CSSObject => {
-  return {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    padding: '4px 8px',
-    border: 'none',
-    background: isActive ? '#3b82f6' : 'transparent',
-    color: isActive ? 'white' : slate['400'],
-    fontSize: '14px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    position: 'relative',
-    zIndex: 2,
-    '&:active': {
-      color: 'white',
-      background: '#3b82f6',
-      boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)',
-    },
-  };
-};
 
 function App() {
   return (
     <QueryProvider>
       <Global styles={globalStyle} />
-      <Layout>
+      <main css={css(getLayoutWrapperStyle())}>
         <section
           css={css({
             background: `linear-gradient(135deg, ${color.slate['50']} 0%, ${color.slate['100']} 100%)`,
@@ -142,7 +78,7 @@ function App() {
                         split={'vertical'}
                         pane1={<EditBookmark />}
                         pane2={<ActiveTabs />}
-                        resizer={<Resizer />}
+                        resizer={<div css={css(getResizerStyle())} />}
                       />
                     </DnD.Boundary>
                   </DnD.Provider>
@@ -153,7 +89,7 @@ function App() {
                   width={'100%'}
                   height={'calc(100vh - 124px)'}
                   split={'vertical'}
-                  pane1={<FindBookmark />}
+                  pane1={<SearchBookmark />}
                   pane2={
                     <DnD.Provider>
                       <DnD.Boundary width={'100%'} height={'100%'}>
@@ -162,15 +98,60 @@ function App() {
                       </DnD.Boundary>
                     </DnD.Provider>
                   }
-                  resizer={<Resizer />}
+                  resizer={<div css={css(getResizerStyle())} />}
                 />
               </Tabs.TabPanel>
             </Tabs.TabPanels>
           </Tabs.Provider>
         </section>
-      </Layout>
+      </main>
     </QueryProvider>
   );
 }
 
 export default App;
+
+function getResizerStyle(): CSSObject {
+  return {
+    width: '100%',
+    height: '14px',
+    backgroundColor: color.slate['200'],
+    backgroundPositionY: 'bottom',
+    background: `url(https://school.programmers.co.kr/assets/img-grippie-horizon-2029be95ca34dfe8c756d091c6f53a6a007e3a66c7c68863ce6f54fe23d4f371.png) no-repeat 50%`,
+    backgroundSize: '2.25rem 0.875rem',
+    cursor: 'ns-resize',
+  };
+}
+
+function getLayoutWrapperStyle(): CSSObject {
+  return {
+    padding: '20px',
+    backgroundColor: color.slate['50'],
+    width: '100vw',
+    height: '100vh',
+  };
+}
+
+function getTabStyle(isActive: boolean): CSSObject {
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    padding: '4px 8px',
+    border: 'none',
+    background: isActive ? '#3b82f6' : 'transparent',
+    color: isActive ? 'white' : slate['400'],
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    position: 'relative',
+    zIndex: 2,
+    '&:active': {
+      color: 'white',
+      background: '#3b82f6',
+      boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)',
+    },
+  };
+}

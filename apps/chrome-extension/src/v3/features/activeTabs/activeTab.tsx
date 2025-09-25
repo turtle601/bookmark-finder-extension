@@ -147,7 +147,6 @@ function getTabTitleStyle(): CSSObject {
 
 function getCloseTabTextStyle(tab: chrome.tabs.Tab): CSSObject {
   return {
-    color: tab.active ? 'white' : color.slate['600'],
     cursor: 'pointer',
   };
 }

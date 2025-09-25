@@ -3,10 +3,10 @@ import { useRef, useState } from 'react';
 
 import { Spacer } from 'bookmark-finder-extension-ui';
 
-import BookmarkSearchField from '@/v3/features/search/findBookmark/ui/bookmarkSearchField';
-import BookmarkSearchResult from '@/v3/features/search/findBookmark/ui/bookmarkSearchResult';
+import BookmarkSearchFieldUI from '@/v3/entities/search/ui/bookmarkSearchField';
+import BookmarkSearchResult from '@/v3/features/search/searchBookmark/bookmarkSearchResult';
 
-function FindBookmark() {
+function SearchBookmark() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [searchText, setSearchText] = useState('');
@@ -30,7 +30,7 @@ function FindBookmark() {
           zIndex: 1,
         })}
       >
-        <BookmarkSearchField inputRef={inputRef} onChange={handleChange} />
+        <BookmarkSearchFieldUI inputRef={inputRef} onChange={handleChange} />
       </div>
       <Spacer direction="vertical" space={12} />
       <BookmarkSearchResult searchText={searchText} />
@@ -38,4 +38,4 @@ function FindBookmark() {
   );
 }
 
-export default FindBookmark;
+export default SearchBookmark;
