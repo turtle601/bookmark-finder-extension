@@ -1,9 +1,13 @@
-import { BookmarkMessageEvent } from './bookmarkMessageEvent';
+import {
+  BookmarkMessageEvent,
+  SearchBookmarkMessageEvent,
+} from './bookmarkMessageEvent';
 import { ChromeTabMessageEvent } from './chromeTabMessageEvent';
 
 const MessageEvent = {
   ...BookmarkMessageEvent,
   ...ChromeTabMessageEvent,
+  ...SearchBookmarkMessageEvent,
 } as const;
 
 class BackgroundMessageEvent {
