@@ -1,10 +1,9 @@
 module.exports = {
   env: { browser: true, es2020: true },
   extends: [
-    require.resolve('bookmark-finder-extension-eslint-config/patch'),     
+    require.resolve('bookmark-finder-extension-eslint-config/patch'),
     require.resolve('bookmark-finder-extension-eslint-config'),
     require.resolve('bookmark-finder-extension-eslint-config/mixins/react'),
-    'plugin:storybook/recommended',
     'plugin:storybook/recommended',
   ],
   settings: {
@@ -23,4 +22,5 @@ module.exports = {
     project: true,
     tsconfigRootDir: __dirname,
   },
+  ignorePatterns: ['jest.setup.ts'],
 };

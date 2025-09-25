@@ -7,6 +7,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["__stories__/**/*", "global.d.ts", "src/**/*"],
-  "exclude": ["node_modules", "webpack.config.js"]
+  "include": [
+    "__stories__/**/*",
+    "global.d.ts",
+    "src/**/*",
+    "__test__/**/*",
+    "jest.setup.js"
+  ],
+  "exclude": ["node_modules", "webpack.config.ts"]
 }
