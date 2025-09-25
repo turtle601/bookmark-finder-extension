@@ -106,3 +106,15 @@ export const createBookmarkFolder = async (payload: { parentId: string }) => {
     payload: { ...payload },
   });
 };
+
+export const queryBookmark = async (payload: { ids: string[] }) => {
+  const response = await createChromeRequest<{
+    isSuccess: boolean;
+    data: chrome.bookmarks.BookmarkTreeNode[];
+  }>({
+    action: 'queryBookmark',
+    payload: { ...payload },
+  });
+
+  return response.data;
+};

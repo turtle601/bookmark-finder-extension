@@ -1,4 +1,4 @@
-import { backgroundMessageEvent } from '@/v3/background/bookmark/event';
+import { backgroundMessageEvent } from '@/v3/background/event';
 
 chrome.action.onClicked.addListener(async (tab) => {
   if (tab.id) {

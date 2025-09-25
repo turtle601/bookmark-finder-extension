@@ -12,6 +12,7 @@ import {
   deleteBookmark,
   getBookmarkTree,
   moveBookmark,
+  queryBookmark,
   updateBookmarkTitle,
 } from '@/v3/entities/bookmark/request/api';
 
@@ -23,7 +24,7 @@ import {
 
 export const keys = {
   bookmarkTree: () => ['getBookmarkTree'],
-  selectedCount: () => ['getSelectedCount'],
+  queryBookmark: (ids: string[]) => ['queryBookmark', ...ids],
 } as const;
 
 export const bookmarkSearchService = {
@@ -125,24 +126,17 @@ export const useCreateSubFolderMutation = (
   });
 };
 
-// export const useCreateBookmarkFolderMutation = () => {
-//   const queryClient = useQueryClient();
-
-//   const { setEditBookmark } = useEditBookmarkStore();
-//   const { openAccordion } = useAccordionActionContext();
-
-//   return useMutation({
-//     mutationKey: ['createBookmarkFolder'],
-//     mutationFn: (payload: { parentId: string }) =>
-//       createBookmarkFolder(payload),
-//     onSuccess: (data) => {
-//       setEditBookmark(data.bookmark);
-
-//       if (data.bookmark.parentId) {
-//         openAccordion(Number(data.bookmark.parentId));
-//       }
-
-//       queryClient.invalidateQueries({ queryKey: ['getBookmarkTree'] });
-//     },
-//   });
-// };
+export const useQueryBookmarkMutation = ({
+  onSuccess,
+}: {
+  onSuccess: (
+    data: chrome.bookmarks.BookmarkTreeNode[],
+    variable: { ids: string[]; startIdx: number },
+  ) => void;
+}) => {
+  return useMutation({
+    mutationFn: (payload: { ids: string[]; startIdx: number }) =>
+      queryBookmark(payload),
+    onSuccess,
+  });
+};

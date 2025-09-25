@@ -16,7 +16,7 @@ interface IBookmarkEditButtonProps {
   }[];
 }
 
-function BookmarkEditButtonUI({ options }: IBookmarkEditButtonProps) {
+function BookmarkEditTrigger({ options }: IBookmarkEditButtonProps) {
   const { isOpen } = useDropDownContext();
 
   const [optionsPosition, setOptionsPosition] = useState({
@@ -39,37 +39,43 @@ function BookmarkEditButtonUI({ options }: IBookmarkEditButtonProps) {
   );
 
   return (
-    <DropDown.Provider>
-      <div
-        css={css({
-          position: 'relative',
-        })}
-      >
-        <DropDown.Trigger>
-          <div ref={triggerRef}>
-            <Center
-              as="button"
-              data-bookmark-edit-button
-              etcStyles={getEditButtonWrapperStyles()}
+    <div
+      css={css({
+        position: 'relative',
+      })}
+    >
+      <DropDown.Trigger>
+        <div ref={triggerRef}>
+          <Center
+            as="button"
+            data-bookmark-edit-button
+            etcStyles={getEditButtonWrapperStyles()}
+          >
+            ⋮
+          </Center>
+        </div>
+      </DropDown.Trigger>
+      <DropDown.Options etcStyles={getEditOptionsStyles(optionsPosition)}>
+        {options.map((option) => {
+          return (
+            <DropDown.Option
+              key={option.label}
+              onClick={option.action}
+              etcStyles={getEditOptionStyles()}
             >
-              ⋮
-            </Center>
-          </div>
-        </DropDown.Trigger>
-        <DropDown.Options etcStyles={getEditOptionsStyles(optionsPosition)}>
-          {options.map((option) => {
-            return (
-              <DropDown.Option
-                key={option.label}
-                onClick={option.action}
-                etcStyles={getEditOptionStyles()}
-              >
-                <p>{option.label}</p>
-              </DropDown.Option>
-            );
-          })}
-        </DropDown.Options>
-      </div>
+              <p>{option.label}</p>
+            </DropDown.Option>
+          );
+        })}
+      </DropDown.Options>
+    </div>
+  );
+}
+
+function BookmarkEditButtonUI({ options }: IBookmarkEditButtonProps) {
+  return (
+    <DropDown.Provider>
+      <BookmarkEditTrigger options={options} />
     </DropDown.Provider>
   );
 }

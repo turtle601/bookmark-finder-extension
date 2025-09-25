@@ -1,7 +1,7 @@
 import {
   type ISearchBookmarkLink,
   extractSearchBookmarkLinks,
-} from '@/v3/background/bookmark/utils';
+} from '@/v3/background/utils';
 
 export const BookmarkMessageEvent = {
   getBookmarkTree: (
@@ -61,136 +61,6 @@ export const BookmarkMessageEvent = {
     return true;
   },
 
-  //   message: { action: 'selectAllBookmarks' },
-  //   sender: chrome.runtime.MessageSender,
-  //   sendResponse: (response?: {
-  //     isSuccess: boolean;
-  //     error?: chrome.runtime.LastError;
-  //   }) => void,
-  // ) => {
-  //   if (chrome.runtime.lastError) {
-  //     sendResponse({
-  //       isSuccess: false,
-  //       error: chrome.runtime.lastError,
-  //     });
-  //   } else {
-  //     bookmarkTreeStorage.selectAll();
-  //     sendResponse({ isSuccess: true });
-  //   }
-
-  //   return true;
-  // },
-  // deselectAllBookmarks: (
-  //   message: { action: 'deselectAllBookmarks' },
-  //   sender: chrome.runtime.MessageSender,
-  //   sendResponse: (response?: {
-  //     isSuccess: boolean;
-  //     error?: chrome.runtime.LastError;
-  //   }) => void,
-  // ) => {
-  //   if (chrome.runtime.lastError) {
-  //     sendResponse({
-  //       isSuccess: false,
-  //       error: chrome.runtime.lastError,
-  //     });
-  //   } else {
-  //     bookmarkTreeStorage.deselectAll();
-  //     sendResponse({ isSuccess: true });
-  //   }
-
-  //   return true;
-  // },
-  // getSelectedCount: (
-  //   message: { action: 'getSelectedCount' },
-  //   sender: chrome.runtime.MessageSender,
-  //   sendResponse: <T extends boolean>(
-  //     response: T extends true
-  //       ? {
-  //           isSuccess: true;
-  //           count: number;
-  //         }
-  //       : {
-  //           isSuccess: false;
-  //           error: chrome.runtime.LastError;
-  //         },
-  //   ) => void,
-  // ) => {
-  //   if (chrome.runtime.lastError) {
-  //     sendResponse({
-  //       isSuccess: false,
-  //       error: chrome.runtime.lastError,
-  //     });
-  //   } else {
-  //     const count = bookmarkTreeStorage.getSelectedCount();
-
-  //     sendResponse({
-  //       isSuccess: true,
-  //       count,
-  //     });
-  //   }
-
-  //   return true;
-  // },
-  // getTopLevelSelectedNodes: (
-  //   message: { action: 'getTopLevelSelectedNodes' },
-  //   sender: chrome.runtime.MessageSender,
-  //   sendResponse: <T extends boolean>(
-  //     response: T extends true
-  //       ? {
-  //           isSuccess: true;
-  //           data: string[];
-  //         }
-  //       : {
-  //           isSuccess: false;
-  //           error: chrome.runtime.LastError;
-  //         },
-  //   ) => void,
-  // ) => {
-  //   if (chrome.runtime.lastError) {
-  //     sendResponse({
-  //       isSuccess: false,
-  //       error: chrome.runtime.lastError,
-  //     });
-  //   } else {
-  //     const nodes = bookmarkTreeStorage.getTopLevelSelectedNodes();
-
-  //     sendResponse({
-  //       isSuccess: true,
-  //       data: nodes,
-  //     });
-  //   }
-
-  //   return true;
-  // },
-  // resetBookmarkTree: (
-  //   message: { action: 'resetBookmarkTree' },
-  //   sender: chrome.runtime.MessageSender,
-  //   sendResponse: <T extends boolean>(
-  //     response: T extends true
-  //       ? {
-  //           isSuccess: true;
-  //         }
-  //       : {
-  //           isSuccess: false;
-  //           error: chrome.runtime.LastError;
-  //         },
-  //   ) => void,
-  // ) => {
-  //   chrome.bookmarks.getTree((tree) => {
-  //     if (chrome.runtime.lastError) {
-  //       sendResponse({
-  //         isSuccess: false,
-  //         error: chrome.runtime.lastError,
-  //       });
-  //     } else {
-  //       bookmarkTreeStorage.reset(tree);
-
-  //       sendResponse({ isSuccess: true });
-  //     }
-  //   });
-
-  //   return true;
-  // },
   deleteBookmark: (
     message: { action: 'deleteBookmark'; payload: { id: string } },
     sender: chrome.runtime.MessageSender,
@@ -311,6 +181,34 @@ export const BookmarkMessageEvent = {
         }
       },
     );
+
+    return true;
+  },
+  queryBookmark: (
+    message: {
+      action: 'queryBookmark';
+      payload: { ids: string[] };
+    },
+    sender: chrome.runtime.MessageSender,
+    sendResponse: <T extends boolean>(
+      response: T extends true
+        ? {
+            isSuccess: true;
+            data: chrome.bookmarks.BookmarkTreeNode[];
+          }
+        : {
+            isSuccess: false;
+            error: chrome.runtime.LastError;
+          },
+    ) => void,
+  ) => {
+    chrome.bookmarks.get([...message.payload.ids], (bookmark) => {
+      if (chrome.runtime.lastError) {
+        sendResponse({ isSuccess: false, error: chrome.runtime.lastError });
+      } else {
+        sendResponse({ isSuccess: true, data: bookmark });
+      }
+    });
 
     return true;
   },

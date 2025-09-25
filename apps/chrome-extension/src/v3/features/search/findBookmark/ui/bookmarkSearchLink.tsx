@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Image } from 'bookmark-finder-extension-ui';
 
-import type { ISearchBookmarkLink } from '@/v3/background/bookmark/utils';
+import type { ISearchBookmarkLink } from '@/v3/background/utils';
 
 interface ISearchBookmarkLinkProps {
   bookmark: ISearchBookmarkLink;

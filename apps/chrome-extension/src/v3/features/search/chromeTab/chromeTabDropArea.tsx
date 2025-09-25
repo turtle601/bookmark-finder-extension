@@ -1,57 +1,37 @@
 import { DnD } from 'bookmark-finder-extension-ui';
 
-import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/ui/bookmarkDropArea';
+import { useDropTabToActiveTabs } from '@/v3/entities/activeTabs/drop/useDropTabToActiveTabs';
+import { useDropBookmarkToActiveTabs } from '@/v3/entities/activeTabs/drop/useDropBookmarkToActiveTabs';
 
-import {
-  useAddChromeTabMutation,
-  useMoveTabMutation,
-} from '@/v3/entities/chromeTab/request';
+import BookmarkDropAreaUI from '@/v3/entities/bookmark/ui/bookmarkDropAreaUI';
 
 interface IChromeTabDropAreaProps {
   startIdx: number;
 }
 
 function ChromeTabDropArea({ startIdx }: IChromeTabDropAreaProps) {
-  const { mutate: moveTab } = useMoveTabMutation();
+  const { dropTab } = useDropTabToActiveTabs();
+  const { dropBookmark } = useDropBookmarkToActiveTabs();
 
-  const { addChromeTabs } = useAddChromeTabMutation();
+  const dropAction = (e: React.DragEvent<Element>) => {
+    const draggedType = e.dataTransfer.getData('dragType');
 
-  const dropDraggedTab = (e: React.DragEvent<Element>) => {
-    const draggedTab = JSON.parse(e.dataTransfer.getData('tab'));
-
-    if (!draggedTab?.id) {
-      return;
+    switch (draggedType) {
+      case 'tab':
+        dropTab(JSON.parse(e.dataTransfer.getData('tab')), startIdx);
+        return;
+      case 'bookmark':
+        dropBookmark(startIdx);
+        return;
+      default:
+        return;
     }
-
-    const isSamePosition =
-      draggedTab.index + 1 === startIdx || draggedTab.index === startIdx;
-
-    if (isSamePosition) {
-      return;
-    }
-
-    moveTab({ tabId: draggedTab.id, index: startIdx });
   };
 
   return (
-    <DnD.Droppable
-      dropAction={(e) => {
-        const draggedType = e.dataTransfer.getData('dragType');
-
-        switch (draggedType) {
-          case 'tab':
-            dropDraggedTab(e);
-            return;
-          case 'bookmark':
-            addChromeTabs(startIdx);
-            return;
-          default:
-            return;
-        }
-      }}
-    >
+    <DnD.Droppable dropAction={dropAction}>
       {({ isDragEnter }) => {
-        return <BookmarkDropArea isDragEnter={isDragEnter} />;
+        return <BookmarkDropAreaUI isDragEnter={isDragEnter} />;
       }}
     </DnD.Droppable>
   );

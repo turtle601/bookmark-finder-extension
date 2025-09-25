@@ -82,6 +82,12 @@ export const useSelectBookmarkController = () => {
     return selectedBookmarkIds.has(bookmark.id);
   };
 
+  const getSelectedBookmarks = () => {
+    return bookmarkTreeOptimizer
+      .getLinearizedTree()
+      .filter((child) => selectedBookmarkIds.has(child?.id));
+  };
+
   return {
     selectedBookmarkIds,
     selectBookmark,
@@ -91,5 +97,6 @@ export const useSelectBookmarkController = () => {
     deselectAllBookmark: resetSelectedBookmark,
     toggleBookmark,
     checkIsSelected,
+    getSelectedBookmarks,
   };
 };

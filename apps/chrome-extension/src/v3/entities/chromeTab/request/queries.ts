@@ -6,8 +6,6 @@ import {
   requestTabs,
 } from '@/v3/entities/chromeTab/request/api';
 
-// import { useSelectedBookmarkLinkQuery } from '@/v3/entities/bookmark/select/hooks/tree/request/queries';
-
 import type { ITabsResponse } from '@/v3/entities/chromeTab/request/api';
 
 import {
@@ -90,9 +88,7 @@ export const useMoveTabMutation = () => {
 export const useAddChromeTabMutation = () => {
   const queryClient = useQueryClient();
 
-  // const { data: selectedBookmarks } = useSelectedBookmarkLinkQuery();
-
-  const { mutate } = useMutation({
+  return useMutation({
     mutationKey: ['addChromeTab'],
     mutationFn: ({ url, index }: { url: string; index: number }) =>
       requestAddChromeTab(url, index),
@@ -102,15 +98,4 @@ export const useAddChromeTabMutation = () => {
       });
     },
   });
-
-  const fn = (startIdx: number) => {
-    // selectedBookmarks?.forEach((bookmark) => {
-    //   if (bookmark.url) {
-    //     mutate({ url: bookmark.url, index: startIdx });
-    //     startIdx++;
-    //   }
-    // });
-  };
-
-  return { addChromeTabs: fn };
 };
