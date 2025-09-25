@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { StoreApi, UseBoundStore } from 'zustand';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 interface IEditFolderTitleStore {
   editFolder: IFolder | null;

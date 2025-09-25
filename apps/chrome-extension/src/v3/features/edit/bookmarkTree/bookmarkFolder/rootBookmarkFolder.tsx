@@ -11,7 +11,7 @@ import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropAr
 
 import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
 
-import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/tree/mapping/bookmark';
+import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/mapping/bookmark';
 
 import {
   useFolderDragEnter,
@@ -31,7 +31,7 @@ import {
   getBookmarkFolderWrapperStyle,
 } from '@/v3/features/edit/bookmarkTree/bookmarkFolder/folder.style';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 function RootBookmarkFolder({ folder }: { folder: IFolder }) {
   const { isFolderDragEnter, dragEnterFolder } = useFolderDragEnter(folder);

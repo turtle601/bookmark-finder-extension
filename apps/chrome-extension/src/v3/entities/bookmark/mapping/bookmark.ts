@@ -5,7 +5,7 @@ import {
   ILink,
   isFolder,
   isLink,
-} from '@/v3/entities/bookmark/tree/types/bookmark';
+} from '@/v3/entities/bookmark/types/bookmark';
 
 export function mappingComponentByBookmarkType(
   bookmark: chrome.bookmarks.BookmarkTreeNode,

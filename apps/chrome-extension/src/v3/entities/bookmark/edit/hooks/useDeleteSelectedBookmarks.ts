@@ -1,4 +1,4 @@
-import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/tree/request/queries';
+import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/request/queries';
 
 import { useSelectBookmarkController } from '@/v3/entities/bookmark/select/hooks/useSelectBookmarkController';
 

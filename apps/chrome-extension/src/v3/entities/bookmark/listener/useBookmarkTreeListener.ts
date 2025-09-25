@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { bookmarkSearchService } from '@/v3/entities/bookmark/tree/request/queries';
+import { bookmarkSearchService } from '@/v3/entities/bookmark/request/queries';
 
 export const useBookmarkTreeListener = () => {
   const queryClient = useQueryClient();

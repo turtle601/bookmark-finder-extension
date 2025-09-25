@@ -5,7 +5,7 @@ import BookmarkDropArea from '@/v3/features/edit/bookmarkTree/ui/bookmarkDropAre
 import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
 import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 interface IBookmarkTreeDropAreaProps {
   folder: IFolder;

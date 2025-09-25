@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
-import { useGetBookmarkTreeQuery } from '@/v3/entities/bookmark/tree/request/queries';
+import { useGetBookmarkTreeQuery } from '@/v3/entities/bookmark/request/queries';
 
 import RootBookmarkFolder from '@/v3/features/edit/bookmarkTree/bookmarkFolder/rootBookmarkFolder';
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 
-import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/tree/mapping/bookmark';
+import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/mapping/bookmark';
 
 function BookmarkTree() {
   const { rootBookmark } = useGetBookmarkTreeQuery();

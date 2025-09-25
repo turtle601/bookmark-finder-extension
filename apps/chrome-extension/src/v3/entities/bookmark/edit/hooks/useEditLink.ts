@@ -1,6 +1,6 @@
-import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/tree/request/queries';
+import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/request/queries';
 
-import type { ILink } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { ILink } from '@/v3/entities/bookmark/types/bookmark';
 
 export const useDeleteLink = (link: ILink) => {
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();

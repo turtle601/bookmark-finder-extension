@@ -5,7 +5,7 @@ import {
   useAccordionContext,
 } from 'bookmark-finder-extension-ui';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 export const useOpenFolder = (folder: IFolder) => {
   const { selectedIdSet } = useAccordionContext();

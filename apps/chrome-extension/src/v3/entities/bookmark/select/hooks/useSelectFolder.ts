@@ -5,7 +5,7 @@ import {
 
 import { useSelectBookmarkController } from '@/v3/entities/bookmark/select/hooks/useSelectBookmarkController';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 export const useSelectFolder = (folder: IFolder) => {
   const {

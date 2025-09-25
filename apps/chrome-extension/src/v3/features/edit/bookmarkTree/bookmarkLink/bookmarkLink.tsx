@@ -6,7 +6,7 @@ import { color } from '@/v3/shared/styles';
 
 import { Center, DnD, Flex, Image } from 'bookmark-finder-extension-ui';
 
-import { ILink } from '@/v3/entities/bookmark/tree/types/bookmark';
+import { ILink } from '@/v3/entities/bookmark/types/bookmark';
 import { useSelectLink } from '@/v3/entities/bookmark/select/hooks/useSelectLink';
 import BookmarkEditButton from '@/v3/features/edit/bookmarkTree/ui/bookmarkEditButton';
 import { useMakeLinkEditButtonOptions } from '@/v3/entities/bookmark/edit/hooks/useEditLink';

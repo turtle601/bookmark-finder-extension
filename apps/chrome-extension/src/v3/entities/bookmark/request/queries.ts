@@ -13,13 +13,13 @@ import {
   getBookmarkTree,
   moveBookmark,
   updateBookmarkTitle,
-} from '@/v3/entities/bookmark/tree/request/api';
+} from '@/v3/entities/bookmark/request/api';
 
 import { linearizedTreeOptimizer } from '@/v3/shared/utils/optimizer/linearizedTreeOptimizer';
 import {
   isRootBookmark,
   IRootBookmark,
-} from '@/v3/entities/bookmark/tree/types/bookmark';
+} from '@/v3/entities/bookmark/types/bookmark';
 
 export const keys = {
   bookmarkTree: () => ['getBookmarkTree'],

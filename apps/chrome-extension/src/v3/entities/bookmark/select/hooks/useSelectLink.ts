@@ -1,5 +1,5 @@
 import { useSelectBookmarkController } from '@/v3/entities/bookmark/select/hooks/useSelectBookmarkController';
-import { ILink } from '@/v3/entities/bookmark/tree/types/bookmark';
+import { ILink } from '@/v3/entities/bookmark/types/bookmark';
 
 export const useSelectLink = (link: ILink) => {
   const {

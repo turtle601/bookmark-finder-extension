@@ -2,12 +2,12 @@ import {
   useDeleteBookmarkMutation,
   useCreateSubFolderMutation,
   useUpdateFolderTitleMutation,
-} from '@/v3/entities/bookmark/tree/request/queries';
+} from '@/v3/entities/bookmark/request/queries';
 
 import { useAccordionActionContext } from 'bookmark-finder-extension-ui';
 import { useEditFolderTitleStore } from '@/v3/entities/bookmark/edit/hooks/useEditFolderTitleStore';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 const useCreateSubFolder = (folder: IFolder) => {
   const { setEditFolderTitle } = useEditFolderTitleStore();

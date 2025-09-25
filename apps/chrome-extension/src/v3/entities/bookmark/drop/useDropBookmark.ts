@@ -1,7 +1,7 @@
-import { useMoveBookmarkMutation } from '@/v3/entities/bookmark/tree/request/queries';
+import { useMoveBookmarkMutation } from '@/v3/entities/bookmark/request/queries';
 import { useSelectBookmarkController } from '@/v3/entities/bookmark/select/hooks/useSelectBookmarkController';
 
-import { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 export const useDropBookmark = (folder: IFolder) => {
   const { selectedBookmarkIds } = useSelectBookmarkController();

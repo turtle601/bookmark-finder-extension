@@ -6,7 +6,7 @@ import { Flex } from 'bookmark-finder-extension-ui';
 
 import { useEditFolderField } from '@/v3/entities/bookmark/edit/hooks/useEditFolderField';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
 interface IBookmarkFolderFieldProps {
   folder: IFolder;

@@ -7,7 +7,7 @@ import BookmarkFolderField from '@/v3/features/edit/bookmarkTree/bookmarkFolder/
 import BookmarkLink from '@/v3/features/edit/bookmarkTree/bookmarkLink/bookmarkLink';
 import BookmarkTreeDropArea from '@/v3/features/edit/bookmarkTree/bookmarkDropArea/bookmarkTreeDropArea';
 
-import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/tree/mapping/bookmark';
+import { mappingComponentByBookmarkType } from '@/v3/entities/bookmark/mapping/bookmark';
 
 import { useEditFolderTitleStore } from '@/v3/entities/bookmark/edit/hooks/useEditFolderTitleStore';
 import { useDropTab } from '@/v3/entities/bookmark/drop/useDropTab';
@@ -15,7 +15,7 @@ import { useDropBookmark } from '@/v3/entities/bookmark/drop/useDropBookmark';
 import { useFolderDragEnter } from '@/v3/entities/bookmark/dragEnter/useFolderDragEnter';
 import { useSelectFolder } from '@/v3/entities/bookmark/select/hooks/useSelectFolder';
 
-import type { IFolder } from '@/v3/entities/bookmark/tree/types/bookmark';
+import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 import {
   getBookmarkFolderAccordionButtonStyle,
   getBookmarkFolderDepthStyle,

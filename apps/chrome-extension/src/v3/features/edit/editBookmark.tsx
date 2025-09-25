@@ -2,7 +2,7 @@ import { Spacer } from 'bookmark-finder-extension-ui';
 
 import { BookmarkControls } from '@/v3/features/edit/bookmarkControls';
 import { BookmarkTree } from '@/v3/features/edit/bookmarkTree';
-import { useBookmarkTreeListener } from '@/v3/entities/bookmark/tree/listener/useBookmarkTreeListener';
+import { useBookmarkTreeListener } from '@/v3/entities/bookmark/listener/useBookmarkTreeListener';
 
 function EditBookmark() {
   const { bookmarkTreeRef } = useBookmarkTreeListener();
