@@ -16,26 +16,28 @@ function BookmarkSearchLinkUI({
     <div css={css(getBookmarkSearchLinkUIWrapperStyle())} onClick={onClick}>
       <Flex
         align="center"
-        gap="8px"
+        direction="row"
         etcStyles={css({
           marginBottom: '4px',
         })}
       >
-        <Center css={css(getBookmarkSearchLinkUIIconWrapperStyle())}>
-          <Image
-            src={bookmark.faviconUrl}
-            alt={`${bookmark.title} 아이콘`}
-            fallbackComponent={
-              <span aria-label={`${bookmark.title} 아이콘`} role="img">
-                🎮
-              </span>
-            }
-            css={css(getBookmarkSearchLinkUIIconStyle())}
-          />
-        </Center>
-        <div css={css(getBookmarkSearchLinkUITitleStyle())}>
-          {bookmark.title}
-        </div>
+        <Flex gap="8px" align="center">
+          <Center css={css(getBookmarkSearchLinkUIIconWrapperStyle())}>
+            <Image
+              src={bookmark.faviconUrl}
+              alt={`${bookmark.title} 아이콘`}
+              fallbackComponent={
+                <span aria-label={`${bookmark.title} 아이콘`} role="img">
+                  🎮
+                </span>
+              }
+              css={css(getBookmarkSearchLinkUIIconStyle())}
+            />
+          </Center>
+          <span css={css(getBookmarkSearchLinkUITitleStyle())}>
+            {bookmark.title}
+          </span>
+        </Flex>
       </Flex>
       <div css={css(getBookmarkSearchLinkUIUrlStyle())}>{bookmark.url}</div>
     </div>
