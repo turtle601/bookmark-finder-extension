@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { css, CSSObject } from '@emotion/react';
 
@@ -17,6 +17,10 @@ function BookmarkLink({ link }: { link: ILink }) {
   const { isSelected, select, toggle, deselect } = useSelectLink(link);
 
   const { editButtonOptions } = useMakeLinkEditButtonOptions(link);
+
+  const faviconUrl = useMemo(() => {
+    return `http://www.google.com/s2/favicons?domain=${link.url}`;
+  }, [link.url]);
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -69,7 +73,7 @@ function BookmarkLink({ link }: { link: ILink }) {
               <Center etcStyles={getBookmarkLinkIconWrapperStyle()}>
                 <Image
                   css={css(getBookmarkLinkImageStyle())}
-                  src={`http://www.google.com/s2/favicons?domain=${link.url}`}
+                  src={faviconUrl}
                   alt={`${link.title} 아이콘`}
                   fallbackComponent={
                     <span aria-label={`${link.title} 아이콘`} role="img">
