@@ -45,11 +45,6 @@ const config = {
         // https://raw.githubusercontent.com/carloscuesta/gitmoji/master/packages/gitmojis/src/gitmojis.json
         // You can run the script repo_scripts/gitmojiSemVer-Extract.js to printout an updated array to paste here.
         releaseRules: {
-          none: [
-            ':recycle:', // ♻️ Refactor code.
-            ':fire:', // 🔥 Remove code or files.
-            ':wrench:', // 🔧 CI.
-          ],
           major: [
             ':boom:', // 💥 Introduce breaking changes.
           ],
@@ -57,6 +52,9 @@ const config = {
             ':sparkles:', // ✨ Introduce new features.
           ],
           patch: [
+            ':recycle:', // ♻️ Refactor code.
+            ':fire:', // 🔥 Remove code or files.
+            ':wrench:', // 🔧 CI.
             ':zap:', // ⚡️ Improve performance.
             ':bug:', // 🐛 Fix a bug.
             ':ambulance:', // 🚑 Critical hotfix.

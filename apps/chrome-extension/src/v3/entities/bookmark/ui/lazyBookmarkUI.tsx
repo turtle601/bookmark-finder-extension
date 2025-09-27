@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface ILazyBookmarkUIProps {
   children: React.ReactNode;
-  rootMargin?: string; // 미리 로드할 거리
+  rootMargin?: string;
 }
 
 function LazyBookmarkUI({
