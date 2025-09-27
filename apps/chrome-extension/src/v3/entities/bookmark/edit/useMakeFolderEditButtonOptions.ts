@@ -3,7 +3,6 @@ import { useDeleteBookmarkMutation } from '@/v3/entities/bookmark/request/querie
 import { useEditFolderTitleStore } from '@/v3/entities/bookmark/model/store/useEditFolderTitleStore';
 
 import { useCreateSubFolder } from '@/v3/entities/bookmark/edit/useCreateSubFolder';
-import { useUpdateFolderTitle } from '@/v3/entities/bookmark/edit/useUpdateFolderTitle';
 
 import type { IFolder } from '@/v3/entities/bookmark/types/bookmark';
 
@@ -28,11 +27,15 @@ export const useMakeFolderEditButtonOptions = (folder: IFolder) => {
   const { editFolder, setEditFolderTitle } = useEditFolderTitleStore();
 
   const { create } = useCreateSubFolder(folder);
-  const { updateTitle } = useUpdateFolderTitle(folder);
+
   const { mutate: deleteBookmark } = useDeleteBookmarkMutation();
 
   const createSubFolder = () => {
     create({ parentId: folder.id });
+  };
+
+  const updateEditMode = () => {
+    setEditFolderTitle(folder);
   };
 
   const deleteFolder = () => {
@@ -45,7 +48,7 @@ export const useMakeFolderEditButtonOptions = (folder: IFolder) => {
     editButtonOptions: [
       {
         label: 'Rename',
-        action: updateTitle,
+        action: updateEditMode,
       },
       {
         label: 'Create Sub Folder',

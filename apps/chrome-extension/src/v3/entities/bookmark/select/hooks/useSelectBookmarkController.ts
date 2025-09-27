@@ -38,6 +38,7 @@ export const useSelectBookmarkController = () => {
           ...bookmarkTreeOptimizer
             .getLinearizedSubTree(bookmark.id)
             .map((child) => child.id),
+          ...bookmarkTreeOptimizer.getAncestors(bookmark.id),
         ]),
       ];
 

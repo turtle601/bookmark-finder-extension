@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useQueryBookmarkMutation } from '@/v3/entities/bookmark/request/queries';
-import { useSelectBookmarkController } from '@/v3/entities/bookmark/select/hooks/useSelectBookmarkController';
 import { isFolder, isLink } from '@/v3/entities/bookmark/types/bookmark';
+import { useSelectedBookmarksData } from '@/v3/entities/bookmark/select/hooks/useSelectedBookmarksData';
 
 const mappingContentText = (
   isWide: boolean,
@@ -19,24 +18,27 @@ const mappingContentText = (
 export const useDragContent = (isWide: boolean) => {
   const [contentText, setContentText] = useState('');
 
-  const { selectedBookmarkIds } = useSelectBookmarkController();
+  const { selectedBookmarkIds, getSelectedBookmarksData } =
+    useSelectedBookmarksData();
 
-  const { mutate: queryBookmark } = useQueryBookmarkMutation({
-    onSuccess: (data) => {
-      const linkCount = data.filter(isLink).length;
-      const folderCount = data.filter(isFolder).length;
+  // 🔥 useCallback으로 함수 메모이제이션
+  const updateContentText = useCallback(async () => {
+    if (selectedBookmarkIds?.size <= 1) {
+      setContentText('');
+      return;
+    }
 
-      setContentText(mappingContentText(isWide, linkCount, folderCount));
-    },
-  });
+    const data = await getSelectedBookmarksData();
+    const linkCount = data.filter(isLink).length;
+    const folderCount = data.filter(isFolder).length;
+    setContentText(mappingContentText(isWide, linkCount, folderCount));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBookmarkIds.size]);
 
   useEffect(() => {
-    if (selectedBookmarkIds?.size > 1) {
-      queryBookmark({ ids: [...selectedBookmarkIds] });
-    } else {
-      setContentText('');
-    }
-  }, [queryBookmark, selectedBookmarkIds]);
+    updateContentText();
+  }, [updateContentText]);
 
   return {
     contentText,

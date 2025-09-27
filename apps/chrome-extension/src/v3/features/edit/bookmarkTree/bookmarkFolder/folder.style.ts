@@ -43,6 +43,7 @@ export function getBookmarkFolderDragSectionStyle(
 export function getBookmarkFolderAccordionButtonStyle(): CSSObject {
   return {
     display: 'flex',
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
     color: color.slate['900'],

@@ -20,7 +20,7 @@ export interface ILink
 export const isFolder = (
   node: chrome.bookmarks.BookmarkTreeNode,
 ): node is IFolder => {
-  return node.children !== undefined;
+  return node.children !== undefined || node.url === undefined;
 };
 
 export const isLink = (

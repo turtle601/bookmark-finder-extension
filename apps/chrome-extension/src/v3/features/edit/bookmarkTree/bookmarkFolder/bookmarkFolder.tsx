@@ -38,13 +38,12 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
 
   const handleSelectClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    e.preventDefault();
 
     // 폴더 좌 클릭
     if (e.shiftKey && e.button === 0) {
-      e.preventDefault();
-      e.stopPropagation();
-
       toggle();
+      return;
     }
   };
 
@@ -114,6 +113,13 @@ function BookmarkFolder({ folder }: { folder: IFolder }) {
                     <Accordion.Button
                       id={folder.id}
                       etcStyles={getBookmarkFolderAccordionButtonStyle()}
+                      externalOnClick={(e) => {
+                        if (e.shiftKey && e.button === 0) {
+                          return false;
+                        }
+
+                        return true;
+                      }}
                     >
                       <Accordion.Icon id={folder.id} size={12} />
                       <Spacer direction="horizontal" space={4} />

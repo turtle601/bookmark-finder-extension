@@ -65,7 +65,7 @@ export const useAddBookmarkMutation = () => {
       index,
     }: {
       title: string;
-      url: string;
+      url?: string;
       parentId: string;
       index: number;
     }) => addBookmark({ url, parentId, index, title }),
@@ -111,7 +111,7 @@ export const useUpdateFolderTitleMutation = () => {
 };
 
 export const useCreateSubFolderMutation = (
-  onMutateSuccess: (bookmark: chrome.bookmarks.BookmarkTreeNode) => void,
+  onMutateSuccess?: (bookmark: chrome.bookmarks.BookmarkTreeNode) => void,
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -126,10 +126,8 @@ export const useCreateSubFolderMutation = (
   });
 };
 
-export const useQueryBookmarkMutation = ({
-  onSuccess,
-}: {
-  onSuccess: (
+export const useQueryBookmarkMutation = (params?: {
+  onSuccess?: (
     data: chrome.bookmarks.BookmarkTreeNode[],
     variable: { ids: string[]; startIdx?: number },
   ) => void;
@@ -137,6 +135,6 @@ export const useQueryBookmarkMutation = ({
   return useMutation({
     mutationFn: (payload: { ids: string[]; startIdx?: number }) =>
       queryBookmark(payload),
-    onSuccess,
+    onSuccess: params?.onSuccess,
   });
 };

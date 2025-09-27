@@ -7,6 +7,7 @@ interface ILinearizedTree {
 
 class BookmarkTreeOptimizer {
   private _linearizedTree: ILinearizedTree[] = []; // 캐시데이터
+  private _nodeIndexMap: Map<string, number> = new Map(); // ID를 인덱스로 매핑하는 맵
 
   public reset(tree: chrome.bookmarks.BookmarkTreeNode) {
     const result: ILinearizedTree[] = [];
@@ -50,23 +51,39 @@ class BookmarkTreeOptimizer {
     }
 
     this._linearizedTree = [...result];
+
+    this._nodeIndexMap.clear();
+    this._linearizedTree.forEach((node, index) => {
+      this._nodeIndexMap.set(node.id, index);
+    });
   }
 
   public getLinearizedSubTree(id: string) {
-    const node = this._linearizedTree.find((node) => node.id === id);
+    const nodeIndex = this._nodeIndexMap.get(id);
+    if (nodeIndex === undefined) return [];
 
-    return this._linearizedTree.filter(
-      (v, i) => node.start < i && i <= node.end,
-    );
+    const node = this._linearizedTree[nodeIndex];
+    return this._linearizedTree.slice(node.start + 1, node.end + 1);
   }
 
   public getLinearizedTree() {
     return this._linearizedTree;
   }
 
-  public getAncestors(childId: string) {
-    const node = this._linearizedTree.find((node) => node.id === childId);
-    return node?.parentIds ?? new Set();
+  public getAncestors(childId: string): Set<string> {
+    const nodeIndex = this._nodeIndexMap.get(childId);
+    if (nodeIndex === undefined) return new Set();
+
+    return this._linearizedTree[nodeIndex].parentIds;
+  }
+
+  public getTopLevelBookmarkIds(selectedBookmarkIds: Set<string>) {
+    return Array.from(selectedBookmarkIds).filter((id) => {
+      const ancestors = this.getAncestors(id);
+      return !Array.from(ancestors).some((ancestorId) =>
+        selectedBookmarkIds.has(ancestorId),
+      );
+    });
   }
 }
 
