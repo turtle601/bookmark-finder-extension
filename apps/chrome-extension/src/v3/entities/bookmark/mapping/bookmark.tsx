@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyBookmarkUI from '../ui/lazyBookmarkUI';
 
 import {
   IFolder,
@@ -16,9 +17,17 @@ export function mappingComponentByBookmarkType(
 ): React.ReactNode {
   switch (true) {
     case isFolder(bookmark):
-      return React.createElement(map.folder, { folder: bookmark });
+      return (
+        <LazyBookmarkUI key={bookmark.id}>
+          <map.folder folder={bookmark} />
+        </LazyBookmarkUI>
+      );
     case isLink(bookmark):
-      return React.createElement(map.link, { link: bookmark });
+      return (
+        <LazyBookmarkUI key={bookmark.id}>
+          <map.link link={bookmark} />
+        </LazyBookmarkUI>
+      );
     default:
       return null;
   }
