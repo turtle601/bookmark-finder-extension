@@ -56,6 +56,9 @@ jobs:
           git config --global user.name turtle601
           git config --global user.email turtle601@naver.com
 
+          # semantic-release 후 최신 상태로 pull
+          git pull origin main
+
           # Get the latest tag (which semantic-release just created)
           LATEST_TAG=$(git describe --tags --abbrev=0)
           VERSION=${LATEST_TAG#v}  # Remove 'v' prefix
