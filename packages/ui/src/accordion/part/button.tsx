@@ -10,12 +10,14 @@ export interface IButtonProps extends ComponentPropsWithoutRef<'button'> {
   id: string;
   children: React.ReactNode;
   etcStyles?: CSSObject;
+  externalOnClick?: (e: React.MouseEvent<HTMLButtonElement>) => boolean | void;
 }
 
 const Button: React.FC<IButtonProps> = ({
   id,
   children,
   etcStyles,
+  externalOnClick,
   ...attribute
 }) => {
   const buttonId = Number(id);
@@ -23,14 +25,22 @@ const Button: React.FC<IButtonProps> = ({
   const { selectedIdSet } = useAccordionContext();
   const { closeAccordion, openAccordion } = useAccordionActionContext();
 
-  const toggle = useCallback(() => {
-    if (selectedIdSet.has(buttonId)) {
-      closeAccordion(buttonId);
-      return;
-    }
+  const toggle = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const result = !externalOnClick ? true : externalOnClick(e);
 
-    openAccordion(buttonId);
-  }, [buttonId, closeAccordion, openAccordion, selectedIdSet]);
+      if (result) {
+        if (selectedIdSet.has(buttonId)) {
+          closeAccordion(buttonId);
+        } else {
+          openAccordion(buttonId);
+        }
+
+        return;
+      }
+    },
+    [buttonId, closeAccordion, openAccordion, selectedIdSet, externalOnClick],
+  );
 
   return (
     <Center
