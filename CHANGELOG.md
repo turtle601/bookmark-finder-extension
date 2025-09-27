@@ -1,5 +1,163 @@
 # Changelog
 
+# [v3.1.0](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.5...v3.1.0) (2025-09-27)
+
+## 🔥 Removing code or files
+- [`5e021e8`](https://github.com/turtle601/bookmark-finder-extension/commit/5e021e8)
+ remove: 불필요한 파일 제거
+
+## 🐛 Fixing a bug
+- [`286aac9`](https://github.com/turtle601/bookmark-finder-extension/commit/286aac9)
+ fix: 검색 북마크 줄바꿈 스타일 수정
+- [`e039aaf`](https://github.com/turtle601/bookmark-finder-extension/commit/e039aaf)
+ fix: IntersectionObserver를 활용한 이미지 지연 로딩으로 성능 개선
+- [`3d3e858`](https://github.com/turtle601/bookmark-finder-extension/commit/3d3e858)
+ fix: IntersectionObserver를 활용한 이미지 지연 로딩으로 성능 개선 적용
+
+## ✨ Introducing new features
+- [`d7e8ad7`](https://github.com/turtle601/bookmark-finder-extension/commit/d7e8ad7)
+ feat: 특정 요소의 자식 요소를 선형 구조로 빠르게 탐색할 수 있는 알고리즘 구현
+- [`0d77f26`](https://github.com/turtle601/bookmark-finder-extension/commit/0d77f26)
+ feat: 북마크 관련 ui 기능을 커스텀 훅으로 분리, css 스타일을 함수로 분리
+- [`ad31559`](https://github.com/turtle601/bookmark-finder-extension/commit/ad31559)
+ feat: 여러 개의 북마크 드래그 시 dragContent 스타일 수정
+- [`433ec68`](https://github.com/turtle601/bookmark-finder-extension/commit/433ec68)
+ feat(ui): accordion.button externalClick props 추가
+- [`9838e63`](https://github.com/turtle601/bookmark-finder-extension/commit/9838e63)
+ feat: chunkArray 유틸함수 구현
+- [`0379e3b`](https://github.com/turtle601/bookmark-finder-extension/commit/0379e3b)
+ feat: 많은 북마크 동시 삭제 시 chunk를 활용한 API 병렬 요청으로 성능 최적화
+
+## 🚀 Deploying stuff
+- [`8646820`](https://github.com/turtle601/bookmark-finder-extension/commit/8646820)
+ release: extension file versions to 3.0.5
+
+## ♻️ Refactoring code
+- [`ff457a1`](https://github.com/turtle601/bookmark-finder-extension/commit/ff457a1)
+ refactor: 불필요한 코드 제거
+- [`45ea885`](https://github.com/turtle601/bookmark-finder-extension/commit/45ea885)
+ refactor: 기존 선택 기능 최적화 관련 코드 작성
+- [`288ef27`](https://github.com/turtle601/bookmark-finder-extension/commit/288ef27)
+ refactor: bookmarks request, listener, type 폴더 이동으로 인한 코드 수정
+- [`d28a990`](https://github.com/turtle601/bookmark-finder-extension/commit/d28a990)
+ refactor: linearizedTreeOptimizer 에서 bookmarkTreeOptimizer 클래스명 변경 및 폴더 위치 이동
+- [`00c0a1d`](https://github.com/turtle601/bookmark-finder-extension/commit/00c0a1d)
+ refactor: features/ui 폴더 위치 이동 및 코드 수정
+- [`83fef6b`](https://github.com/turtle601/bookmark-finder-extension/commit/83fef6b)
+ refactor: 전역상태 관련 코드 폴더 위치 이동
+- [`059b6ef`](https://github.com/turtle601/bookmark-finder-extension/commit/059b6ef)
+ refactor: 크롬탭 기능 드랍관련 기능 커스텀 훅 분리
+- [`643966b`](https://github.com/turtle601/bookmark-finder-extension/commit/643966b)
+ refactor: chromeTab 관련 폴더 모두 제거로 인한 코드 수정
+- [`51de994`](https://github.com/turtle601/bookmark-finder-extension/commit/51de994)
+ refactor: edit/hooks 폴더 제거
+- [`a89172d`](https://github.com/turtle601/bookmark-finder-extension/commit/a89172d)
+ refactor: search 관련 로직 리팩토링
+- [`851b2b9`](https://github.com/turtle601/bookmark-finder-extension/commit/851b2b9)
+ refactor: 북마크 선택 관련 기능 리팩토링
+- [`4032110`](https://github.com/turtle601/bookmark-finder-extension/commit/4032110)
+ refactor: 불필요한 주석 제거
+
+## 🔧 Changing configuration files
+- [`71180c0`](https://github.com/turtle601/bookmark-finder-extension/commit/71180c0)
+ ci: extension 배포 자동화 파일명 변경
+- [`6cd1866`](https://github.com/turtle601/bookmark-finder-extension/commit/6cd1866)
+ ci: npm ui 라이브러리 배포 자동화 permission 오류 해결
+- [`b2df705`](https://github.com/turtle601/bookmark-finder-extension/commit/b2df705)
+ ci: npm ui 라이브러리 배포 자동화 잘못된 register url 오류 해결
+- [`03ed893`](https://github.com/turtle601/bookmark-finder-extension/commit/03ed893)
+ ci: npm ui 라이브러리 배포 자동화 npm 토큰 오류 해결
+- [`94e4505`](https://github.com/turtle601/bookmark-finder-extension/commit/94e4505)
+ ci: ui 라이브러리 버전 업
+- [`84d7c03`](https://github.com/turtle601/bookmark-finder-extension/commit/84d7c03)
+ ci: npm-release.yml .changeset 경로 추가
+- [`4e94382`](https://github.com/turtle601/bookmark-finder-extension/commit/4e94382)
+ ci: .changeset 파일 수정
+- [`007390f`](https://github.com/turtle601/bookmark-finder-extension/commit/007390f)
+ ci: npm ui 라이브러리 배포 자동화 npm 토큰 오류 해결
+- [`2d0eba2`](https://github.com/turtle601/bookmark-finder-extension/commit/2d0eba2)
+ ci: npm ui 라이브러리 배포 자동화 경로 수정
+- [`d12609f`](https://github.com/turtle601/bookmark-finder-extension/commit/d12609f)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`0d9e0b8`](https://github.com/turtle601/bookmark-finder-extension/commit/0d9e0b8)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`0efa93c`](https://github.com/turtle601/bookmark-finder-extension/commit/0efa93c)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`daf3cd4`](https://github.com/turtle601/bookmark-finder-extension/commit/daf3cd4)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`69f064c`](https://github.com/turtle601/bookmark-finder-extension/commit/69f064c)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`b3eb256`](https://github.com/turtle601/bookmark-finder-extension/commit/b3eb256)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`bcaf947`](https://github.com/turtle601/bookmark-finder-extension/commit/bcaf947)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`8611981`](https://github.com/turtle601/bookmark-finder-extension/commit/8611981)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`be1ff7f`](https://github.com/turtle601/bookmark-finder-extension/commit/be1ff7f)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`88da55c`](https://github.com/turtle601/bookmark-finder-extension/commit/88da55c)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`49c2780`](https://github.com/turtle601/bookmark-finder-extension/commit/49c2780)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`7937b81`](https://github.com/turtle601/bookmark-finder-extension/commit/7937b81)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`2c98616`](https://github.com/turtle601/bookmark-finder-extension/commit/2c98616)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`1f7e4fa`](https://github.com/turtle601/bookmark-finder-extension/commit/1f7e4fa)
+ ci: npm ui 라이브러리 배포 자동화 오류 수정
+- [`0976cd9`](https://github.com/turtle601/bookmark-finder-extension/commit/0976cd9)
+ ci: ui 라이브러리, prettier, eslint minor 버전 업
+- [`23899c5`](https://github.com/turtle601/bookmark-finder-extension/commit/23899c5)
+ ci: 버전과 상관없는 깃모지 추가
+- [`a145532`](https://github.com/turtle601/bookmark-finder-extension/commit/a145532)
+ ci: accordion.button props 수정으로 인한 ui 라이브러리 patch 버전 업
+- [`0b272f9`](https://github.com/turtle601/bookmark-finder-extension/commit/0b272f9)
+ ci: Git 브랜치 동기화 문제로 인한 app.release.yml 파일 수정
+
+## 📦 Updating compiled files or packages
+- [`61446f1`](https://github.com/turtle601/bookmark-finder-extension/commit/61446f1)
+ chore: npm version packages
+- [`0ae37ff`](https://github.com/turtle601/bookmark-finder-extension/commit/0ae37ff)
+ chore: npm version packages
+- [`3c53a6c`](https://github.com/turtle601/bookmark-finder-extension/commit/3c53a6c)
+ chore: npm version packages
+- [`9f72851`](https://github.com/turtle601/bookmark-finder-extension/commit/9f72851)
+ chore: npm version packages
+- [`911de52`](https://github.com/turtle601/bookmark-finder-extension/commit/911de52)
+ chore: npm version packages
+- [`4372991`](https://github.com/turtle601/bookmark-finder-extension/commit/4372991)
+ chore: npm version packages
+- [`560526c`](https://github.com/turtle601/bookmark-finder-extension/commit/560526c)
+ chore: npm version packages
+- [`402c588`](https://github.com/turtle601/bookmark-finder-extension/commit/402c588)
+ chore: npm version packages
+- [`8732ae9`](https://github.com/turtle601/bookmark-finder-extension/commit/8732ae9)
+ chore: npm version packages
+- [`2e5cb07`](https://github.com/turtle601/bookmark-finder-extension/commit/2e5cb07)
+ chore: npm version packages
+- [`6e62b97`](https://github.com/turtle601/bookmark-finder-extension/commit/6e62b97)
+ chore: npm version packages
+- [`10d06b4`](https://github.com/turtle601/bookmark-finder-extension/commit/10d06b4)
+ chore: npm version packages
+- [`79c0bb5`](https://github.com/turtle601/bookmark-finder-extension/commit/79c0bb5)
+ chore: npm version packages
+- [`5ed9b5f`](https://github.com/turtle601/bookmark-finder-extension/commit/5ed9b5f)
+ chore: npm version packages
+- [`2bd8d14`](https://github.com/turtle601/bookmark-finder-extension/commit/2bd8d14)
+ chore: npm version packages
+- [`3eeba5a`](https://github.com/turtle601/bookmark-finder-extension/commit/3eeba5a)
+ chore: npm version packages
+- [`c424bb8`](https://github.com/turtle601/bookmark-finder-extension/commit/c424bb8)
+ chore: npm version packages
+- [`9e08fc7`](https://github.com/turtle601/bookmark-finder-extension/commit/9e08fc7)
+ chore: npm version packages
+- [`7ad1cb6`](https://github.com/turtle601/bookmark-finder-extension/commit/7ad1cb6)
+ chore: npm version packages
+- [`0d2652a`](https://github.com/turtle601/bookmark-finder-extension/commit/0d2652a)
+ chore: jest 관련 설정 추가
+- [`b489c9a`](https://github.com/turtle601/bookmark-finder-extension/commit/b489c9a)
+ chore: npm version packages
+
 # [v3.0.5](https://github.com/turtle601/bookmark-finder-extension/compare/v3.0.4...v3.0.5) (2025-09-19)
 
 ## 🐛 Fixing a bug
